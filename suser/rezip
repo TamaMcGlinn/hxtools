@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+#	rezip - optimize a ZIP archive and its members for size
+#	written by Jan Engelhardt, 2011
+#
+#	This program is free software; you can redistribute it and/or
+#	modify it under the terms of the WTF Public License version 2 or
+#	(at your option) any later version.
+
+self=$(readlink -f "$0");
+if [[ -z "$rezip_level" ]]; then
+	rezip_level=0;
+fi;
+export rezip_level;
+rezip_level=$(($rezip_level+1));
+
+do_dir()
+{
+	#
+	# optipng would abort the whole batch if just one odd PNG
+	# is in it, so call with -n1.
+	#
+	echo "  [$rezip_level] optipng";
+	find "$1" -iname "*.png" -print0 | xargs -0rn1 optipng;
+	find "$1" "(" -iname "*.zip" -o -iname "*.jar" ")" -print0 | \
+		xargs -0r "$self";
+}
+
+do_zip()
+{
+	mkdir "tmp.$$";
+	pushd "tmp.$$";
+	echo "  [$rezip_level] Unzip $1";
+	unzip -q "../$1";
+	r="$?";
+	if [[ "$r" -ne 0 ]]; then
+		continue;
+	fi;
+
+	do_dir .;
+
+	rm -f "../$1";
+	echo "  [$rezip_level] Rezip $1";
+	zip -9qr "../$1" *;
+	popd;
+	rm -Rf "tmp.$$";
+}
+
+for i in "$@"; do
+	if [[ -d "$i" ]]; then
+		do_dir "$i";
+	else
+		do_zip "$i";
+	fi;
+done;

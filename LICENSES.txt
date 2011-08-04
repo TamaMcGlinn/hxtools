@@ -60,6 +60,7 @@ suser/fxterm			WTFPL-2.0+
 suser/mailsplit			WTFPL-2.0+
 suser/pesubst			WTFPL-2.0+
 suser/qtar			WTFPL-2.0+
+suser/rezip			WTFPL-2.0+
 suser/rot13			WTFPL-2.0+
 suser/sysinfo			GPL-2.0+
 suser/tailhex			GPL-2.0+
