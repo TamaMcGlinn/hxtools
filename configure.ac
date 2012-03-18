@@ -8,7 +8,7 @@ AM_PROG_CC_C_O
 
 AC_CHECK_HEADERS([lastlog.h paths.h])
 PKG_CHECK_MODULES([libHX], [libHX >= 3.12.1])
-PKG_CHECK_MODULES([libmount], [mount >= 2.20])
+PKG_CHECK_MODULES([libmount], [mount >= 2.19])
 PKG_CHECK_MODULES([libpci], [libpci >= 3])
 PKG_CHECK_MODULES([libxcb], [xcb >= 1])
 AC_SEARCH_LIBS([cap_get_pid], [cap], [libcap_LIBS="$LIBS"; LIBS=""])
