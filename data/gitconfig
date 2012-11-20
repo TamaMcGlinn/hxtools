@@ -10,7 +10,7 @@
 	current = bold white
 
 [color "diff"]
-	commit = bold white red
+	commit = bold white blue
 	frag = magenta
 	meta = bold white blue
 
@@ -32,3 +32,6 @@
 	suppressfrom = 1
 	suppresscc = all
 	thread = 1
+
+[grep]
+	patternType = perl
