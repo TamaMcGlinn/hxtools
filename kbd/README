@@ -52,8 +52,26 @@ us_jeng_sonyvaiou3.map
 
 == FONT OVERVIEW ==
 
-ahnv.fnt
-	Mixture of ati.fnt and nvidia.fnt
+Unless otherwise noted,
+ - the font glyph cells are 8 pixels wide and 16 pixels high
+ - the actual font glyphs may use all of these 8 pixels
+ - the fonts were designed for a 9 pixel wide character cell
+   (IBM-style text mode, where the 9th column is a clone of
+   the 8th for positions 0xB0-0xDF, and otherwise blank)
+
+Linux fbdev makes the character cells as big as the glyph cells,
+which may make some fonts look squashed together.
+The vfontas(1) tool may be used to convert an 8x16 font to a 9x16
+font, IBM-style, for use with fbdev.
+
+
+A1.fnt
+	A font with a somewhat angular shape for the upper-case
+	and digit glyphs.
+	To be used with cp437AB.uni.
+B1.fnt
+	A font with more soft roundings in upper-case and digit glyphs.
+	To be used with cp437AB.uni.
 ati.fnt
 	ATI ROM font
 ega*.fnt
@@ -74,5 +92,6 @@ rhx.fnt
 	a serif roman font
 	r.fnt from the SUSE "kbd" package, alterations
 tosh.fnt
-	A 7-pixel wide narrow geometric sans-serif font
+	A narrow geometric sans-serif font. All glyphs are 7 pixels
+	wide, for use with 8-pixel character cells.
 	CrystalLogic CS55554 ROM
