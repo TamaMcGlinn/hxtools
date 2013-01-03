@@ -189,7 +189,7 @@ sub queue_play
 			&play_umx($file);
 			next;
 		}
-		if (exists $entry->{vbr}) {
+		if ($ext eq ".mp3" && exists($entry->{vbr})) {
 			if ($opt_nomixes) {
 				print STDERR "\e[31m(VBR file and reindexing disabled)\e[0m\n";
 			} else {
