@@ -185,7 +185,7 @@ sub queue_play
 			# my $t = $opt_verbose ? "t" : "";
 			system "timidity", "-Os", "-idt", $file;
 			next;
-		} elsif ($file eq ".umx") {
+		} elsif ($ext eq ".umx") {
 			&play_umx($file);
 			next;
 		}
