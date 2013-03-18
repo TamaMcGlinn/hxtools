@@ -1,0 +1,53 @@
+.TH hcdplay 1 "2013-03-16" "hxtools" "hxtools"
+.SH Name
+.PP
+hcdplay \(em Control autonomous CDDA playback using Linux CDROM ioctls
+.SH Syntax
+.PP
+\fBhcdplay\fP [\fB\-EPRSTs\fP] [\fB\-D\fP \fIdevice\fP] [\fB\-p\fP
+\fIfirst-track\fP [\fIlast-track\fP]]
+.SH Description
+.PP
+CD-DA discs in CD-ROM drives can either be played back using Digital Audio
+Extraction (DAE) where software requests sector by sector, or by using the
+drive's autonomous playback functions, whereby the drive's firmware will do the
+sector reading. Software is only required for a few control codes to initiate
+or terminate playback. (If the drive possesses extra buttons besides the eject
+function, such as the Sony CDU5221, Autonomous Playback can even be controlled
+using that method as well.)
+.PP
+With this autonomous play mode, the drive can/will output sound using a variety
+of methods. Common ones are a 3.5mm headphone jack and a 4-pin Analog Audio
+connector that is supposed to be connected a soundcard. These are often lacking
+nowadays, especially external drives, slimline drives, and even internal 5.25"
+SATA drives. As such, these drives often do not even implement the Autonomous
+Playback functions anymore (the particular ATA commands are ignored).
+.SH Options
+.TP
+\fB\-D\fP, \fB\-\-device\fP \fIdevice\fP
+The path to the CD-ROM device node. Defaults to \fB/dev/sr0\fP.
+.TP
+\fB\-E\fP, \fB\-\-eject\fP
+Request that the drive be ejected.
+.TP
+\fB\-P\fP, \fB\-\-pause\fP
+Pause playback. This can only be issued if the CD-ROM drive is in the Playing
+state.
+.TP
+\fB\-R\fP, \fB\-\-resume\fP
+Resume playback. This can only be issued if the CD-ROM drive is in the Paused
+state.
+.TP
+\fB\-S\fP, \fB\-\-stop\fP
+Stop playback.
+.TP
+\fB\-T\fP, \fB\-\-toc\fP
+Print part of the disc's table of contents (TOC).
+.TP
+\fB\-p\fP, \fB\-\-play\fP [\fIfirst-track\fP [\fIlast-track\fP]]
+Start playback of \fIfirst-track\fP and play until \fIlast-track\fP. If no
+first track is specified, starts from 1. If no last track is specified, it will
+play until the end of the disc.
+.TP
+\fB\-s\fP, \fB\-\-start\fP
+Start playback.
