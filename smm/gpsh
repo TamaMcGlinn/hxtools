@@ -150,9 +150,21 @@ sub filename_meta
 
 sub filename_timidity
 {
-	my $ext = shift @_;
+	my $ext = lc shift @_;
 
-	foreach my $t (qw(.mid .mus .mod .669 .s3m .xm .it)) {
+	foreach my $t (qw(.mid .mus .rmi)) {
+		if ($ext eq $t) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+sub filename_xmp
+{
+	my $ext = lc shift @_;
+
+	foreach my $t (qw(.it .s3m .xm .mod .xm2)) {
 		if ($ext eq $t) {
 			return 1;
 		}
@@ -185,8 +197,8 @@ sub queue_play
 			# my $t = $opt_verbose ? "t" : "";
 			system "timidity", "-Os", "-idt", $file;
 			next;
-		} elsif ($ext eq ".umx") {
-			&play_umx($file);
+		} elsif (&filename_xmp($ext)) {
+			system "xmp", $file;
 			next;
 		}
 		if ($ext eq ".mp3" && exists($entry->{vbr})) {
