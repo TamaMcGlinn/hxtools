@@ -1,0 +1,137 @@
+;; ru-phonde.mim -- Russian input method with German transliteratoin
+
+;; This file is part of the m17n database; a sub-part of the m17n
+;; library.
+
+;; The m17n library is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU Lesser General Public License
+;; as published by the Free Software Foundation; either version 2.1 of
+;; the License, or (at your option) any later version.
+
+;; The m17n library is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; Lesser General Public License for more details.
+
+;; You should have received a copy of the GNU Lesser General Public
+;; License along with the m17n library; if not, write to the Free
+;; Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
+
+(input-method ru phonde)
+
+(description
+ "Russian input method simulating the German transliteration.")
+
+(title "Я")
+
+(map
+	(default
+		("a" ?а)
+		("A" ?А)
+		("b" ?б)
+		("B" ?Б)
+		("w" ?в)
+		("W" ?В)
+		("v" ?в)
+		("V" ?В)
+		("g" ?г)
+		("G" ?Г)
+		("d" ?д)
+		("D" ?Д)
+		("e" ?е)
+		("E" ?Е)
+		("je" ?е)
+		("JE" ?Е)
+		("Je" ?Е)
+		("jo" ?ё)
+		("JO" ?Ё)
+		("Jo" ?Ё)
+		("sj" ?ж)
+		("SJ" ?Ж)
+		("Sj" ?Ж)
+		("s" ?з)
+		("S" ?З)
+		("s " ?з)
+		("S " ?З)
+		("i" ?и)
+		("I" ?И)
+		("j" ?й)
+		("J" ?Й)
+		("j " ?й)
+		("J " ?Й)
+		("k" ?к)
+		("K" ?К)
+		("l" ?л)
+		("L" ?Л)
+		("m" ?м)
+		("M" ?М)
+		("n" ?н)
+		("N" ?Н)
+		("o" ?о)
+		("O" ?О)
+		("p" ?п)
+		("P" ?П)
+		("r" ?р)
+		("R" ?Р)
+		("c" ?с)
+		("C" ?С)
+		("t" ?т)
+		("T" ?Т)
+		("t " ?т)
+		("T " ?Т)
+		("u" ?у)
+		("U" ?У)
+		("f" ?ф)
+		("F" ?Ф)
+		("h" ?х)
+		("H" ?Х)
+		("x" ?х)
+		("X" ?Х)
+		("z" ?ц)
+		("Z" ?Ц)
+		("ts" ?ч)
+		("TS" ?Ч)
+		("Ts" ?Ч)
+		("tsh" ?ч)
+		("TSH" ?Ч)
+		("Tsh" ?Ч)
+		("tsch" ?ч)
+		("TSCH" ?Ч)
+		("Tsch" ?Ч)
+		("sh" ?ш)
+		("SH" ?Ш)
+		("Sh" ?Ш)
+		("sch" ?ш)
+		("SCH" ?Ш)
+		("Sch" ?Ш)
+		("schtsch" ?щ)
+		("SCHTSCH" ?Щ)
+		("Schtsch" ?Щ)
+		("-b" ?ъ)
+		("-B" ?Ъ)
+		("- " ?-)
+		("- " ?-)
+		("y" ?ы)
+		("Y" ?Ы)
+		("'b" ?ь)
+		("'B" ?Ь)
+		("'e" ?э)
+		("'E" ?Э)
+		("' " ?')
+		("' " ?')
+		("ju" ?ю)
+		("JU" ?Ю)
+		("Ju" ?Ю)
+		("ja" ?я)
+		("JA" ?Я)
+		("Ja" ?Я)
+	)
+)
+
+(state (init (default)))
+
+;; Local Variables:
+;; coding: utf-8
+;; mode: lisp
+;; End:
