@@ -221,7 +221,7 @@ sub workaround_mp3vbr
 	# Create an index file...
 	my $ifile = shift @_;
 	my $ofile = $ifile;
-	my $tmpdir = "/tmp/psh";
+	my $tmpdir = "/tmp/psh.$>";
 
 	$ofile =~ s{/}{__}gs;
 	$ofile = "$tmpdir/$ofile";
