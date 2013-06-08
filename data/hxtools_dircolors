@@ -109,6 +109,7 @@ EXEC		1;31
 #.dbf	0;36	# DBase database
 .doc	0;36	# Word document
 .docx	0;36	# Word document
+.flv	0;36	# Macromedia container
 .htm	0;36	# HTML file
 .html	0;36	# HTML file
 .lyx	0;36	# LyX word processing file
