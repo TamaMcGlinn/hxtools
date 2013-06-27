@@ -71,6 +71,12 @@ sub by_normal
 sub by_basename
 {
 	my($p, $q) = ($a, $b);
+	if (-d $p && !-d $q) {
+		return -1;
+	}
+	if (!-d $p && -d $q) {
+		return 1;
+	}
 	$p =~ s{.*/}{}g;
 	$q =~ s{.*/}{}g;
 	return $p cmp $q;
