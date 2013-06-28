@@ -34,8 +34,6 @@ sub main
 
 	if (scalar(@ARGV) == 0) {
 		die "No output file. What gives?\n";
-	} elsif (scalar(@ARGV) == 1) {
-		die "No input directories. What gives?\n";
 	}
 
 	my $archive = shift @ARGV;
@@ -53,10 +51,14 @@ sub main
 		}
 	}
 
-	find({
+	my @targets = grep(/^[^-]/, @ARGV);
+	if (scalar(@targets) == 0) {
+		die "No input directories. What gives?\n";
+	}
+	File::Find::find({
 		wanted => \&collect,
 		no_chdir => 1,
-	}, grep /^[^-]/, @ARGV);
+	}, @targets);
 	@ARGV   = grep /^-/, @ARGV;
 	@result = sort $strategy @result;
 
