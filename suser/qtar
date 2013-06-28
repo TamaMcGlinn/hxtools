@@ -55,6 +55,11 @@ sub main
 	if (scalar(@targets) == 0) {
 		die "No input directories. What gives?\n";
 	}
+	foreach (@targets) {
+		if (!-e $_) {
+			warn "WARNING: Cannot find \"$_\": $!\n";
+		}
+	}
 	File::Find::find({
 		wanted => \&collect,
 		no_chdir => 1,
