@@ -65,6 +65,9 @@ static const char *const cap_names[] = {
 #ifdef CAP_WAKE_ALARM
 	E(WAKE_ALARM),
 #endif
+#ifdef CAP_BLOCK_SUSPEND
+	E(BLOCK_SUSPEND),
+#endif
 #undef E
 };
 

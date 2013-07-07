@@ -21,6 +21,7 @@ dist_man_MANS = \
 	git-forest.1 \
 	git-revert-stats.1 \
 	git-track.1 \
+	hcdplay.1 \
 	hxtools.7 \
 	logontime.8 \
 	mailsplit.1 \
