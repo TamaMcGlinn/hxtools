@@ -30,6 +30,7 @@ static struct pcspkr pcsp = {
 	.sample_rate = 48000,
 	.prop_square = 1,
 	.prop_sine   = 1,
+	.volume      = 0.1,
 };
 
 static unsigned int filter_lo = 0, filter_hi = ~0U;

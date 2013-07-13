@@ -38,8 +38,8 @@ static void pcm_u8(const struct pcspkr *pcsp, long frequency,
 
 	for (sample = 0; sample < duration; ++sample) {
 		value = 127 * dynamic_qi(pcsp,
-		        2.0 * M_PI * frequency * sample / pcsp->sample_rate) +
-			127;
+		        2.0 * M_PI * frequency * sample / pcsp->sample_rate) *
+		        pcsp->volume + 127;
 		fwrite(&value, sizeof(value), 1, pcsp->file_ptr);
 	}
 	value = 0;
@@ -55,7 +55,8 @@ static void pcm_s16(const struct pcspkr *pcsp, long frequency,
 
 	for (sample = 0; sample < duration; ++sample) {
 		value = 32767 * dynamic_qi(pcsp,
-		        2.0 * M_PI * frequency * sample / pcsp->sample_rate);
+		        2.0 * M_PI * frequency * sample / pcsp->sample_rate) *
+		        pcsp->volume;
 		fwrite(&value, sizeof(value), 1, pcsp->file_ptr);
 	}
 	value = 0;
