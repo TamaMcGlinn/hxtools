@@ -38,16 +38,19 @@ sub main
 
 	my $archive = shift @ARGV;
 	if (!defined($packer)) {
-		if (substr($archive, -3, 3) eq ".xz") {
+		if (substr($archive, -3, 3) eq ".xz" ||
+		    substr($archive, -4, 4) eq ".txz") {
 			$packer = "xz";
-		} elsif (substr($archive, -4, 4) eq ".bz2") {
+		} elsif (substr($archive, -4, 4) eq ".bz2" ||
+		    substr($archive, -5, 5) eq ".tbz2") {
 			$packer = "bzip2";
-		} elsif (substr($archive, -3, 3) eq ".gz") {
+		} elsif (substr($archive, -3, 3) eq ".gz" ||
+		    substr($archive, -4, 4) eq ".tgz") {
 			$packer = "gzip";
 		} elsif (substr($archive, -4, 4) eq ".tar") {
 			$packer = undef;
 		} else {
-			$packer = "xz";
+			$packer = "lzip";
 		}
 	}
 
