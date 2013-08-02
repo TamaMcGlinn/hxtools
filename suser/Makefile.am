@@ -19,6 +19,7 @@ dist_bin_SCRIPTS = \
 	wktimer
 
 dist_pkglibexec_SCRIPTS = \
+	437cipher \
 	mailsplit
 
 sysinfo_LDADD = ${libHX_LIBS} ${libmount_LIBS} ${libpci_LIBS} ${libxcb_LIBS}

@@ -54,6 +54,7 @@ smm/qplay			GPL-2.0+
 smm/ssa2srt			WTFPL-2.0+
 smm/stxdb			GPL-2.0+
 smm/vfontas			GPL-2.0+
+suser/437cipher			WTFPL-2.0+
 suser/declone			WTFPL-2.0+
 suser/fduphl			WTFPL-2.0+
 suser/fxterm			WTFPL-2.0+
