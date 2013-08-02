@@ -41,6 +41,7 @@ dist_man_MANS = \
 	printcaps.8 \
 	psthreads.1 \
 	recursive_lower.1 \
+	rot13.1 \
 	sourcefuncsize.1 \
 	spec-beautifier.1 \
 	ssa2srt.1 \

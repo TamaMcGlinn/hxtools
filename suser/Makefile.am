@@ -14,6 +14,7 @@ dist_bin_SCRIPTS = \
 	fduphl \
 	fxterm \
 	pesubst \
+	rot13 \
 	qtar \
 	wktimer
 
