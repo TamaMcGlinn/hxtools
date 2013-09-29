@@ -95,9 +95,23 @@ sub by_basename
 sub by_extension
 {
 	my($p, $q) = ($a, $b);
+	if (-d $p && !-d $q) {
+		return -1;
+	}
+	if (!-d $p && -d $q) {
+		return 1;
+	}
+	if (-d $p && -d $q) {
+		return &by_basename();
+	}
+	# Both are files:
 	$p =~ s{.*\.(\w+)$}{$1};
 	$q =~ s{.*\.(\w+)$}{$1};
-	return $p cmp $q;
+	if ($p ne $q) {
+		return $p cmp $q;
+	}
+	# Same extension
+	return &by_basename();
 }
 
 sub collect
