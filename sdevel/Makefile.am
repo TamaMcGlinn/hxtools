@@ -1,5 +1,10 @@
 # -*- Makefile -*-
 
+AM_CPPFLAGS = ${libHX_CFLAGS}
+
+bin_PROGRAMS = \
+	bin2c
+
 dist_bin_SCRIPTS = \
 	checkbrack \
 	cwdiff \
@@ -22,3 +27,5 @@ dist_pkglibexec_SCRIPTS = \
 	paddrspacesize \
 	proc_stat_signal_decode \
 	sourcefuncsize
+
+bin2c_LDADD = ${libHX_LIBS}

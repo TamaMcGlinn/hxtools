@@ -1,6 +1,7 @@
 # -*- Makefile -*-
 
 dist_man_MANS = \
+	bin2c.1 \
 	bsvplay.1 \
 	cctypeinfo.1 \
 	checkbrack.1 \
@@ -35,7 +36,6 @@ dist_man_MANS = \
 	oplay.1 \
 	orec.1 \
 	pesubst.1 \
-	png2wx.1 \
 	qplay.1 \
 	pcmdiff.1 \
 	printcaps.8 \

@@ -24,8 +24,6 @@ dist_pkglibexec_SCRIPTS  = \
 	fnt2bdf \
 	mod2ogg \
 	mpg2ogg \
-	png2wx.pl \
-	png2wx.py \
 	shared.pm \
 	stxdb
 
