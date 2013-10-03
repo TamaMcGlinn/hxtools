@@ -69,6 +69,35 @@ static char *btc_strquote(const char *src)
 }
 
 /**
+ * Output the binary stream in a "normal" fashion.
+ */
+static void btc_output_normal(FILE *cfilp, FILE *hfilp, FILE *ifilp,
+    size_t isize, const char *vname)
+{
+	char input_buf[4096], *output_buf;
+	size_t input_len;
+
+	if (cfilp != hfilp) {
+		fprintf(hfilp, "extern const unsigned char bin2c_%s[%zu];\n",
+		        vname, isize);
+		fprintf(cfilp, "const unsigned char bin2c_%s[%zu] = \"",
+		        vname, isize);
+	} else {
+		fprintf(cfilp, "static const unsigned char bin2c_%s[%zu] = \"",
+		        vname, isize);
+	}
+
+	while ((input_len = fread(input_buf, 1, sizeof(input_buf), ifilp)) > 0) {
+		output_buf = btc_memquote(input_buf, input_len);
+		if (output_buf == NULL)
+			abort();
+		fwrite(output_buf, strlen(output_buf), 1, cfilp);
+		free(output_buf);
+	}
+	fprintf(cfilp, "\";\n");
+}
+
+/**
  * Construct a variable identifier from the given input filename.
  * Just substitute all non-alphanumeric characters by underscore.
  */
@@ -79,14 +108,18 @@ static hxmc_t *btc_construct_vname(const char *cfile)
 
 	if (vname == NULL)
 		return NULL;
-	/*
-	 * Prepend some identifier. This also ensures that identifiers
-	 * taken from filenames never begin with a digit (forbidden)
-	 * or special characters.
-	 */
-	if (HXmc_strpcat(&vname, "bin2c_") == NULL)
-		return NULL;
-	p = vname + strlen("bin2c_");
+	if (!HX_isalpha(*cfile) && *cfile != '_') {
+		/*
+		 * The identifier must begin with [a-z_]; in any case, it
+		 * cannot begin with a digit or any special character.
+		 */
+		if (HXmc_strpcat(&vname, "_") == NULL)
+			/* can happen but unlikely: just abort w/o errormsg */
+			abort();
+		p = vname + 1;
+	} else {
+		p = vname;
+	}
 	for (; *cfile != '\0'; ++cfile)
 		*p++ = HX_isalnum(*cfile) ? *cfile : '_';
 	return vname;
@@ -97,7 +130,6 @@ static hxmc_t *btc_construct_vname(const char *cfile)
  */
 static int btc_process_single(FILE *cfilp, FILE *hfilp, const char *ifile)
 {
-	char input_buf[4096], *output_buf;
 	struct stat sb;
 	hxmc_t *vname;
 	size_t input_len;
@@ -117,24 +149,8 @@ static int btc_process_single(FILE *cfilp, FILE *hfilp, const char *ifile)
 		return -errno;
 	}
 	vname = btc_construct_vname(ifile);
-	if (cfilp != hfilp) {
-		fprintf(hfilp, "extern const unsigned char %s;\n", vname);
-		fprintf(cfilp, "const unsigned char %s[%zu] = \"",
-		        vname, sb.st_size);
-	} else {
-		fprintf(cfilp, "static const unsigned char %s[%zu] = \"",
-		        vname, sb.st_size);
-	}
+	btc_output_normal(cfilp, hfilp, ifilp, sb.st_size, vname);
 	HXmc_free(vname);
-
-	while ((input_len = fread(input_buf, 1, sizeof(input_buf), ifilp)) > 0) {
-		output_buf = btc_memquote(input_buf, input_len);
-		if (output_buf == NULL)
-			abort();
-		fwrite(output_buf, strlen(output_buf), 1, cfilp);
-		free(output_buf);
-	}
-	fprintf(cfilp, "\";\n");
 	fclose(ifilp);
 	return 0;
 }
