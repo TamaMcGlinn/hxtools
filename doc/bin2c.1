@@ -5,7 +5,7 @@ bin2c \(em embed data files into C as variables
 .SH Syntax
 .PP
 \fBbin2c\fP [\fB\-C\fP \fIprogram-file\fP] [\fB\-H\fP \fIheader-file\fP]
-[\fB\-G\fP \fIguard-name\fP] [\fB\-v\fP \fIfile\fP...
+[\fB\-G\fP \fIguard-name\fP] [\fB\-v\fP] [\fB\-\-wxbitmap\fP] \fIfile\fP...
 .SH Description
 .PP
 bin2c converts files to C variables. It does so by reading the contents of each
@@ -40,6 +40,9 @@ as \fBstatic\fP (file scope).
 .TP
 \fB\-v\fP
 Be verbose. Show all the names and filenames that bin2c will write.
+.TP
+\fB\-\-wxbitmap\fP
+Generate C++ code that generates wxBitmap objects.
 .SH Examples
 .PP
 To generate a single C header file that behaves like XPM files and which is
