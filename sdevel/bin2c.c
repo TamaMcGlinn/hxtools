@@ -42,7 +42,9 @@ struct btc_state {
 struct btc_operations {
 	void (*global_header)(struct btc_state *);
 	void (*global_footer)(struct btc_state *);
+	void (*file_predecl)(struct btc_state *);
 	void (*file_content)(struct btc_state *);
+	void (*func_header)(struct btc_state *);
 };
 
 static hxmc_t *btc_cfile, *btc_hfile;
@@ -240,6 +242,7 @@ static int btc_start(const char **argv)
 {
 	struct btc_state state;
 	FILE *hfilp, *cfilp = NULL;
+	const char **arg;
 	char *result;
 	int ret = 0;
 
@@ -268,8 +271,17 @@ static int btc_start(const char **argv)
 	state.guard_name = btc_guard_name;
 	btc_ops->global_header(&state);
 
-	while (*++argv != NULL) {
-		state.ifile = *argv;
+	if (btc_ops->file_predecl != NULL)
+		for (arg = argv + 1; *arg != NULL; ++arg) {
+			state.ifile = *arg;
+			btc_ops->file_predecl(&state);
+		}
+
+	if (btc_ops->func_header != NULL)
+		btc_ops->func_header(&state);
+
+	for (arg = argv + 1; *arg != NULL; ++arg) {
+		state.ifile = *arg;
 		ret = btc_process_single(&state);
 		if (ret != 0)
 			break;
