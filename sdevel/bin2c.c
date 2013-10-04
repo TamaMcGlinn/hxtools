@@ -180,7 +180,7 @@ static void btc_wxbitmap_file_predecl(struct btc_state *state)
 
 static void btc_wxbitmap_func_header(struct btc_state *state)
 {
-	fprintf(state->cfp, "void bin2c_%s(void)\n{\n" /* } */,
+	fprintf(state->cfp, "void bin2c_init_%s(void)\n{\n" /* } */,
 	        state->guard_name);
 }
 
