@@ -31,6 +31,7 @@ sdevel/git-revert-stats		WTFPL-2.0+
 sdevel/git-track		WTFPL-2.0+
 sdevel/man2html			WTFPL-2.0+
 sdevel/paddrspacesize		WTFPL-2.0+
+sdevel/peicon			GPL-2.0+
 sdevel/proc_stat_signal_decode	WTFPL-2.0+
 sdevel/sourcefuncsize		GPL-2.0+
 sdevel/spec-beautifier		GPL-2.0+

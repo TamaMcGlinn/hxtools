@@ -17,7 +17,8 @@ dist_bin_SCRIPTS = \
 	spec-beautifier
 
 pkglibexec_PROGRAMS = \
-	cctypeinfo
+	cctypeinfo \
+	peicon
 
 dist_pkglibexec_SCRIPTS = \
 	diff2php \
@@ -30,3 +31,4 @@ dist_pkglibexec_SCRIPTS = \
 	sourcefuncsize
 
 bin2c_LDADD = ${libHX_LIBS}
+peicon_LDADD = ${libHX_LIBS}
