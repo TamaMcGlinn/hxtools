@@ -37,6 +37,7 @@ dist_man_MANS = \
 	orec.1 \
 	pesubst.1 \
 	qplay.1 \
+	qtar.1 \
 	pcmdiff.1 \
 	printcaps.8 \
 	psthreads.1 \
