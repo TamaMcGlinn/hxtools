@@ -1,6 +1,7 @@
 # -*- Makefile -*-
 
-AM_CPPFLAGS = ${libHX_CFLAGS}
+AM_CPPFLAGS = ${regular_CPPFLAGS} ${libHX_CFLAGS}
+AM_CFLAGS   = ${regular_CFLAGS}
 
 bin_PROGRAMS = \
 	bin2c
