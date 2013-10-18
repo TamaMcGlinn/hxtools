@@ -1,0 +1,15 @@
+.TH peicon 1 "2013-10-07" "hxtools" "hxtools"
+.SH Name
+.PP
+peicon \(em extract icon resources from PE files
+.SH Syntax
+.PP
+\fBpeicon\fP [\fB\-Llv] [\fB\-o\fP \fIvirtual-shift\fP]
+.SH Description
+.PP
+Extracts the icons from PE files. Icons will be written to files of the name
+pe-%x:%x.ico, where the first number is the icon group number and the second
+is the independent icon number.
+.SH Options
+.TP
+\fB\-L\fP
