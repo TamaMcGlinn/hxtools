@@ -11,7 +11,15 @@
 #include <stdlib.h>
 #include <time.h>
 #include <wchar.h>
-#include <netinet/in.h>
+#ifdef _WIN32
+#	include <winsock2.h>
+#	include <ws2tcpip.h>
+#	define SIZET_FMT "I"
+#else
+#	include <netinet/in.h>
+#	define SIZET_FMT "z"
+#	define HAVE_LOFF_T 1
+#endif
 
 struct x16 {
 	uint8_t a;
@@ -36,7 +44,8 @@ struct x64 {
 	extern int SIZEOF_##vname, ALIGNOF_##vname; \
 	int SIZEOF_##vname = sizeof(type), ALIGNOF_##vname = __alignof__(type);
 #define t(type) \
-	printf("%14s  %7zu  %7zu\n", #type, sizeof(type), __alignof__(type))
+	printf("%14s  %7" SIZET_FMT "u  %7" SIZET_FMT "u\n", \
+		#type, sizeof(type), __alignof__(type))
 
 p(char);
 p(short);
@@ -52,7 +61,9 @@ p(intptr_t);
 p(wchar_t);
 p(size_t);
 p(off_t);
-p(loff_t);
+#ifdef HAVE_LOFF_T
+p(loff_t)
+#endif
 p(uint8_t);
 p(uint16_t);
 p(uint32_t);
@@ -60,7 +71,9 @@ p(uint64_t);
 q(struct x16, x16);
 q(struct x32, x32);
 q(struct x64, x64);
+#ifdef HAVE_MODE_T
 p(mode_t);
+#endif
 p(time_t);
 q(struct timespec, timespec);
 q(struct sockaddr, sockaddr);
@@ -85,7 +98,9 @@ int main(void)
 	t(size_t);
 	t(wchar_t);
 	t(off_t);
+#ifdef HAVE_LOFF_T
 	t(loff_t);
+#endif
 	t(uint8_t);
 	t(uint16_t);
 	t(uint32_t);
@@ -93,7 +108,9 @@ int main(void)
 	t(struct x16);
 	t(struct x32);
 	t(struct x64);
+#ifdef HAVE_MODE_T
 	t(mode_t);
+#endif
 	t(time_t);
 	t(struct timespec);
 	t(struct sockaddr);
