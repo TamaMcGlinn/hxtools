@@ -35,8 +35,10 @@ dist_man_MANS = \
 	omixer.1 \
 	oplay.1 \
 	orec.1 \
+	peicon.1 \
 	pesubst.1 \
 	qplay.1 \
+	qtar.1 \
 	pcmdiff.1 \
 	printcaps.8 \
 	psthreads.1 \

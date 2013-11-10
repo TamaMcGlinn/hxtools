@@ -1,6 +1,7 @@
 # -*- Makefile -*-
 
-AM_CPPFLAGS = ${libHX_CFLAGS}
+AM_CPPFLAGS = ${regular_CPPFLAGS} ${libHX_CFLAGS}
+AM_CFLAGS   = ${regular_CFLAGS}
 
 bin_PROGRAMS = \
 	bin2c
@@ -16,7 +17,8 @@ dist_bin_SCRIPTS = \
 	spec-beautifier
 
 pkglibexec_PROGRAMS = \
-	cctypeinfo
+	cctypeinfo \
+	peicon
 
 dist_pkglibexec_SCRIPTS = \
 	diff2php \
@@ -29,3 +31,4 @@ dist_pkglibexec_SCRIPTS = \
 	sourcefuncsize
 
 bin2c_LDADD = ${libHX_LIBS}
+peicon_LDADD = ${libHX_LIBS}

@@ -1,0 +1,15 @@
+.TH qtar 1 "2013-08-06" "hxtools" "hxtools"
+.SH Name
+.PP
+qtar \(em a somewhat shorter tar invocation
+.SH Syntax
+.PP
+\fBqtar\fP [\fB\-x\fP] [\fB\-\-ext\fP|\fB\-\-svn\fP] \fIarchive_file\fP [\fItar-options\fP...]
+\fIfiles\fP...
+.SH Options
+.TP
+\fB\-x\fP
+Exclude SCM directories like "CVS", ".svn", ".hg" and ".git".
+.TP
+\fB\-\-ext\fP
+Sort files by extension
