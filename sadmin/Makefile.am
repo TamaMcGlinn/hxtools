@@ -5,7 +5,6 @@ AM_CFLAGS   = ${regular_CFLAGS}
 
 bin_PROGRAMS = \
 	clock_info \
-	newns \
 	ofl
 
 dist_bin_SCRIPTS = \
