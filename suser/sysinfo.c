@@ -7,6 +7,7 @@
  *	as published by the Free Software Foundation; either version 2
  *	of the License, or (at your option) any later version.
  */
+#include "config.h"
 #include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -22,10 +23,16 @@
 #include <libHX/map.h>
 #include <libHX/option.h>
 #include <libHX/string.h>
-#include <pci/header.h>
-#include <pci/pci.h>
-#include <xcb/xcb.h>
-#include <libmount.h>
+#ifdef HAVE_LIBPCI
+#	include <pci/header.h>
+#	include <pci/pci.h>
+#endif
+#ifdef HAVE_LIBXCB
+#	include <xcb/xcb.h>
+#endif
+#ifdef HAVE_LIBMOUNT
+#	include <libmount.h>
+#endif
 
 struct sy_block {
 	struct utsname uts;
@@ -221,6 +228,7 @@ static void sy_memory(struct sy_block *sib)
 
 static void sy_disk(struct sy_block *sib)
 {
+#ifdef HAVE_LIBMOUNT
 	struct libmnt_context *ctx;
 	struct libmnt_table *table;
 	struct libmnt_iter *iter;
@@ -271,10 +279,12 @@ static void sy_disk(struct sy_block *sib)
 	if (ctx != NULL)
 		mnt_free_context(ctx);
 	HXmap_free(seen);
+#endif
 }
 
 static void sy_gfx_hardware(struct sy_block *sib)
 {
+#ifdef HAVE_LIBPCI
 	struct pci_dev *pd;
 	struct pci_access *pacc;
 	const char *ret = NULL;
@@ -296,10 +306,12 @@ static void sy_gfx_hardware(struct sy_block *sib)
 		      pd->vendor_id, pd->device_id);
 	pci_cleanup(pacc);
 	sib->gfx_hardware = ret;
+#endif
 }
 
 static void sy_display_size(struct sy_block *sib)
 {
+#ifdef HAVE_LIBXCB
 	xcb_connection_t *conn;
 	const xcb_setup_t *setup;
 	xcb_screen_iterator_t iter;
@@ -317,6 +329,7 @@ static void sy_display_size(struct sy_block *sib)
 	sib->display_height = screen->height_in_pixels;
  out:
 	xcb_disconnect(conn);
+#endif
 }
 
 static void sy_dump(const struct sy_block *sib)
