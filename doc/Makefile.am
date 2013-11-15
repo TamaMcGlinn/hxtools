@@ -30,7 +30,6 @@ dist_man_MANS = \
 	mod2ogg.1 \
 	mpg2ogg.1 \
 	netload.8 \
-	newns.8 \
 	ofl.1 \
 	omixer.1 \
 	oplay.1 \
