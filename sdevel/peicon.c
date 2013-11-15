@@ -319,7 +319,8 @@ static void print_giconent(const struct Z_resdirent *gicon_de,
     unsigned int i, const struct grpicondirentry *ge)
 {
 	printf("0 l /group_icon/%s/%s:%lx/%x (%ux%ux%u) -> /icons/%x\n",
-	       gicon_de->fs_name, grs_de->fs_name, mblk->data - gicon_de->base, i,
+	       gicon_de->fs_name, grs_de->fs_name,
+	       static_cast(long, mblk->data - gicon_de->base), i,
 	       ge->width, ge->height, ge->bpp, ge->id);
 }
 
