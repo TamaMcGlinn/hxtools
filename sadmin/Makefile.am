@@ -13,11 +13,13 @@ dist_bin_SCRIPTS = \
 
 pkglibexec_PROGRAMS = \
 	fd0ssh \
-	printcaps \
 	proc_iomem_count \
 	proc_stat_parse \
 	psthreads \
 	utmp_register
+if HAVE_LIBCAP
+pkglibexec_PROGRAMS += printcaps
+endif
 
 dist_pkglibexec_SCRIPTS = \
 	logontime \
