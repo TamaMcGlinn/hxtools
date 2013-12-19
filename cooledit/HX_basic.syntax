@@ -1,6 +1,7 @@
 # -*- cooleditsyntax -*-
 
 context default
+	# QBasic
 	keyword whole $DYNAMIC white
 	keyword whole $INCLUDE white
 	keyword whole $STATIC white
@@ -63,8 +64,55 @@ context default
 	keyword whole WHILE white
 	keyword whole XOR white
 
-	keyword \{0123456789\} cyan
-	keyword .\{0123456789\} cyan
+	# VB
+	keyword whole And white
+	keyword whole As white
+	keyword whole Attribute white
+	keyword whole Boolean white
+	keyword whole ByVal white
+	keyword whole Byte white
+	keyword whole Call white
+	keyword whole Case white
+	keyword whole Dim white
+	keyword whole Do white
+	keyword whole Else white
+	keyword whole ElseIf white
+	keyword whole End white
+	keyword whole Enum white
+	keyword whole Exit white
+	keyword whole For white
+	keyword whole Function white
+	keyword whole GoTo white
+	keyword whole If white
+	keyword whole Integer white
+	keyword whole Is white
+	keyword whole Long white
+	keyword whole Loop white
+	keyword whole New white
+	keyword whole Next white
+	keyword whole Not white
+	keyword whole Nothing white
+	keyword whole Null white
+	keyword whole On\sError white
+	keyword whole Option white
+	keyword whole Optional white
+	keyword whole Or white
+	keyword whole Private white
+	keyword whole Public white
+	keyword whole ReDim white
+	keyword whole Resume white
+	keyword whole Select white
+	keyword whole Set white
+	keyword whole Step white
+	keyword whole String white
+	keyword whole Sub white
+	keyword whole Then white
+	keyword whole To white
+	keyword whole Until white
+	keyword whole Variant white
+	keyword whole With white
+
+	# QBasic
 	keyword wholeright &H+ cyan
 
 	keyword ^ white
@@ -87,6 +135,7 @@ context default
 	keyword <> white
 	keyword \\ white
 	keyword #\{0123456789\} white
+	keyword & white
 
 context linestart REM \n yellow
 	spellcheck
