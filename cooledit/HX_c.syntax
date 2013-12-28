@@ -24,7 +24,6 @@ context default
 	keyword whole else white
 	keyword whole enum white
 	keyword whole extern white
-	keyword whole flag_t white
 	keyword whole float white
 	keyword whole for white
 	keyword whole goto white
