@@ -83,6 +83,7 @@ context default
 	keyword whole catch white
 	keyword whole class white
 	keyword whole explicit white
+	keyword whole final white
 	keyword whole friend white
 	keyword whole mutable white
 	keyword whole namespace white
