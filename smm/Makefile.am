@@ -12,6 +12,7 @@ dist_bin_SCRIPTS = \
 
 pkglibexec_PROGRAMS = \
 	bsvplay \
+	clt2pbm \
 	pcmdiff \
 	qplay \
 	vfontas
@@ -29,6 +30,7 @@ dist_pkglibexec_SCRIPTS  = \
 
 bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm
+clt2pbm_LDADD   = ${libHX_LIBS}
 hcdplay_LDADD   = ${libHX_LIBS}
 oplay_LDADD     = ${libHX_LIBS}
 pcmdiff_LDADD   = ${libHX_LIBS}
