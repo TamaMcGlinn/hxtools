@@ -5,7 +5,7 @@ AM_CFLAGS   = ${regular_CFLAGS}
 CLEANFILES  = omixer orec
 
 bin_PROGRAMS = \
-	hcdplay oplay
+	clt2bdf hcdplay oplay
 
 dist_bin_SCRIPTS = \
 	googtts gpsh ssa2srt
@@ -30,6 +30,7 @@ dist_pkglibexec_SCRIPTS  = \
 
 bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm
+clt2bdf_LDADD   = ${libHX_LIBS}
 clt2pbm_LDADD   = ${libHX_LIBS}
 hcdplay_LDADD   = ${libHX_LIBS}
 oplay_LDADD     = ${libHX_LIBS}
