@@ -14,6 +14,13 @@
 	frag = magenta
 	meta = bold white blue
 
+[color "decorate"]
+	branch = bold green
+	remotebranch = bold magenta
+	tag = bold yellow
+	stash = bold blue
+	HEAD = bold cyan
+
 [alias]
 	ac = commit --amend
 	br = branch
