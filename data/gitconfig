@@ -27,9 +27,9 @@
 	ci = commit
 	co = checkout
 	dc = diff --cached
-	st = status
-	re = rebase
 	rc = rebase --continue
+	re = rebase
+	st = status
 
 [push]
 	default = current
