@@ -27,9 +27,11 @@
 	ci = commit
 	co = checkout
 	dc = diff --cached
+	lg = log --oneline
 	rc = rebase --continue
 	re = rebase
 	st = status
+	up = remote update
 
 [push]
 	default = current
