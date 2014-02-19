@@ -31,7 +31,7 @@
 	rc = rebase --continue
 	re = rebase
 	st = status
-	up = remote update
+	up = remote update -p
 
 [push]
 	default = current
