@@ -251,7 +251,6 @@ static hxmc_t *btc_construct_vname(const char *cfile)
 static int btc_process_single(struct btc_state *state)
 {
 	struct stat sb;
-	size_t input_len;
 
 	state->ifp = fopen(state->ifile, "r");
 	if (state->ifp == NULL) {
@@ -279,7 +278,6 @@ static int btc_process_single(struct btc_state *state)
 static int btc_start(const char **argv)
 {
 	struct btc_state state;
-	FILE *hfilp, *cfilp = NULL;
 	const char **arg;
 	char *result;
 	int ret = 0;
