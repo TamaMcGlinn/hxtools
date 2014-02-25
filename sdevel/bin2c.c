@@ -1,6 +1,6 @@
 /*
  *	bin2c - convert arbitrary files into C variable definitions
- *	Copyright by Jan Engelhardt, 2004-2008
+ *	Copyright by Jan Engelhardt, 2004–2008,2013–2014
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <libHX/ctype_helper.h>
+#include <libHX/defs.h>
 #include <libHX/option.h>
 #include <libHX/string.h>
 #if CHAR_BIT > 8
@@ -125,13 +126,13 @@ static void btc_stdc_file_content(struct btc_state *state)
 	 * char[N] with N >= 3 too.
 	 */
 	if (state->cfp != state->hfp) {
-		fprintf(state->hfp, "extern const unsigned char bin2c_%s[%zu];\n",
+		fprintf(state->hfp, "extern const unsigned char bin2c_%s[%" HX_SIZET_FMT "u];\n",
 		        state->vname, state->isize + 1);
-		fprintf(state->cfp, "const unsigned char bin2c_%s[%zu] = \"",
+		fprintf(state->cfp, "const unsigned char bin2c_%s[%" HX_SIZET_FMT "u] = \"",
 		        state->vname, state->isize + 1);
 	} else {
 		fprintf(state->cfp,
-		        "static const unsigned char bin2c_%s[%zu] = \"",
+		        "static const unsigned char bin2c_%s[%" HX_SIZET_FMT "u] = \"",
 		        state->vname, state->isize + 1);
 	}
 
@@ -204,7 +205,7 @@ static void btc_wxbitmap_file_content(struct btc_state *state)
 		fwrite(output_buf, strlen(output_buf), 1, state->cfp);
 		free(output_buf);
 	}
-	fprintf(state->cfp, "\", %zu);\n\t\tbin2c_%s = new wxBitmap(wxImage(sm, wxBITMAP_TYPE_ANY), -1);\n\t}\n",
+	fprintf(state->cfp, "\", %" HX_SIZET_FMT "u);\n\t\tbin2c_%s = new wxBitmap(wxImage(sm, wxBITMAP_TYPE_ANY), -1);\n\t}\n",
 	        state->isize, state->vname);
 }
 
