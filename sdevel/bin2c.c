@@ -53,6 +53,7 @@ static hxmc_t *btc_guard_name;
 static unsigned int btc_verbose, btc_emit_wxbitmap;
 static const char btc_quote_needed[] = "\"?\\";
 static const struct btc_operations *btc_ops;
+static int btc_strip = -1;
 
 static size_t btc_qsize_cstring(const void *src, size_t input_size)
 {
@@ -223,9 +224,29 @@ static const struct btc_operations btc_wxbitmap_ops = {
  */
 static hxmc_t *btc_construct_vname(const char *cfile)
 {
-	hxmc_t *vname = HXmc_strinit(cfile);
+	const char *eof;
+	hxmc_t *vname;
+	int strip = btc_strip;
 	char *p;
 
+	/* move @cfile forward as many paths as btc_strip specifies */
+	for (; strip > 0; --strip) {
+		while (*cfile != '/' && *cfile != '\0')
+			++cfile;
+		while (*cfile == '/')
+			++cfile;
+	}
+	/* move @eof backward as many paths as btc_strip specifies */
+	eof = cfile + strlen(cfile) - 1;
+	for (; strip < 0; ++strip) {
+		while (eof >= cfile && *eof == '/')
+			--eof;
+		while (eof >= cfile && *eof != '/')
+			--eof;
+		cfile = eof + 1;
+	}
+
+	vname = HXmc_strinit(cfile);
 	if (vname == NULL)
 		return NULL;
 	if (!HX_isalpha(*cfile) && *cfile != '_') {
@@ -339,6 +360,8 @@ static const struct HXoption btc_option_table[] = {
 	 .help = "Name for the header's include guard"},
 	{.sh = 'H', .type = HXTYPE_MCSTR, .ptr = &btc_hfile,
 	 .help = "Filename for the output .h file", .htyp = "FILE"},
+	{.sh = 'p', .type = HXTYPE_INT, .ptr = &btc_strip,
+	 .help = "Strip N path components (keep -N if N is negative)", .htyp = "N"},
 	{.sh = 'v', .type = HXTYPE_NONE, .ptr = &btc_verbose,
 	 .help = "Be verbose during operation"},
 	{.ln = "wxbitmap", .type = HXTYPE_NONE, .ptr = &btc_emit_wxbitmap,
