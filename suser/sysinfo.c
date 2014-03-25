@@ -49,6 +49,7 @@ struct sy_block {
 
 static const char *sy_cpuinfo_file = "/proc/cpuinfo";
 static const char sysfs_cpu_dir[] = "/sys/devices/system/cpu";
+static unsigned int sy_verbose;
 
 static void sy_num_cpu_threads(struct sy_block *sib)
 {
@@ -246,6 +247,8 @@ static void sy_disk(struct sy_block *sib)
 	iter = mnt_new_iter(MNT_ITER_FORWARD);
 	if (iter == NULL)
 		goto out;
+
+	sib->disk_total = 0;
 	while (mnt_table_next_fs(table, iter, &fs) == 0) {
 		const char *source = mnt_fs_get_source(fs);
 		const char *mntpt  = mnt_fs_get_target(fs);
@@ -363,9 +366,12 @@ static void sy_dump(const struct sy_block *sib)
 	       sib->mem_total / 1024);
 
 	/* disk */
-	printf(" | Disk: %llu/%lluGB",
-	       sib->disk_used / (1024 * 1048576),
-	       sib->disk_total / (1024 * 1048576));
+	if (sib->disk_total != -1)
+		printf(" | Disk: %llu/%lluGB",
+		       sib->disk_used / (1024 * 1048576),
+		       sib->disk_total / (1024 * 1048576));
+	else if (sy_verbose)
+		printf(" | Disk: <libmount missing>");
 
 	/* gfx */
 	if (sib->gfx_hardware != NULL || sib->display_width != 0 ||
@@ -376,6 +382,14 @@ static void sy_dump(const struct sy_block *sib)
 		if (sib->display_width != 0 || sib->display_height != 0)
 			printf(" @ %ux%u", sib->display_width,
 			       sib->display_height);
+	} else if (sy_verbose) {
+		printf(" | Gfx:");
+#ifndef HAVE_LIBPCI
+		printf(" <libpci missing>");
+#endif
+#ifndef HAVE_LIBXCB
+		printf(" <libxcb missing>");
+#endif
 	}
 	printf("\n");
 }
@@ -385,6 +399,8 @@ static bool sy_get_options(int *argc, const char ***argv)
 	static const struct HXoption options_table[] = {
 		{.sh = 'P', .type = HXTYPE_STRING, .ptr = &sy_cpuinfo_file,
 		 .help = "Debug: specify alternate cpuinfo file", .htyp = "FILE"},
+		{.sh = 'v', .type = HXTYPE_NONE, .ptr = &sy_verbose,
+		 .help = "Verbose reporting"},
 		HXOPT_AUTOHELP,
 		HXOPT_TABLEEND,
 	};
@@ -402,6 +418,7 @@ int main(int argc, const char **argv)
 		return EXIT_FAILURE;
 
 	memset(&sib, 0, sizeof(sib));
+	sib.disk_total = -1;
 	uname(&sib.uts);
 	sy_num_cpu_threads(&sib);
 	sy_proc_cpuinfo(&sib);

@@ -5,7 +5,12 @@ sysinfo \(em print IRC-style system information banner
 .\" not just for bragging - can also be useful in bug reports
 .SH Syntax
 .PP
-\fBsysinfo\fP
+\fBsysinfo\fP [\fB\-v\fP]
+.SH Options
+.TP
+\fB\-v\fP
+Print additional info if sysinfo could not determine certain parameters because
+it was compiled without one or more of libmount, libpci or libxcb.
 .SH Description
 .PP
 Prints out an IRC-style machine info, like:
