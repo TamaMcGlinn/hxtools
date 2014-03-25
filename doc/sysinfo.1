@@ -15,10 +15,13 @@ it was compiled without one or more of libmount, libpci or libxcb.
 .PP
 Prints out an IRC-style machine info, like:
 .PP
-[seven] Linux 3.4.4-jng6-default x86_64 | 8-thr Intel(R) Core(TM) i7-2600 CPU
-3401MHz | Load: 0.51 Tasks: 461 | Mem: 2672/32155MB | Disk: 656/2791GB | Gfx:
-Intel Corporation 2nd Generation Core Processor Family Integrated Graphics
+[ares08] Linux 3.13.4-jng21-default x86_64 | 8-thr Intel(R) Core(TM) i7-2600
+CPU 3800MHz | Load: 0.06 Tasks: 534 | Mem: 20222/32154MB | Disk: 1393/2904GB |
+Gfx: Intel Corporation 2nd Generation Core Processor Family Integrated Graphics
 Controller @ 1280x1024
+.PP
+[ares01] Linux 3.13.6+ sparc64 | 24-thr UltraSparc T1 (Niagara) 1000MHz |
+Load: 27.80 Tasks: 489 | Mem: 2048/7979MB | Disk: 1001/1833GB
 .PP
 The load number is the EWMA over the last 60 seconds. The values shown for
 memory and disk are the used amount and the total amount (NOT the free amount
@@ -27,9 +30,11 @@ the available memory, which is the case when memory is in general already full
 \fBand\fP tmpfs files have been moved to swap (i.e. you are approaching more
 trouble).
 .PP
-The @\fIxres\fPx\fIyres\fP is only available if $DISPLAY is set and valid.
-\fIxres\fP and \fIyres\fP will be the dimensions of the \fBvirtual\fP size, not
-the resolution of any particular monitor.
+The @\fIxsize\fPx\fIysize\fP describes the size of the entire X framebuffer
+("virtual desktop"), and will only be printed if $DISPLAY is set and valid. The
+size is specific to the particular display server, and need not coincide with
+the display attached to the shown graphics car (for example, when DISPLAY is
+set to point to an Xvnc instance or a remote DISPLAY).
 .SH See also
 .PP
 \fBhxtools\fP(7)
