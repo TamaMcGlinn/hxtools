@@ -1,0 +1,20 @@
+CPU simulators suck.
+
+Point in case is that the academia "doctrine" of using software like
+SPIM sucks. (SPIM is an X11 program simulating a MIPS R3000 CPU or
+so, intended to help teaching assembler.) These programs are far from
+the reality of assembler programming.
+
+The purpose of the two assembler files in this directory is to
+showcase that writing assembler for a contemporary architecture is
+not mutually exclusive to having terse code.
+
+The code in question is written for GNU As in IA-32 ASM targeting a
+libc with cdecl calling convention. The choice for IA-32 code is an
+obvious one, given that the most prominent CPU architectures to
+support running this at the time of writing are IA-32 and AMD64, of
+which practically everybody has one. (And if not, there are system
+emulators like dosbox/bochs/qemu around. This is far superior to
+programs just simulating a lone useless CPU; they emulate an _entire
+machine_, complete with things you can and should take for granted,
+such as a display.)
