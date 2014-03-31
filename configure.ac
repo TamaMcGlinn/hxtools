@@ -19,6 +19,7 @@ AC_SUBST([libcap_LIBS])
 AM_CONDITIONAL([HAVE_LIBCAP], [test -n "$libcap_LIBS"])
 AC_SEARCH_LIBS([dlopen], [dl], [libdl_LIBS="$LIBS"; LIBS=""])
 AC_SUBST([libdl_LIBS])
+AC_CHECK_FUNCS([splice])
 
 kbddatadir='${datadir}/kbd';
 x11fontdir='${datadir}/fonts';
