@@ -32,6 +32,12 @@
 #	ifndef CLOCK_BOOTTIME_ALARM
 #		define CLOCK_BOOTTIME_ALARM 9
 #	endif
+#	ifndef CLOCK_SGI_CYCLE
+#		define CLOCK_SGI_CYCLE 10
+#	endif
+#	ifndef CLOCK_TAI
+#		define CLOCK_TAI 11
+#	endif
 #endif
 
 #define E(s) {s, #s}
@@ -70,6 +76,12 @@ static const struct clock_desc {
 #endif
 #ifdef CLOCK_BOOTTIME_ALARM
 	E(CLOCK_BOOTTIME_ALARM),
+#endif
+#ifdef CLOCK_SGI_CYCLE
+	E(CLOCK_SGI_CYCLE),
+#endif
+#ifdef CLOCK_TAI
+	E(CLOCK_TAI),
 #endif
 };
 
