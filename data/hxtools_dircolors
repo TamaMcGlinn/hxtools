@@ -47,6 +47,7 @@ EXEC		1;31
 .iso	0;31	# ISO-9660 and UDF images
 .jar	0;31	# Jar (Jung Archiver, a new ARJ). Also: ZIP for Java
 #.lha	0;31	# LHARC
+.lz	0;31	# lzip compressed file
 #.lzh	0;31	# LHARC
 .msi	0;31	# Microsoft installer package
 #.pak	0;31	# Pak or Quake1/2
@@ -113,6 +114,9 @@ EXEC		1;31
 .htm	0;36	# HTML file
 .html	0;36	# HTML file
 .lyx	0;36	# LyX word processing file
+.odt	0;36	# OpenDocument text
+.ods	0;36	# OpenDocument spreadsheet
+.odp	0;36	# OpenDocument presentation
 .pdf	0;36	# Acrobat
 .po	0;36	# Translations
 .pps	0;36	# Powerpoint Pack&Go presentation/document
