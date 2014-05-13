@@ -1,4 +1,4 @@
-AC_INIT([hxtools], [20131222])
+AC_INIT([hxtools], [20140325])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
 AC_PROG_INSTALL
@@ -7,18 +7,20 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 
 AC_CHECK_HEADERS([lastlog.h paths.h])
-PKG_CHECK_MODULES([libHX], [libHX >= 3.12.1])
-PKG_CHECK_MODULES([libmount], [mount >= 2.20], [HAVE_LIBMOUNT=1], [HAVE_LIBMOUNT=""])
-AC_SUBST([HAVE_LIBMOUNT])
-PKG_CHECK_MODULES([libpci], [libpci >= 3], [HAVE_LIBPCI=1], [HAVE_LIBPCI=""])
-AC_SUBST([HAVE_LIBPCI])
-PKG_CHECK_MODULES([libxcb], [xcb >= 1], [HAVE_LIBXCB=1], [HAVE_LIBXCB=""])
-AC_SUBST([HAVE_LIBXCB])
+AH_TEMPLATE([HAVE_LIBMOUNT])
+AH_TEMPLATE([HAVE_LIBPCI])
+AH_TEMPLATE([HAVE_LIBXCB])
+PKG_CHECK_MODULES([libHX], [libHX >= 3.17])
+PKG_CHECK_MODULES([libmount], [mount >= 2.19], [AC_DEFINE([HAVE_LIBMOUNT], [1])], [true])
+PKG_CHECK_MODULES([libpci], [libpci >= 3], [AC_DEFINE([HAVE_LIBPCI], [1])], [true])
+PKG_CHECK_MODULES([libxcb], [xcb >= 1], [AC_DEFINE([HAVE_LIBXCB], [1])], [true])
 AC_SEARCH_LIBS([cap_get_pid], [cap], [libcap_LIBS="$LIBS"; LIBS=""])
 AC_SUBST([libcap_LIBS])
 AM_CONDITIONAL([HAVE_LIBCAP], [test -n "$libcap_LIBS"])
 AC_SEARCH_LIBS([dlopen], [dl], [libdl_LIBS="$LIBS"; LIBS=""])
 AC_SUBST([libdl_LIBS])
+AC_CHECK_FUNCS([splice])
+AC_CHECK_MEMBERS([struct utmpx.ut_session])
 
 kbddatadir='${datadir}/kbd';
 x11fontdir='${datadir}/fonts';

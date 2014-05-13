@@ -1,6 +1,6 @@
 /*
  *	bin2c - convert arbitrary files into C variable definitions
- *	Copyright by Jan Engelhardt, 2004-2008
+ *	Copyright by Jan Engelhardt, 2004–2008,2013–2014
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <libHX/ctype_helper.h>
+#include <libHX/defs.h>
 #include <libHX/option.h>
 #include <libHX/string.h>
 #if CHAR_BIT > 8
@@ -52,6 +53,7 @@ static hxmc_t *btc_guard_name;
 static unsigned int btc_verbose, btc_emit_wxbitmap;
 static const char btc_quote_needed[] = "\"?\\";
 static const struct btc_operations *btc_ops;
+static int btc_strip = -1;
 
 static size_t btc_qsize_cstring(const void *src, size_t input_size)
 {
@@ -125,13 +127,13 @@ static void btc_stdc_file_content(struct btc_state *state)
 	 * char[N] with N >= 3 too.
 	 */
 	if (state->cfp != state->hfp) {
-		fprintf(state->hfp, "extern const unsigned char bin2c_%s[%zu];\n",
+		fprintf(state->hfp, "extern const unsigned char bin2c_%s[%" HX_SIZET_FMT "u];\n",
 		        state->vname, state->isize + 1);
-		fprintf(state->cfp, "const unsigned char bin2c_%s[%zu] = \"",
+		fprintf(state->cfp, "const unsigned char bin2c_%s[%" HX_SIZET_FMT "u] = \"",
 		        state->vname, state->isize + 1);
 	} else {
 		fprintf(state->cfp,
-		        "static const unsigned char bin2c_%s[%zu] = \"",
+		        "static const unsigned char bin2c_%s[%" HX_SIZET_FMT "u] = \"",
 		        state->vname, state->isize + 1);
 	}
 
@@ -204,7 +206,7 @@ static void btc_wxbitmap_file_content(struct btc_state *state)
 		fwrite(output_buf, strlen(output_buf), 1, state->cfp);
 		free(output_buf);
 	}
-	fprintf(state->cfp, "\", %zu);\n\t\tbin2c_%s = new wxBitmap(wxImage(sm, wxBITMAP_TYPE_ANY), -1);\n\t}\n",
+	fprintf(state->cfp, "\", %" HX_SIZET_FMT "u);\n\t\tbin2c_%s = new wxBitmap(wxImage(sm, wxBITMAP_TYPE_ANY), -1);\n\t}\n",
 	        state->isize, state->vname);
 }
 
@@ -222,9 +224,29 @@ static const struct btc_operations btc_wxbitmap_ops = {
  */
 static hxmc_t *btc_construct_vname(const char *cfile)
 {
-	hxmc_t *vname = HXmc_strinit(cfile);
+	const char *eof;
+	hxmc_t *vname;
+	int strip = btc_strip;
 	char *p;
 
+	/* move @cfile forward as many paths as btc_strip specifies */
+	for (; strip > 0; --strip) {
+		while (*cfile != '/' && *cfile != '\0')
+			++cfile;
+		while (*cfile == '/')
+			++cfile;
+	}
+	/* move @eof backward as many paths as btc_strip specifies */
+	eof = cfile + strlen(cfile) - 1;
+	for (; strip < 0; ++strip) {
+		while (eof >= cfile && *eof == '/')
+			--eof;
+		while (eof >= cfile && *eof != '/')
+			--eof;
+		cfile = eof + 1;
+	}
+
+	vname = HXmc_strinit(cfile);
 	if (vname == NULL)
 		return NULL;
 	if (!HX_isalpha(*cfile) && *cfile != '_') {
@@ -250,7 +272,6 @@ static hxmc_t *btc_construct_vname(const char *cfile)
 static int btc_process_single(struct btc_state *state)
 {
 	struct stat sb;
-	size_t input_len;
 
 	state->ifp = fopen(state->ifile, "r");
 	if (state->ifp == NULL) {
@@ -278,7 +299,6 @@ static int btc_process_single(struct btc_state *state)
 static int btc_start(const char **argv)
 {
 	struct btc_state state;
-	FILE *hfilp, *cfilp = NULL;
 	const char **arg;
 	char *result;
 	int ret = 0;
@@ -340,6 +360,8 @@ static const struct HXoption btc_option_table[] = {
 	 .help = "Name for the header's include guard"},
 	{.sh = 'H', .type = HXTYPE_MCSTR, .ptr = &btc_hfile,
 	 .help = "Filename for the output .h file", .htyp = "FILE"},
+	{.sh = 'p', .type = HXTYPE_INT, .ptr = &btc_strip,
+	 .help = "Strip N path components (keep -N if N is negative)", .htyp = "N"},
 	{.sh = 'v', .type = HXTYPE_NONE, .ptr = &btc_verbose,
 	 .help = "Be verbose during operation"},
 	{.ln = "wxbitmap", .type = HXTYPE_NONE, .ptr = &btc_emit_wxbitmap,

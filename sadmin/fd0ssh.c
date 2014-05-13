@@ -34,7 +34,9 @@ static void zerossh_detach_tty(void)
 		perror("open /dev/tty");
 		abort();
 	}
+#ifdef TIOCNOTTY
 	ioctl(fd, TIOCNOTTY);
+#endif
 	close(fd);
 }
 

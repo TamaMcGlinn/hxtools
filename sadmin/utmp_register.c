@@ -169,7 +169,9 @@ static int main2(int argc, const char **argv)
 	if (Opt.host != NULL)
 		HX_strlcpy(entry.ut_host, Opt.host, sizeof(entry.ut_host));
 
+#ifdef HAVE_STRUCT_UTMPX_UT_SESSION
 	entry.ut_session = Opt.sess;
+#endif
 	gettimeofday(&tv, NULL);
 	entry.ut_tv.tv_sec  = tv.tv_sec;
 	entry.ut_tv.tv_usec = tv.tv_usec;

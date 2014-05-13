@@ -14,15 +14,24 @@
 	frag = magenta
 	meta = bold white blue
 
+[color "decorate"]
+	branch = bold green
+	remotebranch = bold magenta
+	tag = bold yellow
+	stash = bold blue
+	HEAD = bold cyan
+
 [alias]
 	ac = commit --amend
 	br = branch
 	ci = commit
 	co = checkout
 	dc = diff --cached
-	st = status
-	re = rebase
+	lg = log --oneline
 	rc = rebase --continue
+	re = rebase
+	st = status
+	up = remote update -p
 
 [push]
 	default = current

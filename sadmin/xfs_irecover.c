@@ -42,12 +42,7 @@
 #include <libHX/proc.h>
 #include <libHX/string.h>
 #include <arpa/inet.h>
-
-typedef int8_t __s8;
-typedef uint8_t __u8;
-typedef uint16_t __be16;
-typedef uint32_t __be32;
-typedef uint64_t __be64;
+#include <linux/types.h>
 
 struct work_info {
 	char *device;

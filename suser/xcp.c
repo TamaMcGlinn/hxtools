@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <libHX/init.h>
 #include <libHX/option.h>
+#include "config.h"
 
 enum {
 	XCP_MMAP,
@@ -43,6 +44,7 @@ static bool xcp_get_options(int *argc, const char ***argv)
 	       HXOPT_ERR_SUCCESS;
 }
 
+#ifdef HAVE_SPLICE
 static int xcp_splice(const char *input, const char *output)
 {
 	off_t ioff = 0, ooff = 0;
@@ -87,6 +89,13 @@ static int xcp_splice(const char *input, const char *output)
 
 	return EXIT_SUCCESS;
 }
+#else
+static int xcp_splice(const char *input, const char *output)
+{
+	fprintf(stderr, "ERROR: xcp was built without splice support\n");
+	return EXIT_FAILURE;
+}
+#endif
 
 static int xcp_mmap(const char *input, const char *output)
 {

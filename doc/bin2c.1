@@ -5,7 +5,8 @@ bin2c \(em embed data files into C as variables
 .SH Syntax
 .PP
 \fBbin2c\fP [\fB\-C\fP \fIprogram-file\fP] [\fB\-H\fP \fIheader-file\fP]
-[\fB\-G\fP \fIguard-name\fP] [\fB\-v\fP] [\fB\-\-wxbitmap\fP] \fIfile\fP...
+[\fB\-G\fP \fIguard-name\fP] [\fB\-p\fP \fInum\fP] [\fB\-v\fP]
+[\fB\-\-wxbitmap\fP] \fIfile\fP...
 .SH Description
 .PP
 bin2c converts files to C variables. It does so by reading the contents of each
@@ -37,6 +38,11 @@ The file where the variable \fBdeclarations\fP will be emitted to. If \fB\-C\fP
 was not specified, \fIh-file\fP will not contain any header guard by default,
 and it will contain the variable definition, the latter of which will be marked
 as \fBstatic\fP (file scope).
+.TP
+\fB\-p\fP \fInum\fP
+Strip \fInum\fP leading path components when transforming input paths to
+variable names. If \fInum\fP is negative, that many trailing path components
+are \fBretained\fP. If \fB\-p\fP is not specified, the default is -1.
 .TP
 \fB\-v\fP
 Be verbose. Show all the names and filenames that bin2c will write.
