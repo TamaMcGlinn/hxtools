@@ -5,6 +5,16 @@ AC_PROG_INSTALL
 AM_INIT_AUTOMAKE([-Wall foreign subdir-objects tar-pax no-dist-gzip dist-xz])
 AC_PROG_CC
 AM_PROG_CC_C_O
+AC_PROG_CXX
+
+regular_CPPFLAGS="-D_FILE_OFFSET_BITS=64 -D_REENTRANT"
+regular_CFLAGS="-Wall -Waggregate-return -Wmissing-declarations \
+	-Wmissing-prototypes -Wredundant-decls -Wshadow -Wstrict-prototypes \
+	-Winline -pipe -std=gnu11"
+regular_CXXFLAGS="-Wall -Wno-pointer-arith -Wshadow -pipe -std=gnu++11"
+AC_SUBST([regular_CPPFLAGS])
+AC_SUBST([regular_CFLAGS])
+AC_SUBST([regular_CXXFLAGS])
 
 AC_CHECK_HEADERS([lastlog.h paths.h])
 AH_TEMPLATE([HAVE_LIBMOUNT])
@@ -22,6 +32,14 @@ AC_SUBST([libdl_LIBS])
 AC_CHECK_FUNCS([splice])
 AC_CHECK_MEMBERS([struct utmpx.ut_session])
 
+AC_LANG_PUSH([C++])
+saved_CXXFLAGS="$CXXFLAGS"
+CXXFLAGS="$CXXFLAGS $regular_CXXFLAGS"
+AC_CHECK_HEADERS([xbrz.h])
+AM_CONDITIONAL([HAVE_XBRZ], [test "$ac_cv_header_xbrz_h" = yes])
+CXXFLAGS="$saved_CXXFLAGS"
+AC_LANG_POP([C++])
+
 kbddatadir='${datadir}/kbd';
 x11fontdir='${datadir}/fonts';
 AC_ARG_WITH([kbddatadir], AS_HELP_STRING([--with-kbddatadir=PATH],
@@ -35,12 +53,6 @@ AC_ARG_WITH([x11fontdir], AS_HELP_STRING([--with-x11fontdir=PATH],
 AC_SUBST([kbddatadir])
 AC_SUBST([x11fontdir])
 
-regular_CPPFLAGS="-D_FILE_OFFSET_BITS=64 -D_REENTRANT"
-regular_CFLAGS="-Wall -Waggregate-return -Wmissing-declarations \
-	-Wmissing-prototypes -Wredundant-decls -Wshadow -Wstrict-prototypes \
-	-Winline -pipe"
-AC_SUBST([regular_CPPFLAGS])
-AC_SUBST([regular_CFLAGS])
 AC_CONFIG_FILES([Makefile data/Makefile doc/Makefile
 	kbd/Makefile sadmin/Makefile sdevel/Makefile smath/Makefile
 	smm/Makefile suser/Makefile])

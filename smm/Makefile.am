@@ -2,10 +2,14 @@
 
 AM_CPPFLAGS = ${regular_CPPFLAGS} ${libHX_CFLAGS}
 AM_CFLAGS   = ${regular_CFLAGS}
+AM_CXXFLAGS = ${regular_CXXFLAGS}
 CLEANFILES  = omixer orec
 
 bin_PROGRAMS = \
 	clt2bdf hcdplay oplay
+if HAVE_XBRZ
+bin_PROGRAMS += cltscale
+endif
 
 dist_bin_SCRIPTS = \
 	googtts gpsh ssa2srt
@@ -32,6 +36,8 @@ bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm
 clt2bdf_LDADD   = ${libHX_LIBS}
 clt2pbm_LDADD   = ${libHX_LIBS}
+cltscale_SOURCES = cltscale.c xbrz_call.cpp
+cltscale_LDADD  = -lxbrz ${libHX_LIBS}
 hcdplay_LDADD   = ${libHX_LIBS}
 oplay_LDADD     = ${libHX_LIBS}
 pcmdiff_LDADD   = ${libHX_LIBS}
