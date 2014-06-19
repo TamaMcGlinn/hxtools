@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use IPC::Open2;
+
+local(*CIN, *COUT);
+
+foreach my $file (@ARGV) {
+	my $pid = open2(\*CIN, undef, "xmllint", "--format", $file);
+	@_ = <CIN>;
+	waitpid($pid, 0);
+	my $status = $? >> 8;
+	if ($status != 0) {
+		die "xmllint exited with status $status\n";
+	}
+	if (!open(COUT, "> $file")) {
+		die "Could not open $file for writing: $!\n";
+	}
+	print COUT @_;
+	close COUT;
+}
