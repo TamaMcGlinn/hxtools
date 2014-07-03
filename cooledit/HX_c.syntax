@@ -2,6 +2,7 @@
 
 context default
 	keyword whole __asm__ white
+	keyword whole __alignof__ white
 	keyword whole __attribute__ white
 	keyword whole __inline__ white
 	keyword whole __inline white
@@ -10,6 +11,7 @@ context default
 	keyword whole __volatile__ white
 
 	keyword whole NULL white
+	keyword whole alignof white
 	keyword whole asm white
 	keyword whole bool white
 	keyword whole break white
@@ -54,6 +56,7 @@ context default
 	keyword whole int32_t white
 	keyword whole int64_t white
 	keyword whole int8_t white
+	keyword whole intptr_t white
 	keyword whole loff_t white
 	keyword whole off64_t white
 	keyword whole off_t white
@@ -68,6 +71,7 @@ context default
 	keyword whole uint32_t white
 	keyword whole uint64_t white
 	keyword whole uint8_t white
+	keyword whole uintptr_t white
 
 	# libHX or C++
 	keyword whole const_cast1 white
@@ -80,14 +84,19 @@ context default
 	keyword whole static_cast white
 
 	# C++
+	keyword whole alignas white
 	keyword whole catch white
 	keyword whole class white
+	keyword whole constexpr white
+	keyword whole decltype white
 	keyword whole explicit white
 	keyword whole final white
 	keyword whole friend white
 	keyword whole mutable white
 	keyword whole namespace white
 	keyword whole new white
+	keyword whole nullptr_t white
+	keyword whole nullptr white
 	keyword whole operator white
 	keyword whole override white
 	keyword whole private white
