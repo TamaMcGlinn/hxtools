@@ -28,7 +28,6 @@ dist_pkglibexec_SCRIPTS  = \
 	extract_qupak \
 	fnt2bdf \
 	mod2ogg \
-	mpg2ogg \
 	shared.pm \
 	stxdb
 

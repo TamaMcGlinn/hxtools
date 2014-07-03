@@ -30,7 +30,6 @@ dist_man_MANS = \
 	mailsplit.1 \
 	man2html.1 \
 	mod2ogg.1 \
-	mpg2ogg.1 \
 	netload.8 \
 	ofl.1 \
 	omixer.1 \
