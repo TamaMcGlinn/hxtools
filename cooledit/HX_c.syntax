@@ -13,6 +13,7 @@ context default
 	keyword whole NULL white
 	keyword whole alignof white
 	keyword whole asm white
+	keyword whole auto white
 	keyword whole bool white
 	keyword whole break white
 	keyword whole case white
