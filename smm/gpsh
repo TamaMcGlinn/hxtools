@@ -192,6 +192,12 @@ sub queue_play
 		my $ext = &filename_ext($file);
 		$ext = lc $ext;
 
+		# A lyr file for a version may be available in a basename
+		my $title2 = $title;
+		$title2 =~ s{\s+\(.*?\)$}{};
+		if (-e "$title.lyr" || -e "$title2.lyr") {
+			print STDERR "\e[1;32m[lyr]\e[0m "; # ]]
+		}
 		print STDERR "\e[1;31m$title\e[0m\n"; # ]]
 		if (&filename_timidity($ext)) {
 			# my $t = $opt_verbose ? "t" : "";
