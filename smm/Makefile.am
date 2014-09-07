@@ -12,7 +12,7 @@ bin_PROGRAMS += cltscale
 endif
 
 dist_bin_SCRIPTS = \
-	googtts gpsh ssa2srt
+	googtts gpsh move_moov ssa2srt
 
 pkglibexec_PROGRAMS = \
 	bsvplay \
