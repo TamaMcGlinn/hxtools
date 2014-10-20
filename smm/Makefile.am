@@ -8,7 +8,7 @@ CLEANFILES  = omixer orec
 bin_PROGRAMS = \
 	clt2bdf hcdplay oplay
 if HAVE_XBRZ
-bin_PROGRAMS += cltscale
+bin_PROGRAMS += cltxscale
 endif
 
 dist_bin_SCRIPTS = \
@@ -35,8 +35,8 @@ bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm
 clt2bdf_LDADD   = ${libHX_LIBS}
 clt2pbm_LDADD   = ${libHX_LIBS}
-cltscale_SOURCES = cltscale.c xbrz_call.cpp
-cltscale_LDADD  = -lxbrz ${libHX_LIBS}
+cltxscale_SOURCES = cltxscale.c xbrz_call.cpp
+cltxscale_LDADD   = -lxbrz ${libHX_LIBS}
 hcdplay_LDADD   = ${libHX_LIBS}
 oplay_LDADD     = ${libHX_LIBS}
 pcmdiff_LDADD   = ${libHX_LIBS}
