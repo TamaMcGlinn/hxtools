@@ -11,7 +11,6 @@ bin_PROGRAMS = \
 	xcp
 
 dist_bin_SCRIPTS = \
-	fduphl \
 	fxterm \
 	pesubst \
 	rot13 \
