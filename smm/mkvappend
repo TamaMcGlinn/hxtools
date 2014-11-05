@@ -1,0 +1,11 @@
+#!/bin/bash -e
+outfile="$1"
+shift
+a=("$1")
+shift
+j=0
+for i in "$@"; do
+	j=$[$j+1]
+	a[j]="+$i"
+done
+exec mkvmerge -o "$outfile" "${a[@]}"

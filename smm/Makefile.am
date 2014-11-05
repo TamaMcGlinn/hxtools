@@ -12,7 +12,7 @@ bin_PROGRAMS += cltxscale
 endif
 
 dist_bin_SCRIPTS = \
-	aumeta googtts gpsh ssa2srt
+	aumeta googtts gpsh mkvappend ssa2srt
 
 pkglibexec_PROGRAMS = \
 	bsvplay \
