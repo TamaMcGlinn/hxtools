@@ -160,24 +160,3 @@ Some helpers have been recently removed because they have found better
 equivalents.
 .PP
 \fBfduphl\fP. Replaced by the system utility "hardlink".
-.PP
-\fBflv2avi\fP. MPlayer-1.0rc4_r32749 (perhaps earlier) no longer shows the
-issue. For affected versions, try using ffmpeg for remuxing.
-.PP
-\fBflv2mka\fP. Replacable by `ffmpeg -i input -vn -acodec copy out.mka`.
-.PP
-\fBgit-lemon\fP. `git cherry-pick` can handle ranges itself as of git 1.7.2.
-.PP
-\fBhtruncate\fP. Replacable by truncate(1) in coreutils 7.x and up.
-.PP
-\fBkps\fP. Now known as \fBpsthreads\fP(1).
-.PP
-\fBln2\fP. Replacable by `cp -l`.
-.PP
-\fBnewns\fP(8). Superseded by `systemd-nspawn`.
-.PP
-\fBpng2wx\fP. Replaced by bin2c(1).
-.PP
-\fBtestdl\fP. Replacable by `ldd -r`.
-.PP
-\fBwavdiff\fP. Renamed to \fBpcmdiff\fP(1).
