@@ -22,7 +22,8 @@ do_dir()
 	#
 	echo "  [$rezip_level] optipng";
 	find "$1" -iname "*.png" -print0 | xargs -0rn1 optipng;
-	find "$1" "(" -iname "*.zip" -o -iname "*.jar" ")" -print0 | \
+	find "$1" "(" -iname "*.zip" -o -iname "*.jar" -o -iname "*.odt" -o \
+		-iname "*.ods" -o -iname "*.odp" ")" -print0 | \
 		xargs -0r "$self";
 }
 
