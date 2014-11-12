@@ -277,16 +277,16 @@ static int btc_process_single(struct btc_state *state)
 {
 	struct stat sb;
 
+	if (stat(state->ifile_path, &sb) != 0) {
+		fprintf(stderr, "ERROR: Cannot stat %s: %s\n",
+		        state->ifile, strerror(errno));
+		return -errno;
+	}
+
 	state->ifp = fopen(state->ifile_path, "r");
 	if (state->ifp == NULL) {
 		fprintf(stderr, "bin2c: ERROR: Could not open %s for "
 		        "reading: %s\n", state->ifile, strerror(errno));
-		return -errno;
-	}
-
-	if (stat(state->ifile_path, &sb) != 0) {
-		fprintf(stderr, "ERROR: Cannot stat %s: %s\n",
-		        state->ifile, strerror(errno));
 		return -errno;
 	}
 	state->isize = sb.st_size;
