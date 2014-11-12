@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <libHX/ctype_helper.h>
 #include <libHX/defs.h>
@@ -350,6 +351,12 @@ static int btc_start(const char **argv)
 	fclose(state.hfp);
 	if (state.cfp != state.hfp)
 		fclose(state.cfp);
+	if (ret != EXIT_SUCCESS) {
+		if (btc_cfile != NULL)
+			unlink(btc_cfile);
+		if (btc_hfile != NULL)
+			unlink(btc_hfile);
+	}
 	return ret;
 }
 
