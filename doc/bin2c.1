@@ -4,9 +4,9 @@
 bin2c \(em embed data files into C as variables
 .SH Syntax
 .PP
-\fBbin2c\fP [\fB\-C\fP \fIprogram-file\fP] [\fB\-H\fP \fIheader-file\fP]
-[\fB\-G\fP \fIguard-name\fP] [\fB\-p\fP \fInum\fP] [\fB\-v\fP]
-[\fB\-\-wxbitmap\fP] \fIfile\fP...
+\fBbin2c\fP [\fB\-C\fP \fIprogram-file\fP] [\fB\-D\fP \fIdir_prefix\fP]
+[\fB\-H\fP \fIheader-file\fP] [\fB\-G\fP \fIguard-name\fP]
+[\fB\-p\fP \fInum\fP] [\fB\-v\fP] [\fB\-\-wxbitmap\fP] \fIfile\fP...
 .SH Description
 .PP
 bin2c converts files to C variables. It does so by reading the contents of each
@@ -26,6 +26,9 @@ examples below.)
 \fB\-C\fP \fIfile\fP
 If specified, causes the variable \fBdefinition\fP to be emitted to the given
 filename.
+.TP
+\fB\-D\fP \fIdir_prefix\fP
+All filenames on the command line will be prefixed with the given directory.
 .TP
 \fB\-G\fP \fIname\fP
 Request that an include guard by the identifier \fIguard-name\fP is emitted

@@ -31,13 +31,15 @@
  * @hfp:	file handle for output of the declaration
  * @vname:	name for the variable inside the outputted program
  * @ifp:	input file handle
+ * @ifile:	input file name (as on the command line)
+ * @ifile_path:	real file path (after possibly prepending @btc_prefix_directory)
  * @isize:	size of the input file in bytes
  */
 struct btc_state {
 	FILE *cfp, *hfp;
 	hxmc_t *vname;
 	FILE *ifp;
-	const char *ifile, *guard_name;
+	const char *ifile, *ifile_path, *guard_name;
 	size_t isize;
 };
 
@@ -51,6 +53,7 @@ struct btc_operations {
 
 static hxmc_t *btc_cfile, *btc_hfile;
 static hxmc_t *btc_guard_name;
+static char *btc_prefix_directory;
 static unsigned int btc_verbose, btc_emit_wxbitmap;
 static const char btc_quote_needed[] = "\"?\\";
 static const struct btc_operations *btc_ops;
@@ -274,14 +277,14 @@ static int btc_process_single(struct btc_state *state)
 {
 	struct stat sb;
 
-	state->ifp = fopen(state->ifile, "r");
+	state->ifp = fopen(state->ifile_path, "r");
 	if (state->ifp == NULL) {
 		fprintf(stderr, "bin2c: ERROR: Could not open %s for "
 		        "reading: %s\n", state->ifile, strerror(errno));
 		return -errno;
 	}
 
-	if (stat(state->ifile, &sb) != 0) {
+	if (stat(state->ifile_path, &sb) != 0) {
 		fprintf(stderr, "ERROR: Cannot stat %s: %s\n",
 		        state->ifile, strerror(errno));
 		return -errno;
@@ -292,6 +295,27 @@ static int btc_process_single(struct btc_state *state)
 	HXmc_free(state->vname);
 	fclose(state->ifp);
 	return 0;
+}
+
+static int btc_process_single_pf(struct btc_state *state)
+{
+	if (btc_prefix_directory == NULL) {
+		state->ifile_path = state->ifile;
+		return btc_process_single(state);
+	}
+
+	hxmc_t *newfile = HXmc_strinit(btc_prefix_directory);
+	int ret = 0;
+
+	if (newfile == NULL || HXmc_strcat(&newfile, "/") == NULL ||
+	    HXmc_strcat(&newfile, state->ifile) == NULL) {
+		ret = -errno;
+	} else {
+		state->ifile_path = newfile;
+		ret = btc_process_single(state);
+	}
+	HXmc_free(newfile);
+	return ret;
 }
 
 /**
@@ -342,7 +366,7 @@ static int btc_start(const char **argv)
 
 	for (arg = argv + 1; *arg != NULL; ++arg) {
 		state.ifile = *arg;
-		ret = btc_process_single(&state);
+		ret = btc_process_single_pf(&state);
 		if (ret != 0)
 			break;
 	}
@@ -363,6 +387,8 @@ static int btc_start(const char **argv)
 static const struct HXoption btc_option_table[] = {
 	{.sh = 'C', .type = HXTYPE_MCSTR, .ptr = &btc_cfile,
 	 .help = "Filename for the output .c file", .htyp = "FILE"},
+	{.sh = 'D', .type = HXTYPE_STRING, .ptr = &btc_prefix_directory,
+	 .help = "Prefix input filenames with this directory", .htyp = "DIR"},
 	{.sh = 'G', .type = HXTYPE_MCSTR, .ptr = &btc_guard_name,
 	 .help = "Name for the header's include guard"},
 	{.sh = 'H', .type = HXTYPE_MCSTR, .ptr = &btc_hfile,
