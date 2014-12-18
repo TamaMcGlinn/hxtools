@@ -29,7 +29,6 @@ static struct HXmap *keymap, *varmap;
 static double notemap[MAX_OCTAVES*12], glob_mode = 7.0 / 8;
 static int glob_spd = 120, glob_len = 4, glob_octave = 4;
 static struct pcspkr pcsp = {
-	.format      = PCSPKR_16,
 	.sample_rate = 48000,
 	.prop_square = 1,
 	.prop_sine   = 1,

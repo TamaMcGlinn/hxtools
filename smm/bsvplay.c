@@ -26,7 +26,6 @@ struct bsv_insn {
 };
 
 static struct pcspkr pcsp = {
-	.format      = PCSPKR_16,
 	.sample_rate = 48000,
 	.prop_square = 1,
 	.prop_sine   = 1,

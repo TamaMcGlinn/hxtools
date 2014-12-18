@@ -30,24 +30,18 @@ static inline double dynamic_qi(const struct pcspkr *pcsp, double x)
 	       (pcsp->prop_square + pcsp->prop_sine);
 }
 
-static void pcm_u8(const struct pcspkr *pcsp, long frequency,
-    long duration, long af_pause)
-{
-	uint8_t value;
-	long sample;
-
-	for (sample = 0; sample < duration; ++sample) {
-		value = 127 * dynamic_qi(pcsp,
-		        2.0 * M_PI * frequency * sample / pcsp->sample_rate) *
-		        pcsp->volume + 127;
-		fwrite(&value, sizeof(value), 1, pcsp->file_ptr);
-	}
-	value = 0;
-	for (sample = 0; sample < af_pause; ++sample)
-		fwrite(&value, sizeof(value), 1, pcsp->file_ptr);
-}
-
-static void pcm_s16(const struct pcspkr *pcsp, long frequency,
+/**
+ * pcspkr_output - produce waves
+ * @state:	pcspkr state
+ * @frequency:	tone frequency
+ * @duration:	duration, in samples
+ *		(number of samples in a second given by @state->sampling_rate)
+ * @af_pause:	after-pause, in samples
+ *
+ * Outputs 16-bit PCM samples of a @freq Hz tone for @duration to @sp->fp,
+ * with an optional pause.
+ */
+void pcspkr_output(const struct pcspkr *pcsp, long frequency,
     long duration, long af_pause)
 {
 	int16_t value;
@@ -64,46 +58,11 @@ static void pcm_s16(const struct pcspkr *pcsp, long frequency,
 		fwrite(&value, sizeof(value), 1, pcsp->file_ptr);
 }
 
-/**
- * pcspkr_output - produce waves
- * @state:	pcspkr state
- * @frequency:	tone frequency
- * @duration:	duration, in samples
- *		(number of samples in a second given by @state->sampling_rate)
- * @af_pause:	after-pause, in samples
- *
- * Outputs 16-bit PCM samples of a @freq Hz tone for @duration to @sp->fp,
- * with an optional pause.
- */
-void pcspkr_output(const struct pcspkr *pcsp, long frequency,
-    long duration, long af_pause)
-{
-	switch (pcsp->format) {
-		case PCSPKR_8:
-			pcm_u8(pcsp, frequency, duration, af_pause);
-			break;
-		case PCSPKR_16:
-			pcm_s16(pcsp, frequency, duration, af_pause);
-			break;
-	}
-}
-
 void pcspkr_silence(const struct pcspkr *pcsp, long duration)
 {
 	static const uint16_t value_16 = 0;
-	static const uint8_t value_8 = 0;
 	long sample;
 
-	switch (pcsp->format) {
-		case PCSPKR_8:
-			for (sample = 0; sample < duration; ++sample)
-				fwrite(&value_8, sizeof(value_8),
-				       1, pcsp->file_ptr);
-			break;
-		case PCSPKR_16:
-			for (sample = 0; sample < duration; ++sample)
-				fwrite(&value_16, sizeof(value_16),
-				       1, pcsp->file_ptr);
-			break;
-	}
+	for (sample = 0; sample < duration; ++sample)
+		fwrite(&value_16, sizeof(value_16), 1, pcsp->file_ptr);
 }
