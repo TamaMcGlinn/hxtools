@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 struct pcspkr {
-	double prop_square, prop_sine, volume;
+	double volume;
 	FILE *file_ptr;
 	unsigned int sample_rate;
 };

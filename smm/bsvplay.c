@@ -27,8 +27,6 @@ struct bsv_insn {
 
 static struct pcspkr pcsp = {
 	.sample_rate = 48000,
-	.prop_square = 1,
-	.prop_sine   = 1,
 	.volume      = 0.1,
 };
 
@@ -105,10 +103,6 @@ int main(int argc, const char **argv)
 		 .help = "Play only this tick in a tick block"},
 		{.sh = 'Z', .type = HXTYPE_NONE, .ptr = &no_zero_ticks,
 		 .help = "Skip over silenced ticks"},
-		{.sh = 'i', .type = HXTYPE_DOUBLE, .ptr = &pcsp.prop_sine,
-		 .help = "Proportion of sine-wave calculation mixed in"},
-		{.sh = 'q', .type = HXTYPE_DOUBLE, .ptr = &pcsp.prop_square,
-		 .help = "Proportion of square-wave calculation mixed in"},
 		{.sh = 'r', .type = HXTYPE_UINT, .ptr = &pcsp.sample_rate,
 		 .help = "Sample rate (default: 48000)"},
 		HXOPT_AUTOHELP,

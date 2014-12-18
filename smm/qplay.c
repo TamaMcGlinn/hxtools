@@ -30,8 +30,6 @@ static double notemap[MAX_OCTAVES*12], glob_mode = 7.0 / 8;
 static int glob_spd = 120, glob_len = 4, glob_octave = 4;
 static struct pcspkr pcsp = {
 	.sample_rate = 48000,
-	.prop_square = 1,
-	.prop_sine   = 1,
 	.volume      = 0.1,
 };
 
@@ -407,10 +405,6 @@ static void init_maps(void)
 int main(int argc, const char **argv)
 {
 	static const struct HXoption options_table[] = {
-		{.sh = 'i', .type = HXTYPE_DOUBLE, .ptr = &pcsp.prop_sine,
-		 .help = "Proportion of sine-wave calculation mixed in"},
-		{.sh = 'q', .type = HXTYPE_DOUBLE, .ptr = &pcsp.prop_square,
-		 .help = "Proportion of square-wave calculation mixed in"},
 		{.sh = 'r', .type = HXTYPE_UINT, .ptr = &pcsp.sample_rate,
 		 .help = "Sample rate (default: 48000)"},
 		HXOPT_AUTOHELP,
