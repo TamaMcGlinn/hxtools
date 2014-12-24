@@ -40,6 +40,9 @@ sub main
 		"x" => \$opt_nomixes,
 		"z" => sub { $opt_shuffle = 0 },
 		"v" => \$opt_verbose,
+		"af=s" => sub {
+			push(@opt_mplayer, "-af", $_[1]);
+		},
 		"O=s" => sub {
 			if ($_[1] =~ s/^M,//) {
 				push(@opt_mplayer, $_[1]);
