@@ -1,6 +1,6 @@
 /*
- *	sysinfo.c -
- *	Copyright © Jan Engelhardt <jengelh [at] medozas de>, 2005 - 2012
+ *	sysinfo.c - print banner with general system information
+ *	Copyright Jan Engelhardt, 2005–2015
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@
 
 struct sy_block {
 	struct utsname uts;
+	struct HXmap *osrel;
 	unsigned int num_cpu_threads, num_tasks;
 	char *cpu_vendor, *cpu_arch;
 	hxmc_t *cpu_model_name;
@@ -47,6 +48,7 @@ struct sy_block {
 	unsigned int display_width, display_height;
 };
 
+static const char *sy_osrelease_file = "/etc/os-release";
 static const char *sy_cpuinfo_file = "/proc/cpuinfo";
 static const char sysfs_cpu_dir[] = "/sys/devices/system/cpu";
 static unsigned int sy_verbose;
@@ -338,9 +340,21 @@ static void sy_display_size(struct sy_block *sib)
 static void sy_dump(const struct sy_block *sib)
 {
 	/* system */
-	printf("(by hxtools sysinfo) [%s] %s %s %s",
-		sib->uts.nodename, sib->uts.sysname, sib->uts.release,
-		sib->uts.machine);
+	printf("(by hxtools sysinfo) [%s]", sib->uts.nodename);
+	if (sib->osrel != NULL) {
+		const char *s = HXmap_get(sib->osrel, "NAME");
+		if (s != NULL) {
+			printf(" %s", s);
+			s = HXmap_get(sib->osrel, "VERSION_ID");
+			if (s == NULL)
+				s = HXmap_get(sib->osrel, "VERSION");
+			if (s != NULL)
+				printf(" %s", s);
+			printf(" |");
+		}
+	}
+	printf(" %s %s %s",
+	       sib->uts.sysname, sib->uts.release, sib->uts.machine);
 
 	/* cpu */
 	if (sib->num_cpu_threads == 0)
@@ -420,6 +434,7 @@ int main(int argc, const char **argv)
 	memset(&sib, 0, sizeof(sib));
 	sib.disk_total = -1;
 	uname(&sib.uts);
+	sib.osrel = HX_shconfig_map(sy_osrelease_file);
 	sy_num_cpu_threads(&sib);
 	sy_proc_cpuinfo(&sib);
 	sy_cpupower(&sib);
@@ -429,5 +444,6 @@ int main(int argc, const char **argv)
 	sy_gfx_hardware(&sib);
 	sy_display_size(&sib);
 	sy_dump(&sib);
+	HXmap_free(sib.osrel);
 	return EXIT_SUCCESS;
 }

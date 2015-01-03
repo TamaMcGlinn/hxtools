@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 
+use Getopt::Long;
 use IPC::Open3;
+our $novideo = 0;
+&Getopt::Long::Configure(qw(bundling));
+&GetOptions("n" => \$novideo);
 &main();
 
 sub main
@@ -15,7 +19,8 @@ sub moov_one_file
 	my $input = shift @_;
 	local(*CIN, *COUT);
 	my $pid = open3(\*CIN, \*COUT, \*COUT,
-		"ffmpeg", "-i", $input, "-acodec", "copy", "-vcodec", "copy",
+		"ffmpeg", "-i", $input, "-acodec", "copy",
+		$novideo ? ("-vn") : ("-vcodec", "copy"),
 		"-moov_size", "4", "-y", ".moov.mp4");
 	close CIN;
 
@@ -27,7 +32,8 @@ sub moov_one_file
 	# Run with exact moov_size
 	print "$input: moov_size=$moov_size\n";
 	$pid = open3(\*CIN, \*COUT, \*COUT,
-		"ffmpeg", "-i", $input, "-acodec", "copy", "-vcodec", "copy",
+		"ffmpeg", "-i", $input, "-acodec", "copy",
+		$novideo ? ("-vn") : ("-vcodec", "copy"),
 		"-moov_size", $moov_size, "-y", ".moov.mp4");
 	close CIN;
 	while (defined(my $line = <COUT>)) {
