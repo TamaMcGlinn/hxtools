@@ -43,6 +43,9 @@ sub main
 		"af=s" => sub {
 			push(@opt_mplayer, "-af", $_[1]);
 		},
+		"loop=s" => sub {
+			push(@opt_mplayer, "-loop", $_[1]);
+		},
 		"O=s" => sub {
 			if ($_[1] =~ s/^M,//) {
 				push(@opt_mplayer, $_[1]);
