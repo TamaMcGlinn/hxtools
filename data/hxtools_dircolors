@@ -165,7 +165,8 @@ EXEC		1;31
 .mp4	0;36	# MPEG-4 video
 .mpeg	0;36
 .mpg	0;36	# MPEG video
-.ogg	0;36	# OGG container
+.ogg	0;36	# OGG container (usually with Vorbis audio stream)
+.opus	0;36	# OGG container with Opus audio stream
 .pbm	0;36	# Portable Bitmap
 .pcx	0;36	# ZSoft Paintbrush
 .pgm	0;36	# Portable graymap
