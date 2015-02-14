@@ -325,7 +325,8 @@ sub index_rebuild
 		if (&filename_meta($ext)) {
 			next;
 		}
-		my $title = &filename_nonext($file);
+		my $title = $file;
+		#my $title = &filename_nonext($file);
 		$track_list->{$title} = {"file" => $file};
 	}
 
@@ -337,7 +338,7 @@ sub index_rebuild
 		}
 
 		# Mark this title as being a mix and/or part of a mix
-		my $parent_title = &filename_nonext($af);
+		my $parent_title = $af; #&filename_nonext($af);
 		$track_list->{$parent_title}->{"ofs"} = 0;
 
 		if (!open(FH, "< $file")) {
