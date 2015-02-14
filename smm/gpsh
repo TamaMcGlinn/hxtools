@@ -95,9 +95,8 @@ sub main
 	if ($opt_listonly) {
 		return;
 	}
-	@$queue = sort { $a cmp $b } @$queue;
 	if ($opt_shuffle) {
-		@$queue = sort s_random @$queue;
+		@$queue = sort s_random sort { $a cmp $b } @$queue;
 	}
 	&queue_play($index, $queue);
 }
