@@ -128,9 +128,9 @@ sub push_files
 {
 	local *COUT;
 	my @args = (
-		"tar", "-T-", "--null",
+		"tar", "--no-recursion", "--null", "-T-",
 		defined($packer) ? "--use=$packer" : (),
-		"--no-recursion", "--owner=root", "--group=root",
+		"--owner=root", "--group=root",
 		"-cvf", $_[0], @{$_[2]},
 	);
 
