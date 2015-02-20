@@ -70,7 +70,7 @@ while (defined(my $line = shift @keep)) {
 
 print <<"--EOF";
 </pre>
-<?php } ?>
 </body>
 </html>
+<?php } ?>
 --EOF
