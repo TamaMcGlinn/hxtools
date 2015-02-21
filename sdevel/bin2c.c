@@ -129,6 +129,8 @@ static void btc_stdc_file_content(struct btc_state *state)
 	 * C++ is very picky about sizes. "ABC" is of type char[4] and must be
 	 * assigned to a char[N] with N >= 4. In C, "ABC" could be assigned to
 	 * char[N] with N >= 3 too.
+	 * Yes, this means the array contains a trailing \0 byte. JPEG and PNG
+	 * permit for trailing garbage, I hope we can get away with it ;-)
 	 */
 	if (state->cfp != state->hfp) {
 		fprintf(state->hfp, "extern const unsigned char bin2c_%s[%" HX_SIZET_FMT "u];\n",
