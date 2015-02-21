@@ -29,6 +29,9 @@ filename.
 .TP
 \fB\-D\fP \fIdir_prefix\fP
 All filenames on the command line will be prefixed with the given directory.
+This has the implication that files will be searched relative to
+\fIdir_prefix\fP, while the variable name ending up in the C source for an
+image will remain non-prefixed.
 .TP
 \fB\-G\fP \fIname\fP
 Request that an include guard by the identifier \fIguard-name\fP is emitted
