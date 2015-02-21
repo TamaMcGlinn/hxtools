@@ -3,7 +3,6 @@
 context default
 	keyword linestart @@*@@ cyan
 	keyword linestart Index:\s brown
-	keyword linestart \s black white
 	keyword linestart \*\*\*\*\*\*\*\*\*\*\*\*\*\*\* cyan
 	keyword linestart \*\*\**\*\*\*\* cyan
 	keyword linestart ---*---- cyan
