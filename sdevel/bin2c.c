@@ -1,6 +1,6 @@
 /*
  *	bin2c - convert arbitrary files into C variable definitions
- *	Copyright by Jan Engelhardt, 2004–2008,2013–2014
+ *	Copyright by Jan Engelhardt, 2004–2008,2013–2015
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -74,14 +74,19 @@ static size_t btc_qsize_cstring(const void *src, size_t input_size)
 static char *btc_memquote(const void *vsrc, size_t input_size)
 {
 	size_t quoted_size = btc_qsize_cstring(vsrc, input_size);
-	char *out = malloc(quoted_size + 1), *p = out;
+	char *qbitmap, *out, *p;
 	const unsigned char *src = vsrc;
+	size_t i;
 
-	if (out == NULL)
+	p = out = malloc(quoted_size + 1);
+	qbitmap = malloc(input_size);
+	if (qbitmap == NULL || out == NULL)
 		abort();
-	for (; input_size-- > 0; ++src) {
-		if (!HX_isprint(*src) ||
-		    strchr(btc_quote_needed, *src) != NULL) {
+	for (i = 0; i < input_size; ++i)
+		qbitmap[i] = !HX_isprint(src[i]) ||
+		             strchr(btc_quote_needed, src[i]);
+	for (i = 0; input_size-- > 0; ++i, ++src) {
+		if (qbitmap[i]) {
 			*p++ = '\\';
 			*p++ = '0' + ((*src & 0700) >> 6);
 			*p++ = '0' + ((*src & 0070) >> 3);
@@ -91,6 +96,7 @@ static char *btc_memquote(const void *vsrc, size_t input_size)
 		}
 	}
 	*p = '\0';
+	free(qbitmap);
 	return out;
 }
 
