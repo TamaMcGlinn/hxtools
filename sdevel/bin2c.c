@@ -55,7 +55,6 @@ static hxmc_t *btc_cfile, *btc_hfile;
 static hxmc_t *btc_guard_name;
 static char *btc_prefix_directory;
 static unsigned int btc_verbose, btc_emit_wxbitmap, btc_emit_ultra;
-static const char btc_quote_needed[] = "\"?\\";
 static const struct btc_operations *btc_ops;
 static int btc_strip = -1;
 
@@ -94,28 +93,43 @@ static char *btc_tblquote(const void *vsrc, size_t input_size)
 	return out;
 }
 
+/*
+ * character/sequence		chance		expansion
+ * 00,22,5C			3/256		2 (\x)
+ * 01..07,digit			7/256*10/256	4 (\000 .. \007)
+ * 01..07,nondigit		7/256*246/256	2 (\0 .. \7)
+ * 08..1F,digit			24/256*10/256	4 (\010 .. \031)
+ * 08..1F,nondigit		24/256*246/256	3 (\10 .. \31)
+ * 20..21,23..3E,40..5B,5D..7E	92/256		1
+ * 3F:3F			1/256*1/256	3 (\077)
+ * 3F:!3F			1/256*255/256	1 (?)
+ * 7F..FF			129/256		4 (\177 .. \377)
+ * average bytes per byte around 2.74411 (the 3F cases are hard to determine)
+ */
 static char *btc_memquote(const void *vsrc, size_t input_size)
 {
 	size_t quoted_size = input_size * 4 + 1;
-	char *qbitmap, *out, *p;
+	char *out, *p;
 	const unsigned char *src = vsrc;
-	size_t i;
+	bool qthis, qnext;
 
 	p = out = malloc(quoted_size + 1);
-	qbitmap = malloc(input_size);
-	if (qbitmap == NULL || out == NULL)
-		abort();
-	for (i = 0; i < input_size; ++i)
-		qbitmap[i] = !HX_isprint(src[i]) ||
-		             strchr(btc_quote_needed, src[i]);
-	for (i = 0; input_size-- > 0; ++i, ++src) {
-		if (!qbitmap[i]) {
+	qnext = input_size > 1 && (src[0] == '\"' || src[0] == '\\' || !HX_isprint(src[0]));
+	for (; input_size-- > 0; ++src) {
+		qthis = qnext;
+		qnext = input_size > 0 && (!HX_isprint(src[1]) ||
+		        src[1] == '\"' || src[1] == '\\' ||
+		        (src[1] == '?' && src[0] == '?' && !qthis));
+		if (!qthis) {
 			*p++ = *src;
 			continue;
 		}
-		bool full = input_size == 0 ||
-		            (!qbitmap[i+1] && HX_isdigit(src[1]));
+		bool full = input_size == 0 || (!qnext && HX_isdigit(src[1]));
 		*p++ = '\\';
+		if (*src == '\"' || *src == '\\') {
+			*p++ = *src;
+			continue;
+		}
 		if (full || *src > 0070)
 			*p++ = '0' + ((*src & 0700) >> 6);
 		if (full || *src > 0007)
@@ -123,7 +137,6 @@ static char *btc_memquote(const void *vsrc, size_t input_size)
 		*p++ = '0' + (*src & 0007);
 	}
 	*p = '\0';
-	free(qbitmap);
 	return out;
 }
 
