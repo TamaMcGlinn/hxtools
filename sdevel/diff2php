@@ -32,6 +32,7 @@ print <<"--EOF";
 
 while (defined(my $ln = <STDIN>)) {
 	push(@keep, $ln);
+	$ln =~ s{<\?}{<\?php echo "<?"; ?>}g;
 	print $ln;
 }
 
