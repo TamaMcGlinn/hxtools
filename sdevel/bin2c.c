@@ -59,21 +59,9 @@ static const char btc_quote_needed[] = "\"?\\";
 static const struct btc_operations *btc_ops;
 static int btc_strip = -1;
 
-static size_t btc_qsize_cstring(const void *src, size_t input_size)
-{
-	const unsigned char *p = src;
-	size_t z = 0;
-
-	for (; input_size-- > 0; ++p)
-		z += (!HX_isprint(*p) ||
-		     strchr(btc_quote_needed, *p) != NULL) ?
-		     4 /* "\xXY" */ : 1;
-	return z;
-}
-
 static char *btc_memquote(const void *vsrc, size_t input_size)
 {
-	size_t quoted_size = btc_qsize_cstring(vsrc, input_size);
+	size_t quoted_size = input_size * 4 + 1;
 	char *qbitmap, *out, *p;
 	const unsigned char *src = vsrc;
 	size_t i;
