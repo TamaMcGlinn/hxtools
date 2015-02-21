@@ -6,7 +6,8 @@ bin2c \(em embed data files into C as variables
 .PP
 \fBbin2c\fP [\fB\-C\fP \fIprogram-file\fP] [\fB\-D\fP \fIdir_prefix\fP]
 [\fB\-H\fP \fIheader-file\fP] [\fB\-G\fP \fIguard-name\fP]
-[\fB\-p\fP \fInum\fP] [\fB\-v\fP] [\fB\-\-wxbitmap\fP] \fIfile\fP...
+[\fB\-p\fP \fInum\fP] [\fB\-v\fP] [\fB\-\-ultra\fP] [\fB\-\-wxbitmap\fP]
+\fIfile\fP...
 .SH Description
 .PP
 bin2c converts files to C variables. It does so by reading the contents of each
@@ -53,8 +54,15 @@ are \fBretained\fP. If \fB\-p\fP is not specified, the default is -1.
 \fB\-v\fP
 Be verbose. Show all the names and filenames that bin2c will write.
 .TP
+\fB\-\-ultra\fP
+Writeout the raw data as a string literal. As the literal contains a trailing
+NUL byte, the size of the array is necessarily also one byte longer than the
+raw data, which you need to account for. (In C, it would be possible to write
+char x[3] = "ABC", but this leads to an error in C++ where x[4] is required.)
+.TP
 \fB\-\-wxbitmap\fP
-Generate C++ code that generates wxBitmap objects.
+Generate C++ code that generates wxBitmap objects. (Implies Ultra encoding,
+and deals with it appropriately, too.)
 .SH Examples
 .PP
 To generate a single C header file that behaves like XPM files and which is
