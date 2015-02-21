@@ -86,14 +86,18 @@ static char *btc_memquote(const void *vsrc, size_t input_size)
 		qbitmap[i] = !HX_isprint(src[i]) ||
 		             strchr(btc_quote_needed, src[i]);
 	for (i = 0; input_size-- > 0; ++i, ++src) {
-		if (qbitmap[i]) {
-			*p++ = '\\';
-			*p++ = '0' + ((*src & 0700) >> 6);
-			*p++ = '0' + ((*src & 0070) >> 3);
-			*p++ = '0' + (*src & 0007);
-		} else {
+		if (!qbitmap[i]) {
 			*p++ = *src;
+			continue;
 		}
+		bool full = input_size == 0 ||
+		            (!qbitmap[i+1] && HX_isdigit(src[1]));
+		*p++ = '\\';
+		if (full || *src > 0070)
+			*p++ = '0' + ((*src & 0700) >> 6);
+		if (full || *src > 0007)
+			*p++ = '0' + ((*src & 0070) >> 3);
+		*p++ = '0' + (*src & 0007);
 	}
 	*p = '\0';
 	free(qbitmap);
