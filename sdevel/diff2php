@@ -63,8 +63,7 @@ while (defined(my $line = shift @keep)) {
 	$line =~ s/^(\!.*)/$D{yellow}$1$F/ ||
 	$line =~ s/^(\?.*)/$D{brown}$1$F/ ||
 	$line =~ s/^((RCS|retrieving)\s.*)/$D{brown}$1$F/ ||
-	$line =~ s/^((Only|Common|File|Files|Binary)\s.*)/$D{hblue}$1$F/ ||
-	$line =~ s/^ (.*)/<span style="background-color: #$C{gray};">&nbsp;<\/span>$1/;
+	$line =~ s/^((Only|Common|File|Files|Binary)\s.*)/$D{hblue}$1$F/;
 	print $line, "\n";
 }
 
