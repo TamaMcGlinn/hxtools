@@ -15,7 +15,7 @@
 #include <libHX/string.h>
 
 struct sp_task {
-	char comm[31], state;
+	char comm[32], state;
 	int pid, ppid, pgid, sid, tty_nr, tty_pgrp;
 	unsigned int task_flags;
 	/*
