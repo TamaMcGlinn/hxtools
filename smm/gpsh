@@ -115,7 +115,7 @@ sub queue_select
 
 	print "[$$] Index has ", scalar(keys %$index), " entries\n";
 	foreach my $arg (@$argv) {
-		push(@$queue, grep {
+		push(@$queue, sort grep {
 			$_ =~ /$arg/i &&
 			(!$opt_nomixes || !exists($index->{$_}->{"ofs"}))
 		} keys %$index);
