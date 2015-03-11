@@ -1,18 +1,22 @@
-.TH gpsh 1 "2010-11-30" "hxtools" "hxtools"
+.TH gpsh 1 "2015-03-11" "hxtools" "hxtools"
 .SH Name
 .PP
-gpsh \(em grep and play my audio files from shell
+gpsh \(em select audio files by name and play them
 .SH Syntax
 .PP
 \fBgpsh\fP [\fB\-F\fP \fIindex.m9u\fP] [\fB-OM,\fP\fIopt\fP]
 [\fB\-blvxz\fP] \fIpatterns\fP...
 .SH Description
 .PP
-Greps the master index file by the specified patterns and plays back any
-matching entries (using external programs: mplayer, timidity). It expressly
-supports jumping into subtracks in mixes.
+gpsh is a utility that will search the current directory for audio/video files
+by matching their path and filename with regular expression patterns presented
+on the command line, and feeding them to a multimedia player. gpsh is capable
+of reading special tracklist files which contain subtrack names and their
+associated time positions.
 .PP
-When no pattern is given, all files are selected.
+When no pattern is given, all entries are selected. By default, all entries
+which matched a particular pattern are played back in random order, but order
+between patterns is retained.
 .SH Options
 .TP
 \fB\-F\fP \fIindex.m9u\fP
@@ -36,7 +40,11 @@ Do print the playlist (can be very long).
 Ignore subtracks in a mix, and also avoid reindexing of VBR files.
 .TP
 \fB\-z\fP
-Do not shuffle the play queue.
+Do not shuffle the play queue / play back in lexicographic order.
+.TP
+\fB\-\-loop\fP \fIn\fP
+Passes the -loop option to mplayer. Note that the option has \fBtwo\fP
+dashes for gpsh.
 .SH Index
 .PP
 gpsh keeps an index cache, and refreshes it in the background when it is older
@@ -45,29 +53,24 @@ exists. Directories and files whose name without extension ends in "_noindex"
 will be skipped.
 .SH Tracklists for mixes
 .PP
-gpsh scans all .txt files for the following pattern used to denote a subtrack
+gpsh scans all .tls files for the following pattern used to denote a subtrack
 in a big mix of the same basename:
 .PP
 /^\[(?:(\d+):)?(\d+):(\d+)\](.*)/
 .PP
 Example: Audio file: "DJ Doboy - Trancequility volume 01.mp3",
-Tracklist: "DJ Doboy - Trancequility volume 01.txt",
+Tracklist: "DJ Doboy - Trancequility volume 01.tls",
 TL content: "[48:29] Paul van Dyk - For an angel".
 .SH Regex search
 .PP
 gpsh uses a Perl regular expression search across file name (mix name, if any)
 and subtrack name.
 .PP
-Example: gpsh 'dj.doboy.*trancequility.*paul.van.dyk'
+Example: gpsh 'doboy.*trancequility.*paul.van.dyk'
 .PP
 Would cause gpsh to search for all PVD tracks in Doboy's Trancequility
 mixes. mplayer will be invoked on "DJ Doboy - Trancequility volume 01.mp3"
-with automatic seeking to position 48:29, for example. Of course, just
-specifying
-.PP
-gpsh 'dj.doboy.*trancequility'
-.PP
-Would select the grand mix and start at 00:00.
+with automatic seeking to position 48:29, for example.
 .SH Extra options
 .PP
 gpsh \-OM,\-af\-clr chillout
