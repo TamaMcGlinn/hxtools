@@ -326,7 +326,7 @@ sub index_rebuild
 			next;
 		}
 		my $title = $file;
-		#my $title = &filename_nonext($file);
+		# Collect with extension to enable tabbing on the shell
 		$track_list->{$title} = {"file" => $file};
 	}
 
@@ -337,8 +337,10 @@ sub index_rebuild
 			next;
 		}
 
-		# Mark this title as being a mix and/or part of a mix
-		my $parent_title = $af; #&filename_nonext($af);
+		# Mark this title as being a mix and/or part of a mix.
+		# In this case, we do not want the extension,
+		# to facilitate grepping for e.g. "mix 01,02".
+		my $parent_title = &filename_nonext($af);
 		$track_list->{$parent_title}->{"ofs"} = 0;
 
 		if (!open(FH, "< $file")) {
@@ -360,7 +362,7 @@ sub index_rebuild
 			$s = $h * 3600 + $m * 60 + $s;
 			$track_list->{"$parent_title,$title"} = {
 				"ofs" => $s,
-				"parent" => $track_list->{$parent_title},
+				"parent" => $track_list->{$af},
 			};
 		}
 		close FH;
