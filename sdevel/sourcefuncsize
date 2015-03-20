@@ -98,6 +98,17 @@ sub analyze_data ()
 			if ($ln =~ m[^\s*#]so) {
 				push(@saved_seg, $cur_seg);
 				$cur_seg = "^pre";
+			} elsif ($ln =~ m[^\s*/\*.*?\*/\s*$]so) {
+				#
+				# one-line /* */ comment, with no code
+				#
+				push(@saved_seg, $cur_seg);
+				$cur_seg = "^cm";
+			} elsif ($ln =~ m[/\*.*?\*/]so) {
+				#
+				# one-line /* */ comment, with possibly code in
+				# the same line thus, do nothing here
+				#
 			} elsif ($ln =~ m[^\s*//]so) {
 				push(@saved_seg, $cur_seg);
 				$cur_seg = "^cm";
@@ -108,11 +119,6 @@ sub analyze_data ()
 				push(@saved_seg, $cur_seg);
 				$cur_seg = "^lcm";
 				++$seg_lcomm;
-			} elsif ($ln =~ m[/\*.*?\*/]so) {
-				#
-				# one-line /* */ comment, with possibly code in
-				# the same line thus, do nothing here
-				#
 			} elsif ($ln =~ m[\*/]so) {
 				$seg_lcomm = 0;
 			} elsif ($Empty) {
