@@ -61,7 +61,7 @@ my $FUNC_RX = qr/^
 		\s*\*+\s* |             # returns pointer
 		\s+                     # returns type
 	)
-	(\w+)                           # function name
+	(\w+(?:::\w+)*)                           # function name
 	\s*\(\s*.*?\s*\)                # function args
 	\s*\{
 /xs;
