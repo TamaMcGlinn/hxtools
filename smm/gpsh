@@ -197,12 +197,7 @@ sub queue_play
 		my $ext = &filename_ext($file);
 		$ext = lc $ext;
 
-		# A lyr file for a version may be available in a basename
-		my $title2 = $title;
-		$title2 =~ s{\s+\(.*?\)$}{};
-		if (-e "$title.lyr" || -e "$title2.lyr") {
-			print STDERR "\e[1;32m[lyr]\e[0m "; # ]]
-		}
+		&print_lyr($title);
 		print STDERR "\e[1;31m$title\e[0m\n"; # ]]
 		if (&filename_timidity($ext)) {
 			# my $t = $opt_verbose ? "t" : "";
@@ -223,6 +218,23 @@ sub queue_play
 			--$ofs;
 		}
 		system "mplayer", "-vo", "null", $file, "-ss", $ofs, @opt_mplayer;
+	}
+}
+
+sub print_lyr
+{
+	# A lyr file for a version may be available in a basename.
+	# If so, print a line notifying about its existence.
+	my $title = shift @_;
+	my $title2 = $title;
+	do {
+		if (-e "$title2.lyr") {
+			print STDERR "\e[1;32m[lyr]\e[0m "; # ]]
+			return;
+		}
+	} while ($title2 =~ s{\s*(?:\([^\)]+\)|\[[^\]]+\])$}{});
+	if (-e "$title.lyr") {
+		print STDERR "\e[1;32m[lyr]\e[0m "; # ]]
 	}
 }
 
