@@ -228,8 +228,12 @@ sub queue_play
 
 sub workaround_mp3vbr
 {
-	# MPlayer cannot properly seek in MP3 VBR streams.
-	# Create an index file...
+	# MP3 ABR/VBR files have no seek index. Players fall back to computing
+	# the position using CBR semantics. (That is faster than reindexing it
+	# *everytime*, and thus a reasonable default.) However, accessing mixes
+	# requires a functional seek index, so reindex the audio file *and
+	# keep it* (which players doing on-the-fly-reindex don't - which would
+	# make it even more costly).
 	my $ifile = shift @_;
 	my $ofile = $ifile;
 	my $tmpdir = "/tmp/psh.$>";
