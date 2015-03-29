@@ -237,9 +237,16 @@ sub workaround_mp3vbr
 	my $ifile = shift @_;
 	my $ofile = $ifile;
 	my $tmpdir = "/tmp/psh.$>";
+	my @stat = stat($ifile);
 
-	$ofile =~ s{/}{__}gs;
-	$ofile = "$tmpdir/$ofile";
+	if (!defined($stat[0])) {
+		return $ifile;
+	}
+	#
+	# Use a path-independent name, so that gpsh can be run from
+	# subdirectories and not cause remuxing a file.
+	#
+	$ofile = "$tmpdir/$stat[0].$stat[1]";
 	if (-e $ofile) {
 		return $ofile;
 	}
