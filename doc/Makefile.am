@@ -25,6 +25,7 @@ dist_man_MANS = \
 	git-track.1 \
 	hcdplay.1 \
 	hxtools.7 \
+	ldif-duplicate-attrs.1 \
 	logontime.8 \
 	mailsplit.1 \
 	man2html.1 \

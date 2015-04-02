@@ -1,0 +1,42 @@
+.TH ldif-duplicate-attrs 1 "2015-04-01" "hxtools" "hxtools"
+.SH Name
+.PP
+ldif-duplicate-attrs \(em check for multi-value attributes in LDIF file
+.SH Usage
+.PP
+\fBprocalldiff\fP [\fB\-C\fP] \fB<\fP\fIfoo.ldif\fP \fB>\fP\fIreport.txt\fP
+.PP
+Input must not contain linewraps. Do use with
+.PP
+{\fBslapcat\fB|\fBldapsearch\fP} \fB-o ldif-wrap=no\fP ...
+.SH Description
+.PP
+Reads an LDIF file from standard input and checks for the presence
+of multivalued attributes of all DNs. Whitelisted attribute names
+are excluded from the problem report. Outputs a statistic sorted by
+severity to standard output.
+.SH Options
+.TP
+\fB\-C\fP
+Force color output. Useful when piping into `less -R`.
+(By default, color is only emitted when stdout is a tty.)
+.SH Example output
+.PP
+.nf
+	11	cn=67eoG,ou=Muenchen,o=Deutschland
+		uid(3) cn(2) fullName(2) mail(2) sn(2)
+	10	cn=Hoff,ou=Muenchen,o=Deutschland
+		homeCity(2) homePostalAddress(2) homeZipCode(2) l(2)
+		telephoneNumber(2)
+.fi
+.PP
+The DN cn=67eoG has had three values for the "uid" attribute, two for "cn",
+and so on, for a total badness score of 11.
+The entire output is sorted by:
+.IP 1. 4
+Overall, DNs are sorted by descending score.
+.IP 2. 4
+For a particular DN, attributes are sorted by descending score.
+.IP 3. 4
+If two attributes have the same score, sort occurs
+lexicographically ascending.

@@ -23,6 +23,8 @@ endif
 
 dist_pkglibexec_SCRIPTS = \
 	logontime \
+	ldif-duplicate-attrs \
+	ldif-leading-spaces \
 	netload \
 	recursive_lower \
 	vcsaview
