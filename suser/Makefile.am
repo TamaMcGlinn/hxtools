@@ -12,7 +12,7 @@ bin_PROGRAMS = \
 
 dist_bin_SCRIPTS = \
 	fxterm \
-	pegrep pesubst \
+	pegrep pesubst qpdecode \
 	rot13 \
 	qtar \
 	wktimer

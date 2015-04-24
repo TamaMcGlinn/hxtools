@@ -1,0 +1,2 @@
+#!/usr/bin/perl -lp
+s{=(..)}{pack("H*",$1)}egs;
