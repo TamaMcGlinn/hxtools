@@ -202,7 +202,7 @@ sub process_master
 			$s->{section} = $1;
 		}
 		&process_generic($s);
-		if ($s->{sectype} == "package") {
+		if ($s->{sectype} eq "package") {
 			&process_package();
 		}
 		if ($opt_diff_mode) {
