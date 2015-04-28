@@ -61,13 +61,13 @@ sub process_generic
 		print STDERR "$s->{pos}: Seen \"/usr/lib\". Consider replacing with \%_libdir or \%_libexecdir as appropriate.\n";
 	}
 	if (m</usr/lib64$PSTOP>) {
-		print STDERR "$s->{pos}: Seen \"/usr/lib64\". Consider fixing it.";
+		print STDERR "$s->{pos}: Seen \"/usr/lib64\". Consider fixing it.\n";
 	}
 	if (m{(?:^|\s)/lib$PSTOP}) {
 		print STDERR "$s->{pos}: Seen \"/lib\". Consider replacing with \%_lib as appropriate.\n";
 	}
 	if (m{(?:^|\s)/lib64$PSTOP}) {
-		print STDERR "$s->{pos}: Seen \"/lib64\". Consider fixing it.";
+		print STDERR "$s->{pos}: Seen \"/lib64\". Consider fixing it.\n";
 	}
 
 	# Temporarily add {} to reduce following regexes
