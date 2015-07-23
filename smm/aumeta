@@ -2,9 +2,18 @@
 
 use Getopt::Long;
 use IPC::Open3;
-our $novideo = 0;
+our $strip_video = 0;
+our %meta;
 &Getopt::Long::Configure(qw(bundling));
-&GetOptions("n" => \$novideo);
+&GetOptions(
+	"n" => \$strip_video,
+	"t=s" => \$meta{title},
+	"a=s" => \$meta{artist},
+	"l=s" => \$meta{album},
+	"G=s" => \$meta{genre},
+	"N=s" => \$meta{track},
+	"d=s" => \$meta{date},
+);
 &main();
 
 sub main
@@ -18,12 +27,16 @@ sub moov_one_file
 {
 	my $input = shift @_;
 	local(*CIN, *COUT);
+	my @args = ("ffmpeg", "-i", $input, "-acodec", "copy");
+	push(@args, $strip_video ? "-vn" : ("-vcodec", "copy"));
+	foreach my $key (keys %meta) {
+		push(@args, "-metadata", "$key=$meta{$key}");
+	}
+
 	my $tmpfile = "~\$~$$.moov.mp4";
 	# must be in same filesystem for rename() to succeed, so don't use /tmp
 	my $pid = open3(\*CIN, \*COUT, \*COUT,
-		"ffmpeg", "-i", $input, "-acodec", "copy",
-		$novideo ? ("-vn") : ("-vcodec", "copy"),
-		"-moov_size", "4", "-y", $tmpfile);
+	          @args, "-moov_size", "4", "-y", $tmpfile);
 	close CIN;
 
 	my $moov_size = 4 + &moov_get_extra(\*COUT);
@@ -34,15 +47,13 @@ sub moov_one_file
 	# Run with exact moov_size
 	print "$input: moov_size=$moov_size\n";
 	$pid = open3(\*CIN, \*COUT, \*COUT,
-		"ffmpeg", "-i", $input, "-acodec", "copy",
-		$novideo ? ("-vn") : ("-vcodec", "copy"),
-		"-moov_size", $moov_size, "-y", $tmpfile);
+	       @args, "-moov_size", $moov_size, "-y", $tmpfile);
 	close CIN;
 	while (defined(my $line = <COUT>)) {
 	}
 	close COUT;
 	waitpid($pid, 0);
-	my $status = $? >> 8;
+	$status = $? >> 8;
 	if ($status != 0) {
 		print STDERR "$input: 2nd stage error\n";
 		return;
