@@ -18,10 +18,12 @@ sub moov_one_file
 {
 	my $input = shift @_;
 	local(*CIN, *COUT);
+	my $tmpfile = "~\$~$$.moov.mp4";
+	# must be in same filesystem for rename() to succeed, so don't use /tmp
 	my $pid = open3(\*CIN, \*COUT, \*COUT,
 		"ffmpeg", "-i", $input, "-acodec", "copy",
 		$novideo ? ("-vn") : ("-vcodec", "copy"),
-		"-moov_size", "4", "-y", ".moov.mp4");
+		"-moov_size", "4", "-y", $tmpfile);
 	close CIN;
 
 	my $moov_size = 4 + &moov_get_extra(\*COUT);
@@ -34,7 +36,7 @@ sub moov_one_file
 	$pid = open3(\*CIN, \*COUT, \*COUT,
 		"ffmpeg", "-i", $input, "-acodec", "copy",
 		$novideo ? ("-vn") : ("-vcodec", "copy"),
-		"-moov_size", $moov_size, "-y", ".moov.mp4");
+		"-moov_size", $moov_size, "-y", $tmpfile);
 	close CIN;
 	while (defined(my $line = <COUT>)) {
 	}
@@ -48,12 +50,12 @@ sub moov_one_file
 
 	# Set filetimes to original
 	my @stat = stat($input);
-	if (!utime($stat[8], $stat[9], ".moov.mp4")) {
-		print STDERR "$input: could not set utimes on temporary file: $!\n";
+	if (!utime($stat[8], $stat[9], $tmpfile)) {
+		print STDERR "$input: could not set utimes on temporary file $tmpfile: $!\n";
 		return;
 	}
-	if (!rename(".moov.mp4", $input)) {
-		print STDERR "$input: could not move temporary file back: $!\n";
+	if (!rename($tmpfile, $input)) {
+		print STDERR "$input: could not move temporary file $tmpfile back: $!\n";
 		return;
 	}
 	return 1;
