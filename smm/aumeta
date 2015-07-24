@@ -13,6 +13,7 @@ our %meta;
 	"G=s" => \$meta{genre},
 	"N=s" => \$meta{track},
 	"d=s" => \$meta{date},
+	"m=s" => \%meta,
 );
 &main();
 
@@ -30,7 +31,9 @@ sub moov_one_file
 	my @args = ("ffmpeg", "-i", $input, "-acodec", "copy");
 	push(@args, $strip_video ? "-vn" : ("-vcodec", "copy"));
 	foreach my $key (keys %meta) {
-		push(@args, "-metadata", "$key=$meta{$key}");
+		if (defined($meta{$key})) {
+			push(@args, "-metadata", "$key=$meta{$key}");
+		}
 	}
 
 	my $tmpfile = "~\$~$$.moov.mp4";
