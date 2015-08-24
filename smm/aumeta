@@ -38,8 +38,9 @@ sub moov_one_file
 
 	my $tmpfile = "~\$~$$.moov.mp4";
 	# must be in same filesystem for rename() to succeed, so don't use /tmp
-	my $pid = open3(\*CIN, \*COUT, \*COUT,
-	          @args, "-moov_size", "4", "-y", $tmpfile);
+	my @targs = ("-moov_size", 4, "-y", $tmpfile);
+	print STDERR "*** Running ", join(" ", @args, @targs), "\n";
+	my $pid = open3(\*CIN, \*COUT, \*COUT, @args, @targs);
 	close CIN;
 
 	my $moov_size = 4 + &moov_get_extra(\*COUT);
@@ -49,6 +50,8 @@ sub moov_one_file
 
 	# Run with exact moov_size
 	print "$input: moov_size=$moov_size\n";
+	my @targs = ("-moov_size", $moov_size, "-y", $tmpfile);
+	print STDERR "*** Running ", join(" ", @args, @targs), "\n";
 	$pid = open3(\*CIN, \*COUT, \*COUT,
 	       @args, "-moov_size", $moov_size, "-y", $tmpfile);
 	close CIN;
