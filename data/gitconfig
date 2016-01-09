@@ -44,3 +44,6 @@
 
 [grep]
 	patternType = perl
+
+[merge]
+	conflictstyle = diff3
