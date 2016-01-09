@@ -47,3 +47,6 @@
 
 [merge]
 	conflictstyle = diff3
+
+[diff]
+	algorithm = histogram
