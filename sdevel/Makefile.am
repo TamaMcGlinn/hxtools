@@ -24,7 +24,6 @@ dist_pkglibexec_SCRIPTS = \
 	diff2php \
 	doxygen-kerneldoc-filter \
 	git-blame-stats \
-	git-new-root \
 	git-revert-stats \
 	paddrspacesize \
 	proc_stat_signal_decode \

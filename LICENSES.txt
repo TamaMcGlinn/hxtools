@@ -26,7 +26,6 @@ sdevel/doxygen-kerneldoc-filter	WTFPL-2.0+
 sdevel/git-author-stats		WTFPL-2.0+
 sdevel/git-blame-stats		WTFPL-2.0+
 sdevel/git-forest		GPL-2.0+
-sdevel/git-new-root		WTFPL-2.0+
 sdevel/git-revert-stats		WTFPL-2.0+
 sdevel/git-track		WTFPL-2.0+
 sdevel/man2html			WTFPL-2.0+
