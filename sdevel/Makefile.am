@@ -2,9 +2,10 @@
 
 AM_CPPFLAGS = ${regular_CPPFLAGS} ${libHX_CFLAGS}
 AM_CFLAGS   = ${regular_CFLAGS}
+AM_CXXFLAGS = ${regular_CXXFLAGS}
 
 bin_PROGRAMS = \
-	bin2c
+	bin2c gxxdm
 
 dist_bin_SCRIPTS = \
 	checkbrack \
@@ -30,4 +31,6 @@ dist_pkglibexec_SCRIPTS = \
 	sourcefuncsize
 
 bin2c_LDADD = ${libHX_LIBS}
+gxxdm_SOURCES = gxxdm.cpp
+gxxdm_LDADD = ${libHX_LIBS}
 peicon_LDADD = ${libHX_LIBS}
