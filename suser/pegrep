@@ -1,0 +1,90 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+our($grepcolor, $filecolor, $coloncolor, $linenocolor, $stopcolor) = ($ENV{"GREP_COLOR"});
+
+&main();
+
+sub goback
+{
+	my($s, $start) = @_;
+	if ($start == 0) {
+		return 0;
+	}
+	my $of = rindex($$s, "\n", $start - 1);
+	if ($of <= 0) {
+		return 0;
+	}
+	$of = rindex($$s, "\n", $of - 1);
+	return ($of <= 0) ? 0 : $of;
+}
+
+sub gofwd
+{
+	my($s, $start) = @_;
+	my $max = length($$s);
+	if ($start >= $max) {
+		return $max;
+	}
+	my $of = index($$s, "\n", $start);
+	if ($of < 0 || $of >= $max) {
+		return $max;
+	}
+	$of = index($$s, "\n", $of + 1);
+	return ($of < 0 || $of >= $max) ? $max : $of;
+}
+
+sub nlcount
+{
+	my $tmp = shift @_;
+	return $tmp =~ tr/\n//;
+}
+
+sub main
+{
+	my $pattern = shift @ARGV;
+	if (length($grepcolor) > 0) {
+		$grepcolor = "\x1b\x5b${grepcolor}m";
+		$filecolor = "\x1b\x5b35m";
+		$coloncolor = "\x1b\x5b1;30m";
+		$linenocolor = "\x1b\x5b36m";
+		$stopcolor = "\x1b\x5b0m";
+	}
+	foreach my $file (@ARGV) {
+		&dofile($file, $pattern);
+	}
+}
+
+sub dofile
+{
+	my($file, $pattern) = @_;
+	local *FH;
+
+	open(FH, "< $file");
+	my @lines = <FH>;
+	close FH;
+	my $data = join("", @lines);
+	while ($data =~ m{$pattern}gs) {
+		my $mainofs   = $-[0];
+		my $postofs   = $+[0];
+		my $mainlen   = $postofs - $mainofs;
+		my $leadofs   = &goback(\$data, $mainofs);
+		my $endofs    = &gofwd(\$data, $postofs);
+		my $linestart = 1 + &nlcount(substr($data, 0, $mainofs));
+		my $lineend   = $linestart + &nlcount(substr($data, $mainofs, $mainlen));
+		print "$filecolor$file$stopcolor";
+		print "$coloncolor:$stopcolor";
+		print "$linenocolor$linestart$stopcolor";
+		print "$coloncolor→$stopcolor";
+		print "$linenocolor$lineend$stopcolor";
+		print "$coloncolor:$stopcolor";
+		print substr($data, $leadofs, $mainofs - $leadofs);
+		# because less -R does not support color across \n
+		my $main = substr($data, $mainofs, $mainlen);
+		$main =~ s{\n}{$stopcolor\n$grepcolor}g;
+		print $grepcolor, $main, $stopcolor;
+		print substr($data, $postofs, $endofs - $postofs);
+		print "\n";
+	}
+}
