@@ -46,6 +46,23 @@ static ssize_t dparse_digitname(std::list<seg> &ast, const char *sym, size_t idx
 	return ast.rbegin()->end;
 }
 
+static ssize_t dparse_qual_mf(std::list<seg> &ast, const char *sym, size_t idx)
+{
+	for (; strchr("KORV", sym[idx]) != nullptr; ++idx) {
+		if (sym[idx] == 'K')
+			ast.push_back({idx, idx + 1, "const qualifier for member function"});
+		else if (sym[idx] == 'O')
+			ast.push_back({idx, idx + 1, "uref qualifier for member function"});
+		else if (sym[idx] == 'R')
+			ast.push_back({idx, idx + 1, "ref qualifier for member function"});
+		else if (sym[idx] == 'O')
+			ast.push_back({idx, idx + 1, "volatile qualifier for member function"});
+		else if (sym[idx] == 'r')
+			ast.push_back({idx, idx + 1, "restrict qualifier for member function"});
+	}
+	return idx;
+}
+
 static ssize_t dparse_nspace(std::list<seg> &ast, const char *sym, size_t idx)
 {
 	ast.push_back({idx, idx, "nspace"});
@@ -53,8 +70,12 @@ static ssize_t dparse_nspace(std::list<seg> &ast, const char *sym, size_t idx)
 		return -1;
 	++idx;
 	auto &tl = *ast.rbegin();
+	int ret = dparse_qual_mf(tl.sub, sym, idx);
+	if (ret < 0)
+		return ret;
+	idx = ret;
 	while (isdigit(sym[idx])) {
-		int ret = dparse_digitname(tl.sub, sym, idx);
+		ret = dparse_digitname(tl.sub, sym, idx);
 		if (ret < 0)
 			return ret;
 		idx = ret;
