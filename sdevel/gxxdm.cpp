@@ -10,8 +10,10 @@
  *	For details, see the file named "LICENSE.GPL2".
  */
 #include <list>
+#include <sstream>
 #include <string>
-#include <stdio.h>
+#include <cctype>
+#include <cstdio>
 #include <libHX/string.h>
 
 struct seg {
@@ -87,6 +89,28 @@ static ssize_t dparse_nspace(std::list<seg> &ast, const char *sym, size_t idx)
 	return idx;
 }
 
+static ssize_t dparse_array(std::list<seg> &ast, const char *sym, size_t idx)
+{
+	if (sym[idx] != 'A')
+		return -1;
+	ast.push_back({idx, idx + 1, "array"});
+	auto &e_array = *ast.rbegin();
+	++idx;
+	e_array.sub.push_back({idx, idx, "array size"});
+	auto &e_asize = *e_array.sub.rbegin();
+	size_t arsize = 0;
+	for (; isdigit(sym[idx]); ++idx) {
+		arsize *= 10;
+		arsize += sym[idx] - '0';
+	}
+	e_asize.end = idx;
+	e_array.end = idx;
+	if (sym[idx] != '_')
+		return -1;
+	e_array.end = ++idx;
+	return dparse_type(e_array.sub, sym, idx);
+}
+
 static ssize_t dparse_functype(std::list<seg> &ast, const char *sym, size_t idx)
 {
 	ast.push_back({idx, idx, "return type"});
@@ -106,7 +130,6 @@ static ssize_t dparse_functype(std::list<seg> &ast, const char *sym, size_t idx)
 static ssize_t dparse_type(std::list<seg> &ast, const char *sym, size_t idx)
 {
 	if (sym[idx] == 'r') ast.push_back({idx, idx + 1, "restrict"});
-	else if (sym[idx] == 'F') ast.push_back({idx, idx + 1, "function"});
 	else if (sym[idx] == 'K') ast.push_back({idx, idx + 1, "const"});
 	else if (sym[idx] == 'P') ast.push_back({idx, idx + 1, "pointer to"});
 	else if (sym[idx] == 'R') ast.push_back({idx, idx + 1, "reference to"});
@@ -122,7 +145,15 @@ static ssize_t dparse_type(std::list<seg> &ast, const char *sym, size_t idx)
 		idx = ret;
 		return idx;
 	}
+	else if (sym[idx] == 'A') {
+		int ret = dparse_array(ast, sym, idx);
+		if (ret < 0)
+			return ret;
+		idx = ret;
+		return idx;
+	}
 	else if (sym[idx] == 'F') {
+		ast.push_back({idx, idx + 1, "function"});
 		auto &ptr = *ast.rbegin();
 		if (sym[idx+1] == '\0')
 			return -1;
