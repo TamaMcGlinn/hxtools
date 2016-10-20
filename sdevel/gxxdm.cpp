@@ -46,6 +46,26 @@ static ssize_t dparse_digitname(std::list<seg> &ast, const char *sym, size_t idx
 	return ast.rbegin()->end;
 }
 
+static ssize_t dparse_nspace(std::list<seg> &ast, const char *sym, size_t idx)
+{
+	ast.push_back({idx, idx, "nspace"});
+	if (sym[idx] != 'N')
+		return -1;
+	++idx;
+	auto &tl = *ast.rbegin();
+	while (isdigit(sym[idx])) {
+		int ret = dparse_digitname(tl.sub, sym, idx);
+		if (ret < 0)
+			return ret;
+		idx = ret;
+	}
+	tl.end = idx;
+	if (sym[idx] != 'E')
+		return -1;
+	tl.end = ++idx;
+	return idx;
+}
+
 static ssize_t dparse_functype(std::list<seg> &ast, const char *sym, size_t idx)
 {
 	ast.push_back({idx, idx, "return type"});
@@ -95,6 +115,13 @@ static ssize_t dparse_type(std::list<seg> &ast, const char *sym, size_t idx)
 	}
 	else if (isdigit(sym[idx])) {
 		int ret = dparse_digitname(ast, sym, idx);
+		if (ret < 0)
+			return ret;
+		idx = ret;
+		return idx;
+	}
+	else if (sym[idx] == 'N') {
+		int ret = dparse_nspace(ast, sym, idx);
 		if (ret < 0)
 			return ret;
 		idx = ret;
@@ -154,9 +181,9 @@ static ssize_t dparse_paramlist(std::list<seg> &ast, const char *sym, size_t idx
 static ssize_t dparse_template1(std::list<seg> &ast, const char *sym, size_t idx)
 {
 	ast.push_back({idx, idx, "template"});
-	auto &tl = *ast.rbegin();
 	if (sym[idx] != 'I')
 		return -1;
+	auto &tl = *ast.rbegin();
 	tl.sub.push_back({idx, idx + 1, "template parameter list start marker"});
 	++idx;
 	if (sym[idx] == '\0')
@@ -186,19 +213,26 @@ static ssize_t dparse_template1(std::list<seg> &ast, const char *sym, size_t idx
 
 static ssize_t dparse_z(std::list<seg> &ast, const char *sym, size_t idx)
 {
-	if (!isdigit(sym[idx]))
-		return 01;
-	int ret = dparse_digitname(ast, sym, idx);
-	if (ret < 0)
-		return ret;
-	idx = ret;
+	if (sym[idx] == 'N') {
+		int ret = dparse_nspace(ast, sym, idx);
+		if (ret < 0)
+			return ret;
+		idx = ret;
+	} else if (isdigit(sym[idx])) {
+		int ret = dparse_digitname(ast, sym, idx);
+		if (ret < 0)
+			return ret;
+		idx = ret;
+	} else {
+		return -1;
+	}
 	if (sym[idx] == 'I') {
-		ret = dparse_template1(ast, sym, idx);
+		int ret = dparse_template1(ast, sym, idx);
 		if (ret < 0)
 			return ret;
 		idx = ret;
 	} else if (sym[idx] != '\0') {
-		ret = dparse_paramlist(ast, sym, idx);
+		int ret = dparse_paramlist(ast, sym, idx);
 		if (ret < 0)
 			return ret;
 		idx = ret;
