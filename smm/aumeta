@@ -1,0 +1,98 @@
+#!/usr/bin/perl
+
+use Getopt::Long;
+use IPC::Open3;
+our $strip_video = 0;
+our %meta;
+&Getopt::Long::Configure(qw(bundling));
+&GetOptions(
+	"n" => \$strip_video,
+	"t=s" => \$meta{title},
+	"a=s" => \$meta{artist},
+	"l=s" => \$meta{album},
+	"G=s" => \$meta{genre},
+	"N=s" => \$meta{track},
+	"d=s" => \$meta{date},
+	"m=s" => \%meta,
+);
+&main();
+
+sub main
+{
+	foreach my $file (@ARGV) {
+		&moov_one_file($file);
+	}
+}
+
+sub moov_one_file
+{
+	my $input = shift @_;
+	local(*CIN, *COUT);
+	my @args = ("ffmpeg", "-i", $input, "-acodec", "copy");
+	push(@args, $strip_video ? "-vn" : ("-vcodec", "copy"));
+	foreach my $key (keys %meta) {
+		if (defined($meta{$key})) {
+			push(@args, "-metadata", "$key=$meta{$key}");
+		}
+	}
+
+	my $tmpfile = "~\$~$$.moov.mp4";
+	# must be in same filesystem for rename() to succeed, so don't use /tmp
+	my @targs = ("-moov_size", 4, "-y", $tmpfile);
+	print STDERR "*** Running ", join(" ", @args, @targs), "\n";
+	my $pid = open3(\*CIN, \*COUT, \*COUT, @args, @targs);
+	close CIN;
+
+	my $moov_size = 4 + &moov_get_extra(\*COUT);
+	waitpid($pid, 0);
+	my $status = $? >> 8;
+	close COUT;
+
+	# Run with exact moov_size
+	print "$input: moov_size=$moov_size\n";
+	my @targs = ("-moov_size", $moov_size, "-y", $tmpfile);
+	print STDERR "*** Running ", join(" ", @args, @targs), "\n";
+	$pid = open3(\*CIN, \*COUT, \*COUT,
+	       @args, "-moov_size", $moov_size, "-y", $tmpfile);
+	close CIN;
+	while (defined(my $line = <COUT>)) {
+	}
+	close COUT;
+	waitpid($pid, 0);
+	$status = $? >> 8;
+	if ($status != 0) {
+		print STDERR "$input: 2nd stage error\n";
+		return;
+	}
+
+	# Set filetimes to original
+	my @stat = stat($input);
+	if (!utime($stat[8], $stat[9], $tmpfile)) {
+		print STDERR "$input: could not set utimes on temporary file $tmpfile: $!\n";
+		return;
+	}
+	if (!rename($tmpfile, $input)) {
+		print STDERR "$input: could not move temporary file $tmpfile back: $!\n";
+		return;
+	}
+	return 1;
+}
+
+sub moov_get_extra
+{
+	local *FH = shift @_;
+	my $extra = 0;
+	my $seen = undef;
+
+	while (defined(my $line = <FH>)) {
+		if ($line =~ /reserved_moov_size is too small, needed (\d+) additional/) {
+			$seen = 1;
+			$extra = $1;
+			last;
+		}
+	}
+	if (!$seen) {
+		return undef;
+	}
+	return $extra;
+}

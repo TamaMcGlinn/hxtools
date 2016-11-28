@@ -44,3 +44,9 @@
 
 [grep]
 	patternType = perl
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	algorithm = histogram

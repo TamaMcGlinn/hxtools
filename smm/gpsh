@@ -169,7 +169,7 @@ sub filename_xmp
 {
 	my $ext = lc shift @_;
 
-	foreach my $t (qw(.it .s3m .xm .mod .xm2 .j2b)) {
+	foreach my $t (qw(.it .s3m .xm .mod .xm2 .j2b .psm)) {
 		if ($ext eq $t) {
 			return 1;
 		}
