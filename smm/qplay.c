@@ -136,6 +136,7 @@ static unsigned int parse_arg_m(const char *origptr)
 
 /**
  * parse_arg_n - play a note value
+ * (The values 0..85 are related to MIDI notes.)
  */
 static unsigned int parse_arg_n(const char *origptr)
 {
