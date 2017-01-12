@@ -3,7 +3,6 @@ sadmin/fd0ssh			LGPL-2.1/LGPL-3.0
 sadmin/filenameconv		WTFPL-2.0+
 sadmin/logontime		WTFPL-2.0+
 sadmin/netload			WTFPL-2.0+
-sadmin/newns			WTFPL-2.0+
 sadmin/ofl			WTFPL-2.0+
 sadmin/pmap_dirty		WTFPL-2.0+
 sadmin/printcaps		WTFPL-2.0+
