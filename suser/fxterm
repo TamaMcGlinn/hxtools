@@ -1,28 +1,19 @@
 #!/bin/bash
 #
-#	fxterm - work around strange xterm font handling
-#	Requires that the same font is available with and without _b suffix.
+#	fxterm - VGA-ish xterm launcher
 #
-#	Usage examples.
-#	Use tosh.pcf & tosh_b.pcf with CJK input support:
-#		fxterm -f tosh -j -- [other xterm options]
+#	To use tosh.pcf & tosh_b.pcf:
+#		fxterm -f tosh
 #	Just fixup my colors:
-#		fxterm -- [xterm options]
 #		fxterm -fa "DejaVu Sans Mono:size=32"
 #	"--" terminates processing fxterm options, as do any unrecognized
-#	option, so you may drop "--" in certain circumstances.
+#	option, so you may drop "--" in most circumstances.
 
-export GTK_IM_MODULE="ibus";
-export QT_IM_MODULE="ibus";
 while [[ "$#" -gt 0 ]]; do
 	case "$1" in
 	(-f)
 		font="$2";
 		shift 2;
-		;;
-	(-j)
-		export XMODIFIERS="@im=ibus";
-		shift 1;
 		;;
 	(--)
 		shift 1;
