@@ -16,53 +16,57 @@
 #include <unistd.h>
 #define BLOCKSIZE 4096
 
+static void dofile(const char *file)
+{
+	struct stat sb;
+	ssize_t ret;
+	char buffer[BLOCKSIZE];
+	int in, out;
+
+	if ((in = open(file, O_RDONLY)) < 0) {
+		fprintf(stderr, "Could not open %s: %s\n",
+		        file, strerror(errno));
+		return;
+	}
+	if (fstat(in, &sb) < 0) {
+		fprintf(stderr, "Could not stat %s: %s\n",
+		        file, strerror(errno));
+		return;
+	}
+	if (unlink(file) < 0) {
+		fprintf(stderr, "Could not unlink %s: %s\n",
+		        file, strerror(errno));
+		return;
+	}
+	if ((out = open(file, O_WRONLY | O_TRUNC | O_CREAT,
+	    sb.st_mode)) < 0) {
+		fprintf(stderr, "Could not recreate/open file %s: %s\n",
+		        file, strerror(errno));
+		fgets(buffer, 4, stdin);
+		return;
+	}
+
+	printf("* %s\n", file);
+	fchown(out, sb.st_uid, sb.st_gid);
+	fchmod(out, sb.st_mode);
+	while ((ret = read(in, buffer, BLOCKSIZE)) > 0)
+		if (write(out, buffer, ret) < 0) {
+			fprintf(stderr, "Error during write to %s: "
+			        "%s\n", file, strerror(errno));
+			break;
+		}
+
+	if (ret < 0)
+		fprintf(stderr, "Error during read on %s: %s\n",
+		        file, strerror(errno));
+	close(in);
+	close(out);
+}
+
 int main(int argc, const char **argv)
 {
 	++argv;
-	for (; --argc > 0 && *argv != NULL; ++argv) {
-		struct stat sb;
-		ssize_t ret;
-		char buffer[BLOCKSIZE];
-		int in, out;
-
-		if ((in = open(*argv, O_RDONLY)) < 0) {
-			fprintf(stderr, "Could not open %s: %s\n",
-			        *argv, strerror(errno));
-			continue;
-		}
-		if (fstat(in, &sb) < 0) {
-			fprintf(stderr, "Could not stat %s: %s\n",
-			        *argv, strerror(errno));
-			continue;
-		}
-		if (unlink(*argv) < 0) {
-			fprintf(stderr, "Could not unlink %s: %s\n",
-			        *argv, strerror(errno));
-			continue;
-		}
-		if ((out = open(*argv, O_WRONLY | O_TRUNC | O_CREAT,
-		    sb.st_mode)) < 0) {
-			fprintf(stderr, "Could not recreate/open file %s: %s\n",
-			        *argv, strerror(errno));
-			fgets(buffer, 4, stdin);
-			continue;
-		}
-
-		printf("* %s\n", *argv);
-		fchown(out, sb.st_uid, sb.st_gid);
-		fchmod(out, sb.st_mode);
-		while ((ret = read(in, buffer, BLOCKSIZE)) > 0)
-			if (write(out, buffer, ret) < 0) {
-				fprintf(stderr, "Error during write() to %s: "
-				        "%s\n", *argv, strerror(errno));
-				break;
-			}
-
-		if (ret < 0)
-			fprintf(stderr, "Error during read() on %s: %s\n",
-			        *argv, strerror(errno));
-		close(in);
-		close(out);
-	}
+	for (; --argc > 0 && *argv != NULL; ++argv)
+		dofile(*argv);
 	return EXIT_SUCCESS;
 }
