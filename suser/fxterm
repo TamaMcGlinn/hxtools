@@ -2,34 +2,8 @@
 #
 #	fxterm - VGA-ish xterm launcher
 #
-#	To use tosh.pcf & tosh_b.pcf:
-#		fxterm -f tosh
-#	Just fixup my colors:
-#		fxterm -fa "DejaVu Sans Mono:size=32"
-#	"--" terminates processing fxterm options, as do any unrecognized
-#	option, so you may drop "--" in most circumstances.
-
-while [[ "$#" -gt 0 ]]; do
-	case "$1" in
-	(-f)
-		font="$2";
-		shift 2;
-		;;
-	(--)
-		shift 1;
-		break;
-		;;
-	(*)
-		break;
-		;;
-	esac;
-done;
-
-if [[ -n "$font" ]]; then
-	opts="-fn $font -fb $font";
-fi;
-
 if [[ ! -e /usr/share/X11/app-defaults/XTerm.jng ]]; then
+	# existence of file means the system xterm is already patched
 	par=(
 	-xrm '*VT100*loginShell: true'
 	-xrm '*VT100*geometry: 80x25'
@@ -67,4 +41,4 @@ if [[ ! -e /usr/share/X11/app-defaults/XTerm.jng ]]; then
 	-xrm '*VT100*colorUL: #60AAAA'
 	);
 fi;
-exec xterm "${par[@]}" $opts "$@";
+exec xterm "${par[@]}" "$@"
