@@ -42,6 +42,8 @@ struct kps_proc_data {
 	bool sublevel;
 };
 
+static bool kps_tty;
+
 static void kps_read_cmdline(struct kps_proc_data *p, int fd)
 {
 	ssize_t ret;
@@ -50,10 +52,9 @@ static void kps_read_cmdline(struct kps_proc_data *p, int fd)
 	ret = read(fd, buf, sizeof(buf));
 	if (ret > 0) {
 		p->cmdline = HXmc_meminit(buf, ret);
-		for (--ret; ret >= 0; --ret) {
+		for (--ret; ret >= 0; --ret)
 			if (p->cmdline[ret] == '\0')
 				p->cmdline[ret] = ' ';
-		}
 	}
 	close(fd);
 }
@@ -231,7 +232,7 @@ static inline void kps_color_vine(void)
 	static int b;
 	if (b == 0)
 		b = (rand() % 3) + 1;
-	if (isatty(STDOUT_FILENO)) {
+	if (kps_tty) {
 		if (b == 1)
 			printf("\e[32m");
 		else if (b == 2)
@@ -243,7 +244,7 @@ static inline void kps_color_vine(void)
 
 static inline void kps_color_restore(void)
 {
-	if (isatty(STDOUT_FILENO))
+	if (kps_tty)
 		printf("\e[0m");
 }
 
@@ -345,6 +346,7 @@ int main(int argc, const char **argv)
 		fprintf(stderr, "HX_init: %s\n", strerror(-ret));
 		abort();
 	}
+	kps_tty = isatty(STDOUT_FILENO);
 	tree = kps_proc_init();
 	kps_tree_show(tree);
 	HXmap_free(tree);
