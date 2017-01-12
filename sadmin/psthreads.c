@@ -28,9 +28,15 @@ enum pstat_fields {
 	STAT_CGTIME, __STAT_NFIELDS,
 };
 
+enum xcolor {
+	C_THREAD  = 32,
+	C_PROCESS = 33,
+};
+
 struct kps_proc_data {
 	struct HXlist_head anchor;
-	struct HXlist_head children;
+	struct HXlist_head thread_children;
+	struct HXlist_head process_children;
 
 	hxmc_t *cmdline;
 	int cmdlen;
@@ -131,7 +137,8 @@ static struct kps_proc_data *kps_proc_read_one(unsigned int pid)
 	if ((task = calloc(1, sizeof(*task))) == NULL)
 		abort();
 	HXlist_init(&task->anchor);
-	HXlist_init(&task->children);
+	HXlist_init(&task->thread_children);
+	HXlist_init(&task->process_children);
 	task->cmdlen = 0;
 
 	snprintf(buf, sizeof(buf), "/proc/%u/cmdline", pid);
@@ -186,17 +193,19 @@ static void kps_proc_read(struct HXmap *tree)
 			if (task == NULL)
 				abort();
 
-			if (task->pid != task->tgid)
+			if (task->pid != task->tgid) {
 				parent = HXmap_get(tree, reinterpret_cast(void *,
 				         static_cast(long, task->tgid)));
-			else if (task->ppid > 1)
+				if (parent != NULL)
+					HXlist_add_tail(&parent->thread_children, &task->anchor);
+			} else if (task->ppid > 1) {
 				parent = HXmap_get(tree, reinterpret_cast(void *,
 				         static_cast(long, task->ppid)));
-
-			if (parent != NULL) {
-				HXlist_add_tail(&parent->children, &task->anchor);
-				task->sublevel = true;
+				if (parent != NULL)
+					HXlist_add_tail(&parent->process_children, &task->anchor);
 			}
+			if (parent != NULL)
+				task->sublevel = true;
 
 			HXmap_add(tree, reinterpret_cast(void *,
 				static_cast(long, tid)), task);
@@ -227,19 +236,10 @@ static struct HXmap *kps_proc_init(void)
 	return tree;
 }
 
-static inline void kps_color_vine(void)
+static inline void kps_color_vine(unsigned int color)
 {
-	static int b;
-	if (b == 0)
-		b = (rand() % 3) + 1;
-	if (kps_tty) {
-		if (b == 1)
-			printf("\e[32m");
-		else if (b == 2)
-			printf("\e[33m");
-		else if (b == 3)
-			printf("\e[31m");
-	}
+	if (kps_tty)
+		printf("\e[%dm", color);
 }
 
 static inline void kps_color_restore(void)
@@ -258,16 +258,16 @@ static inline void kps_graph_nothing(void)
 	printf("     ");
 }
 
-static inline void kps_graph_tleaf(void)
+static inline void kps_graph_tleaf(enum xcolor color)
 {
-	kps_color_vine();
+	kps_color_vine(color);
 	printf(" └─ ");
 	kps_color_restore();
 }
 
-static inline void kps_graph_leaf(void)
+static inline void kps_graph_leaf(enum xcolor color)
 {
-	kps_color_vine();
+	kps_color_vine(color);
 	printf(" ├─ ");
 	kps_color_restore();
 }
@@ -283,35 +283,46 @@ static inline void kps_common_fields(const struct kps_proc_data *task)
 	printf("%5u ", task->pid);
 }
 
-static void kps_task_show(const struct kps_proc_data *parent,
-    unsigned int depth, hxmc_t **bar_array)
+static void kps_task_show(const struct kps_proc_data *, unsigned int, hxmc_t **);
+
+static void kps_task_show_group(const struct HXlist_head *children,
+    unsigned int depth, hxmc_t **bar_array, enum xcolor color, bool more_leaves)
 {
 	const struct kps_proc_data *task;
 	unsigned int i;
 
-	HXlist_for_each_entry(task, &parent->children, anchor) {
+	HXlist_for_each_entry(task, children, anchor) {
 		kps_common_fields(task);
-		if (depth != 0)
-			kps_color_vine();
-		for (i = 0; i < depth; ++i)
-			if (HXbitmap_test(*bar_array, i))
-				kps_graph_vine();
-			else
+		for (i = 0; i < depth; ++i) {
+			if (bar_array[0][i] == '\0') {
 				kps_graph_nothing();
-		if (depth != 0)
+				continue;
+			}
+			kps_color_vine(bar_array[0][i]);
+			kps_graph_vine();
 			kps_color_restore();
-		HXmc_setlen(bar_array, HXbitmap_size(*bar_array, depth + 1));
-		if (task->anchor.next == &parent->children) {
-			HXbitmap_clear(*bar_array, depth);
-			kps_graph_tleaf();
+		}
+		HXmc_setlen(bar_array, depth + 1);
+		if (task->anchor.next != children || more_leaves) {
+			bar_array[0][depth] = color;
+			kps_graph_leaf(color);
 			printf("%s\n", task->cmdline);
 		} else {
-			HXbitmap_set(*bar_array, depth);
-			kps_graph_leaf();
+			bar_array[0][depth] = '\0';
+			kps_graph_tleaf(color);
 			printf("%s\n", task->cmdline);
 		}
 		kps_task_show(task, depth + 1, bar_array);
 	}
+}
+
+static void kps_task_show(const struct kps_proc_data *parent,
+    unsigned int depth, hxmc_t **bar_array)
+{
+	kps_task_show_group(&parent->thread_children, depth, bar_array,
+		C_THREAD, !HXlist_empty(&parent->process_children));
+	kps_task_show_group(&parent->process_children, depth, bar_array,
+		C_PROCESS, false);
 }
 
 static void kps_tree_show(struct HXmap *tree)
@@ -325,10 +336,12 @@ static void kps_tree_show(struct HXmap *tree)
 		abort();
 
 	printf("USER.... ...PID COMMAND\n");
+	/* iterator over all tasks */
 	while ((node = HXmap_traverse(trav)) != NULL) {
 		const struct kps_proc_data *task = node->data;
 
 		if (task->sublevel)
+			/* this is not a toplevel task */
 			continue;
 		kps_common_fields(task);
 		printf("%s\n", task->cmdline);
