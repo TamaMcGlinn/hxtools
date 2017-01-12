@@ -7,7 +7,9 @@ declone \(em break hardlinks
 \fBdeclone\fP \fIfile\fP...
 .SH Description
 .PP
-Breaks a hard link as created by \fBln\fP(1). The operation may take a while.
+Breaks a hard link as created by \fBln\fP(1) or \fBhardlink\fP(1).
+This program makes a copy of the file's contents, the ownership information
+and standard permissions. It does not copy ACLs or SELinux contexts.
 .SH Example
 .PP
 .nf
