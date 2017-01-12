@@ -32,9 +32,6 @@ dist_man_MANS = \
 	mod2ogg.1 \
 	netload.8 \
 	ofl.1 \
-	omixer.1 \
-	oplay.1 \
-	orec.1 \
 	peicon.1 \
 	pesubst.1 \
 	qplay.1 \

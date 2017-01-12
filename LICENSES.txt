@@ -46,7 +46,6 @@ smm/gpsh			WTFPL-2.0+
 smm/hcdplay			WTFPL-2.0+
 smm/mod2ogg			WTFPL-2.0+
 smm/mpg2ogg			WTFPL-2.0+
-smm/oplay			GPL-2.0+
 smm/pcmdiff			WTFPL-2.0+
 smm/qplay			GPL-2.0+
 smm/ssa2srt			WTFPL-2.0+
