@@ -11,7 +11,6 @@ dist_bin_SCRIPTS = \
 	checkbrack \
 	cwdiff \
 	git-author-stat \
-	git-export-patch \
 	git-forest \
 	git-track \
 	man2html \

@@ -19,7 +19,6 @@ dist_man_MANS = \
 	fnt2bdf.1 \
 	fxterm.1 \
 	git-author-stat.1 \
-	git-export-patch.1 \
 	git-forest.1 \
 	git-revert-stats.1 \
 	git-track.1 \

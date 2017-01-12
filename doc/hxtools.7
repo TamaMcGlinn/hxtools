@@ -156,6 +156,11 @@ display
 Some helpers have been recently removed because they have found better
 equivalents.
 .PP
+\fBgit\-export\-patch\fP. Replaced by `git format\-patch \-M \-M` (can be
+chained to mail through `git send\-email ... \-\-format-patch \-M \-M`). The
+TortoiseSVN hack that git\-export\-patch offered was dropped without
+replacement.
+.PP
 \fBomixer\fP. Replaced by the utility "amixer".
 .PP
 \fBoplay\fP. Replaced by the utility "aplay".
