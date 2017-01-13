@@ -44,22 +44,14 @@ understand KernelDoc
 .PP
 \fBfnt2bdf\fP(1) \(en convert VGA raw fonts to X11 BDF
 .PP
-\fBfxterm\fP(1) \(en start xterm with sane settings
+\fBfxterm\fP(1) \(en start xterm with VGA color palette
 .PP
 \fBgit\-author\-stat\fP(1) \(en show commit author statistics of a git repository
 .PP
 \fBgit\-blame\-stat\fP(1) \(en show per-line author statistics of a git
 repository
 .PP
-\fBgit\-export\-patch\fP(1) \(en produce perfect patch from git comits for mail
-submission
-.PP
 \fBgit\-forest\fP(1) \(en display the commit history forest
-.PP
-\fBgit\-lemon\fP(1) \(en don't just pick cherries, but take it all (cherry-pick a
-commit range)
-.PP
-\fBgit\-new\-root\fP(1) \(en start a new branch with a new history root
 .PP
 \fBgit\-revert\-stats\fP(1) \(en show reverting statistics of a git repository
 .PP
@@ -158,6 +150,8 @@ equivalents.
 chained to mail through `git send\-email ... \-\-format-patch \-M \-M`). The
 TortoiseSVN hack that git\-export\-patch offered was dropped without
 replacement.
+.PP
+\fBgit\-new\-root\fP. Replaced by `git checkout --orphan; rm -Rf`.
 .PP
 \fBomixer\fP. Replaced by the utility "amixer".
 .PP
