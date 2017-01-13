@@ -42,7 +42,7 @@ smm/extract_q2pak		WTFPL-2.0+
 smm/fnt2bdf			GPL-2.0+
 smm/gpsh			WTFPL-2.0+
 smm/hcdplay			WTFPL-2.0+
-smm/mod2ogg			WTFPL-2.0+
+smm/mod2opus			WTFPL-2.0+
 smm/mpg2ogg			WTFPL-2.0+
 smm/pcmdiff			WTFPL-2.0+
 smm/qplay			GPL-2.0+

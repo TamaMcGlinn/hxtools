@@ -28,7 +28,7 @@ dist_man_MANS = \
 	logontime.8 \
 	mailsplit.1 \
 	man2html.1 \
-	mod2ogg.1 \
+	mod2opus.1 \
 	netload.8 \
 	ofl.1 \
 	peicon.1 \
