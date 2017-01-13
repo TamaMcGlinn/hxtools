@@ -9,8 +9,7 @@ if HAVE_XBRZ
 bin_PROGRAMS += cltxscale
 endif
 
-dist_bin_SCRIPTS = \
-	aumeta googtts gpsh mkvappend ssa2srt
+dist_bin_SCRIPTS = aumeta gpsh mkvappend ssa2srt
 
 pkglibexec_PROGRAMS = \
 	bsvplay \
