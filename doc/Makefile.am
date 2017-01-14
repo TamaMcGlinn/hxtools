@@ -31,6 +31,7 @@ dist_man_MANS = \
 	mod2opus.1 \
 	netload.8 \
 	ofl.1 \
+	pegrep.1 \
 	peicon.1 \
 	pesubst.1 \
 	qplay.1 \

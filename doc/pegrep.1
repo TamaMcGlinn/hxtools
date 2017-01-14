@@ -1,0 +1,20 @@
+.TH pegrep 1 "2017-01-13" "hxtools" "hxtools"
+.SH Name
+.PP
+pegrep \(em multi-line perl-regexp grep
+.SH Syntax
+.PP
+\fBpegrep\fP \fIpattern\fP \fIfile\fP...
+.SH Description
+.PP
+Greps in a set of files for a given Perl regular expression pattern, spanning
+multiple lines, and shows the result with one line before and after for
+context.
+.SH Examples
+.PP
+.nf
+	pegrep '}[\\s\\n]*else[\\s\\n]*{' $(find . -type f -name "*.cpp")
+.fi
+.SH See also
+.PP
+\fBhxtools\fP(7), \fBpesubst\fP(1)
