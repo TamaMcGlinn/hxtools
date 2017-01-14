@@ -1,6 +1,8 @@
 sadmin/clock_info		WTFPL-2.0+
 sadmin/fd0ssh			LGPL-2.1/LGPL-3.0
 sadmin/filenameconv		WTFPL-2.0+
+sadmin/ldif-duplicate-attrs	WTFPL-2.0+
+sadmin/ldif-leading-spaces	WTFPL-2.0+
 sadmin/logontime		WTFPL-2.0+
 sadmin/netload			WTFPL-2.0+
 sadmin/ofl			WTFPL-2.0+
@@ -26,6 +28,7 @@ sdevel/git-blame-stats		WTFPL-2.0+
 sdevel/git-forest		GPL-2.0+
 sdevel/git-revert-stats		WTFPL-2.0+
 sdevel/git-track		WTFPL-2.0+
+sdevel/gxxdm			GPL-2.0+
 sdevel/man2html			WTFPL-2.0+
 sdevel/paddrspacesize		WTFPL-2.0+
 sdevel/peicon			GPL-2.0+
@@ -34,6 +37,7 @@ sdevel/sourcefuncsize		GPL-2.0+
 sdevel/spec-beautifier		GPL-2.0+
 smath/graph-fanout		GPL-2.0+
 smath/graph-lchain		GPL-2.0+
+smm/aumeta			WTFPL-2.0+
 smm/bsvplay			GPL-2.0+
 smm/extract_d3pkg		WTFPL-2.0+
 smm/extract_dxhog		WTFPL-2.0+
@@ -42,6 +46,7 @@ smm/extract_q2pak		WTFPL-2.0+
 smm/fnt2bdf			GPL-2.0+
 smm/gpsh			WTFPL-2.0+
 smm/hcdplay			WTFPL-2.0+
+smm/mkvappend			WTFPL-2.0+
 smm/mod2opus			WTFPL-2.0+
 smm/mpg2ogg			WTFPL-2.0+
 smm/pcmdiff			WTFPL-2.0+
@@ -53,6 +58,7 @@ suser/437cipher			WTFPL-2.0+
 suser/declone			WTFPL-2.0+
 suser/fxterm			WTFPL-2.0+
 suser/mailsplit			WTFPL-2.0+
+suser/pegrep			WTFPL-2.0+
 suser/pesubst			WTFPL-2.0+
 suser/qpdecoder			WTFPL-2.0+
 suser/qtar			WTFPL-2.0+

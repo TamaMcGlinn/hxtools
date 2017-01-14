@@ -1,5 +1,12 @@
 #!/usr/bin/perl
-
+#
+#	Move seek index and add metadata
+#	written by Jan Engelhardt, 2014–2015
+#
+#	This program is free software; you can redistribute it and/or
+#	modify it under the terms of the WTF Public License version 2 or
+#	(at your option) any later version.
+#
 use Getopt::Long;
 use IPC::Open3;
 our $strip_video = 0;
