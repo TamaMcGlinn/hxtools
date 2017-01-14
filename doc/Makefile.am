@@ -1,6 +1,7 @@
 # -*- Makefile -*-
 
 dist_man_MANS = \
+	aumeta.1 \
 	bin2c.1 \
 	bsvplay.1 \
 	cctypeinfo.1 \

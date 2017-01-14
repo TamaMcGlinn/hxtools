@@ -1,0 +1,45 @@
+.TH aumeta 1 "2017-01-13" "hxtools" "hxtools"
+.SH Name
+.PP
+aumeta \(em move seek index and adjust metadata of audio files
+.SH Syntax
+.PP
+aumeta [\fB\-n\fP] [\fB\-G\fP \fIgenre\fP] [\fB\-N\fP \fItracknum\fP]
+[\fB\-a\fP \fIartist\fP] [\fB\-d\fP \fIiso8601date\fP] [\fB\-l\fP \fIalbum\fP]
+[\fB\-m\fP \fIkey\fP\fB=\fP\fIvalue\fP] [\fB\-t\fP \fItitle\fP]
+.SH Description
+.PP
+aumeta will utilize ffmpeg to reorder the seek index to the front to facilitate
+streaming, and, optionally, rewrite metadata in audio files.
+.PP
+The tool has only been tested with MPEG-4 containers and is probably not going
+to work for other formats.
+.SH Options
+.PP
+.TP
+\fB\-G\fP \fIstring\fP
+Set the genre in the metadata section to the given value.
+.TP
+\fB\-N\fP \fInumber\fP
+Set the track number in the metadata.
+.TP
+\fB\-a\fP \fIstring\fP
+Set the artist name in the metadata.
+.TP
+\fB\-d\fP \fIyyyy\-mm\-dd\fP
+Set the datestamp in the metadata.
+.TP
+\fB\-l\fP \fIstring\fP
+Set the album name in the metadata.
+.TP
+\fB\-m\fP \fIkey\fP\fB=\fP\fIvalue\fP
+Set an arbitrary key/value pair in the metadata.
+.TP
+\fB\-n\fP
+Remove any video content found in the file.
+.TP
+\fB\-t\fP \fIstring\fP
+Set the track title in the metadata.
+.SH See also
+.PP
+\fBhxtools\fP(7), \fBffmpeg\fP(1)
