@@ -325,13 +325,17 @@ static void sy_display_size(struct sy_block *sib)
 	conn = xcb_connect(NULL, NULL);
 	if (conn == NULL)
 		return;
+	if (xcb_connection_has_error(conn))
+		goto out;
 	setup = xcb_get_setup(conn);
 	if (setup == NULL)
 		goto out;
 	iter = xcb_setup_roots_iterator(setup);
 	screen = iter.data;
-	sib->display_width  = screen->width_in_pixels;
-	sib->display_height = screen->height_in_pixels;
+	if (screen != NULL) {
+		sib->display_width  = screen->width_in_pixels;
+		sib->display_height = screen->height_in_pixels;
+	}
  out:
 	xcb_disconnect(conn);
 #endif
