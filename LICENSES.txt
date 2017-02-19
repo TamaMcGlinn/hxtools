@@ -4,7 +4,7 @@ sadmin/filenameconv		WTFPL-2.0+
 sadmin/ldif-duplicate-attrs	WTFPL-2.0+
 sadmin/ldif-leading-spaces	WTFPL-2.0+
 sadmin/logontime		WTFPL-2.0+
-sadmin/netload			WTFPL-2.0+
+sadmin/hxnetload		WTFPL-2.0+
 sadmin/ofl			WTFPL-2.0+
 sadmin/pmap_dirty		WTFPL-2.0+
 sadmin/printcaps		WTFPL-2.0+

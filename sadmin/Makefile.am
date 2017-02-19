@@ -25,7 +25,7 @@ dist_pkglibexec_SCRIPTS = \
 	logontime \
 	ldif-duplicate-attrs \
 	ldif-leading-spaces \
-	netload \
+	hxnetload \
 	recursive_lower \
 	vcsaview
 

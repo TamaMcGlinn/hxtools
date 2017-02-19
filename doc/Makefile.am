@@ -30,7 +30,7 @@ dist_man_MANS = \
 	mailsplit.1 \
 	man2html.1 \
 	mod2opus.1 \
-	netload.8 \
+	hxnetload.8 \
 	ofl.1 \
 	pegrep.1 \
 	peicon.1 \
