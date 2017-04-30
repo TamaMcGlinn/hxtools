@@ -21,7 +21,7 @@ unimapdir        = ${kbddatadir}/unimaps
 dist_unimap_DATA = cp437AB.uni
 
 EXTRA_DIST = ahnv.bdf mux.bdf rhx.bdf tosh.bdf
-BDFTOPCF = ${AM_V_GEN} bdftopcf <"$<" | gzip -9c >"$@"
+BDFTOPCF = ${AM_V_GEN} bdftopcf <"$<" | gzip -9cn >"$@"
 
 ahnv.pcf.gz: ahnv.bdf
 	${BDFTOPCF}
