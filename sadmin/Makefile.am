@@ -17,9 +17,6 @@ pkglibexec_PROGRAMS = \
 	proc_stat_parse \
 	psthreads \
 	utmp_register
-if HAVE_LIBCAP
-pkglibexec_PROGRAMS += printcaps
-endif
 
 dist_pkglibexec_SCRIPTS = \
 	logontime \
@@ -39,7 +36,6 @@ dist_noinst_SCRIPTS = \
 
 clock_info_LDADD       = -lrt
 ofl_LDADD              = ${libHX_LIBS}
-printcaps_LDADD        = ${libHX_LIBS} ${libcap_LIBS}
 proc_iomem_count_LDADD = ${libHX_LIBS}
 proc_stat_parse_LDADD  = ${libHX_LIBS}
 psthreads_LDADD        = ${libHX_LIBS}

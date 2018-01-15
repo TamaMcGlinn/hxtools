@@ -38,7 +38,6 @@ dist_man_MANS = \
 	qplay.1 \
 	qtar.1 \
 	pcmdiff.1 \
-	printcaps.8 \
 	psthreads.1 \
 	recursive_lower.1 \
 	rezip.1 \

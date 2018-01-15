@@ -7,7 +7,6 @@ sadmin/logontime		WTFPL-2.0+
 sadmin/hxnetload		WTFPL-2.0+
 sadmin/ofl			WTFPL-2.0+
 sadmin/pmap_dirty		WTFPL-2.0+
-sadmin/printcaps		WTFPL-2.0+
 sadmin/proc_iomem_count		WTFPL-2.0+
 sadmin/proc_stat_parse		WTFPL-2.0+
 sadmin/psthreads		GPL-2.0+
