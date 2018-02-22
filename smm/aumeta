@@ -34,6 +34,7 @@ sub main
 sub moov_one_file
 {
 	my $input = shift @_;
+	my($ext) = ($input =~ m{(\.[^\.]+)$});
 	local(*CIN, *COUT);
 	my @args = ("ffmpeg", "-i", $input, "-acodec", "copy");
 	push(@args, $strip_video ? "-vn" : ("-vcodec", "copy"));
@@ -43,7 +44,7 @@ sub moov_one_file
 		}
 	}
 
-	my $tmpfile = "~\$~$$.moov.mp4";
+	my $tmpfile = "~\$~$$.moov$ext";
 	# must be in same filesystem for rename() to succeed, so don't use /tmp
 	my @targs = ("-moov_size", 4, "-y", $tmpfile);
 	print STDERR "*** Running ", join(" ", @args, @targs), "\n";
