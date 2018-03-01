@@ -11,6 +11,7 @@
 #
 
 use Data::Dumper;
+use lib qw(.);
 use File::Find::Rule;
 use Getopt::Long;
 use strict;
