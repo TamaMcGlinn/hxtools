@@ -114,7 +114,7 @@ static int zerossh_setup(int argc, const char **argv)
 
 	/*
 	 * Making the writer a subprocess makes for a very compact memory
-	 * usage, allows to use no special signal setup, and even both
+	 * usage, allows one to use no special signal setup, and even both
 	 * interactive and non-interactive work as expected, that is, if
 	 * mount.fuse detaches, so does the pipe writer with it.
 	 */

@@ -303,7 +303,7 @@ static void parse_str(const char *ptr)
 				ptr += parse_arg_x(ptr);
 				break;
 			default:
-				fprintf(stderr, "** Unkown command ignored: %c\n", *ptr);
+				fprintf(stderr, "** Unknown command ignored: %c\n", *ptr);
 				break;
 		}
 	}
