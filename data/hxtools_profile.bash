@@ -50,7 +50,7 @@ hxtools_profile_main ()
 		[[ "$?" -ne 2 ]] && alias grep="command grep --color=auto";
 		pcregrep --color=auto x /dev/null &>/dev/null;
 		[[ "$?" -ne 2 ]] && alias pcregrep="command pcregrep --color=auto";
-		export GREP_COLOR="36;7";
+		export GREP_COLORS="mt=36;7:se=1;31:ln=36"
 		export PCREGREP_COLOR="36;7";
 	fi;
 
