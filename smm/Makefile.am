@@ -38,6 +38,7 @@ hcdplay_LDADD   = ${libHX_LIBS}
 pcmdiff_LDADD   = ${libHX_LIBS}
 qplay_SOURCES   = qplay.c pcspkr_pcm.c
 qplay_LDADD     = ${libHX_LIBS} -lm
+vfontas_SOURCES = vfontas.cpp vfalib.cpp vfalib.hpp
 vfontas_LDADD   = ${libHX_LIBS}
 
 EXTRA_DIST = pcspkr.h
