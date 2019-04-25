@@ -42,7 +42,6 @@ smm/extract_d3pkg		WTFPL-2.0+
 smm/extract_dxhog		WTFPL-2.0+
 smm/extract_f3pod		WTFPL-2.0+
 smm/extract_q2pak		WTFPL-2.0+
-smm/fnt2bdf			GPL-2.0+
 smm/gpsh			WTFPL-2.0+
 smm/hcdplay			WTFPL-2.0+
 smm/mkvappend			WTFPL-2.0+

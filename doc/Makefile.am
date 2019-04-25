@@ -17,7 +17,6 @@ dist_man_MANS = \
 	extract_f3pod.1 \
 	extract_qupak.1 \
 	fd0ssh.1 \
-	fnt2bdf.1 \
 	fxterm.1 \
 	git-author-stat.1 \
 	git-forest.1 \

@@ -23,7 +23,6 @@ dist_pkglibexec_SCRIPTS  = \
 	extract_dxhog \
 	extract_f3pod \
 	extract_qupak \
-	fnt2bdf \
 	mod2opus \
 	shared.pm \
 	stxdb

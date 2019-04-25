@@ -42,8 +42,6 @@ understand KernelDoc
 .PP
 \fBfilenameconv\fP(1) \(en convert file name encoding
 .PP
-\fBfnt2bdf\fP(1) \(en convert VGA raw fonts to X11 BDF
-.PP
 \fBfxterm\fP(1) \(en start xterm with VGA color palette
 .PP
 \fBgit\-author\-stat\fP(1) \(en show commit author statistics of a git repository
@@ -150,6 +148,8 @@ equivalents.
 chained to mail through `git send\-email ... \-\-format-patch \-M \-M`). The
 TortoiseSVN hack that git\-export\-patch offered was dropped without
 replacement.
+.PP
+\fBfnt2bdf\fP. Replaced by `vfontas -loadfnt ... -savebdf ...`.
 .PP
 \fBgit\-new\-root\fP. Replaced by `git checkout --orphan; rm -Rf`.
 .PP
