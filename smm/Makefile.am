@@ -4,7 +4,7 @@ AM_CPPFLAGS = ${regular_CPPFLAGS} ${libHX_CFLAGS}
 AM_CFLAGS   = ${regular_CFLAGS}
 AM_CXXFLAGS = ${regular_CXXFLAGS}
 
-bin_PROGRAMS = clt2bdf hcdplay
+bin_PROGRAMS = hcdplay
 
 dist_bin_SCRIPTS = aumeta gpsh mkvappend ssa2srt
 
@@ -25,7 +25,6 @@ dist_pkglibexec_SCRIPTS  = \
 
 bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm
-clt2bdf_LDADD   = ${libHX_LIBS}
 hcdplay_LDADD   = ${libHX_LIBS}
 pcmdiff_LDADD   = ${libHX_LIBS}
 qplay_SOURCES   = qplay.c pcspkr_pcm.c
