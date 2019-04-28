@@ -8,7 +8,6 @@ dist_man_MANS = \
 	checkbrack.1 \
 	clock_info.1 \
 	clt2bdf.1 \
-	clt2pbm.1 \
 	cwdiff.1 \
 	declone.1 \
 	diff2php.1 \

@@ -13,7 +13,6 @@ dist_bin_SCRIPTS = aumeta gpsh mkvappend ssa2srt
 
 pkglibexec_PROGRAMS = \
 	bsvplay \
-	clt2pbm \
 	pcmdiff \
 	qplay \
 	vfontas
@@ -30,7 +29,6 @@ dist_pkglibexec_SCRIPTS  = \
 bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm
 clt2bdf_LDADD   = ${libHX_LIBS}
-clt2pbm_LDADD   = ${libHX_LIBS}
 cltxscale_SOURCES = cltxscale.c xbrz_call.cpp
 cltxscale_LDADD   = -lxbrz ${libHX_LIBS}
 hcdplay_LDADD   = ${libHX_LIBS}
