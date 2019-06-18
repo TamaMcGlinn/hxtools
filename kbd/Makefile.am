@@ -1,6 +1,7 @@
 # -*- Makefile -*-
 
-x11fonts     = mux_9x16.pcf.gz mux_17x32.pcf.gz rhx_9x16.pcf.gz \
+x11fonts     = A1_9x16.pcf.gz A1_17x32.pcf.gz \
+               mux_9x16.pcf.gz mux_17x32.pcf.gz rhx_9x16.pcf.gz \
                rhx_17x32.pcf.gz tosh_9x16.pcf.gz tosh_17x32.pcf.gz
 x11miscdir   = ${x11fontdir}/misc
 x11misc_DATA = ${x11fonts}
@@ -25,6 +26,10 @@ fontgen1 = ${AM_V_GEN} ../smm/vfontas -loadfnt $< -loadmap ${srcdir}/cp437x.uni 
 fontgen2 = ${AM_V_GEN} ../smm/vfontas -loadfnt $< -loadmap ${srcdir}/cp437x.uni -upscale 2 2 -canvas 17 32 -lge -savebdf -
 fontout  = bdftopcf | gzip -9 >$@
 
+A1_9x16.pcf.gz: A1.fnt
+	${AM_V_GEN} ../smm/vfontas -loadfnt $< -loadmap ${srcdir}/cp437x.uni -canvas 9 16 -lge -savebdf - A1 | ${fontout}
+A1_17x32.pcf.gz: A1.fnt
+	${AM_V_GEN} ../smm/vfontas -loadfnt $< -loadmap ${srcdir}/cp437x.uni -upscale 2 2 -canvas 17 32 -lge -savebdf - A1 | ${fontout}
 mux_9x16.pcf.gz: mux.fnt
 	${fontgen1} mux | ${fontout}
 mux_17x32.pcf.gz: mux.fnt
