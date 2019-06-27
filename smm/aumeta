@@ -40,6 +40,7 @@ sub moov_one_file
 	push(@args, $strip_video ? "-vn" : ("-vcodec", "copy"));
 	foreach my $key (keys %meta) {
 		if (defined($meta{$key})) {
+			push(@args, "-metadata:s", "$key=$meta{$key}");
 			push(@args, "-metadata", "$key=$meta{$key}");
 		}
 	}
