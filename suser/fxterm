@@ -43,4 +43,7 @@ if [[ ! -e /usr/share/X11/app-defaults/XTerm.jng ]]; then
 	-xrm '*VT100*visualBell: false'
 	);
 fi;
-exec xterm "${par[@]}" "$@"
+if [ -z "$XTERM" ]; then
+	XTERM=xterm
+fi
+exec "$XTERM" "${par[@]}" "$@"
