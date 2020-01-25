@@ -4,23 +4,9 @@ AM_CPPFLAGS = ${regular_CPPFLAGS} ${libHX_CFLAGS}
 AM_CFLAGS   = ${regular_CFLAGS}
 AM_CXXFLAGS = ${regular_CXXFLAGS}
 
-bin_PROGRAMS = hcdplay
-
-dist_bin_SCRIPTS = aumeta gpsh mkvappend ssa2srt
-
-pkglibexec_PROGRAMS = \
-	bsvplay \
-	pcmdiff \
-	qplay \
-	vfontas
-
-dist_pkglibexec_SCRIPTS  = \
-	extract_d3pkg \
-	extract_dxhog \
-	extract_f3pod \
-	extract_qupak \
-	mod2opus \
-	shared.pm
+bin_PROGRAMS = bsvplay hcdplay pcmdiff qplay vfontas
+dist_bin_SCRIPTS = aumeta extract_d3pkg extract_dxhog extract_f3pod \
+	extract_qupak extract_dfqshared.pm gpsh mod2opus mkvappend ssa2srt
 
 bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm

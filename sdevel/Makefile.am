@@ -11,7 +11,9 @@ dist_bin_SCRIPTS = \
 	checkbrack \
 	cwdiff \
 	git-author-stat \
+	git-blame-stats \
 	git-forest \
+	git-revert-stats \
 	git-track \
 	man2html \
 	spec-beautifier
@@ -23,8 +25,6 @@ pkglibexec_PROGRAMS = \
 dist_pkglibexec_SCRIPTS = \
 	diff2php \
 	doxygen-kerneldoc-filter \
-	git-blame-stats \
-	git-revert-stats \
 	paddrspacesize \
 	proc_stat_signal_decode \
 	sourcefuncsize

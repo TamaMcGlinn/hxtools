@@ -3,20 +3,13 @@
 AM_CPPFLAGS = ${regular_CPPFLAGS} ${libHX_CFLAGS}
 AM_CFLAGS   = ${regular_CFLAGS}
 
-bin_PROGRAMS = \
-	clock_info \
-	ofl
+bin_PROGRAMS = ofl proc_iomem_count proc_stat_parse
 
 dist_bin_SCRIPTS = \
 	pmap_dirty \
 	su1
 
-pkglibexec_PROGRAMS = \
-	fd0ssh \
-	proc_iomem_count \
-	proc_stat_parse \
-	psthreads \
-	utmp_register
+pkglibexec_PROGRAMS = clock_info fd0ssh psthreads utmp_register
 
 dist_pkglibexec_SCRIPTS = \
 	logontime \
