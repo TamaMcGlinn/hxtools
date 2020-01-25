@@ -50,7 +50,6 @@ smm/mpg2ogg			WTFPL-2.0+
 smm/pcmdiff			WTFPL-2.0+
 smm/qplay			GPL-2.0+
 smm/ssa2srt			WTFPL-2.0+
-smm/stxdb			GPL-2.0+
 smm/vfontas			GPL-3.0+
 suser/437cipher			WTFPL-2.0+
 suser/declone			WTFPL-2.0+

@@ -42,7 +42,6 @@ dist_man_MANS = \
 	sourcefuncsize.1 \
 	spec-beautifier.1 \
 	ssa2srt.1 \
-	stxdb.1 \
 	sysinfo.1 \
 	tailhex.1 \
 	utmp_register.8 \

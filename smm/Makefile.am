@@ -20,8 +20,7 @@ dist_pkglibexec_SCRIPTS  = \
 	extract_f3pod \
 	extract_qupak \
 	mod2opus \
-	shared.pm \
-	stxdb
+	shared.pm
 
 bsvplay_SOURCES = bsvplay.c pcspkr_pcm.c
 bsvplay_LDADD   = ${libHX_LIBS} -lm
