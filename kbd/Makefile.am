@@ -2,7 +2,7 @@
 
 x11fonts     = A1_9x16.pcf.gz A1_17x32.pcf.gz \
                mux_9x16.pcf.gz mux_17x32.pcf.gz rhx_9x16.pcf.gz \
-               rhx_17x32.pcf.gz tosh_9x16.pcf.gz tosh_17x32.pcf.gz
+               rhx_17x32.pcf.gz
 x11miscdir   = ${x11fontdir}/misc
 x11misc_DATA = ${x11fonts}
 CLEANFILES   = ${x11fonts}
@@ -14,10 +14,7 @@ qwertzdir         = ${kbddatadir}/keymaps/i386/qwertz
 dist_qwertz_DATA  = de_jng.map
 
 vgafontdir        = ${kbddatadir}/consolefonts
-dist_vgafont_DATA = A1.fnt B1.fnt ati.fnt gotik-textura.fnt ital.fnt mux.fnt \
-               neuropol.fnt nvidia.fnt \
-               rhx.fnt tosh.fnt \
-               ega437_8x16.fnt ega437_8x14.fnt ega437_8x8.fnt
+dist_vgafont_DATA = A1.fnt B1.fnt mux.fnt neuropol.fnt rhx.fnt
 
 unimapdir        = ${kbddatadir}/unimaps
 dist_unimap_DATA = cp437AB.uni
@@ -38,7 +35,3 @@ rhx_9x16.pcf.gz: rhx.fnt
 	${fontgen1} rhx | ${fontout}
 rhx_17x32.pcf.gz: rhx.fnt
 	${fontgen2} rhx | ${fontout}
-tosh_9x16.pcf.gz: tosh.fnt
-	${fontgen1} tosh | ${fontout}
-tosh_17x32.pcf.gz: tosh.fnt
-	${fontgen2} tosh | ${fontout}

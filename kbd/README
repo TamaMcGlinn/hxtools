@@ -72,26 +72,12 @@ A1.fnt
 B1.fnt
 	A font with more soft roundings in upper-case and digit glyphs.
 	To be used with cp437AB.uni.
-ati.fnt
-	ATI ROM font
-ega*.fnt
-	EGA.CPI
-gotik-textura.fnt
-	a Blackletter-Textura font (1994)
-ital.fnt
-	a sans-serif oblique font (1994)
 mu0.fnt
 	sans-serif font
 	mu.fnt from the SUSE "kbd" package
 mux.fnt
 	a geometric, sans-serif font with serifs on a few glyphs
 	by myself (Jan), reuses some dingbat glyphs from mu
-nvidia.fnt
-	AMIBIOS/NVIDIA ROM font
 rhx.fnt
 	a serif roman font
 	r.fnt from the SUSE "kbd" package, alterations
-tosh.fnt
-	A narrow geometric sans-serif font. All glyphs are 7 pixels
-	wide, for use with 8-pixel character cells.
-	CrystalLogic CS55554 ROM
