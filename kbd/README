@@ -78,6 +78,3 @@ mu0.fnt
 mux.fnt
 	a geometric, sans-serif font with serifs on a few glyphs
 	by myself (Jan), reuses some dingbat glyphs from mu
-rhx.fnt
-	a serif roman font
-	r.fnt from the SUSE "kbd" package, alterations
