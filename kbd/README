@@ -72,9 +72,9 @@ A1.fnt
 B1.fnt
 	A font with more soft roundings in upper-case and digit glyphs.
 	To be used with cp437AB.uni.
+E1.fnt
+	a Eurostile-inspired geometric, sans-serif font with serifs
+	placed on a few select glyphs, reuses some dingbat glyphs from mu.
 mu0.fnt
 	sans-serif font
 	mu.fnt from the SUSE "kbd" package
-mux.fnt
-	a geometric, sans-serif font with serifs on a few glyphs
-	by myself (Jan), reuses some dingbat glyphs from mu

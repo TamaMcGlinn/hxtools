@@ -7,7 +7,7 @@ qwertzdir         = ${kbddatadir}/keymaps/i386/qwertz
 dist_qwertz_DATA  = de_jng.map
 
 vgafontdir        = ${kbddatadir}/consolefonts
-dist_vgafont_DATA = A1.fnt B1.fnt mux.fnt neuropol.fnt
+dist_vgafont_DATA = A1.fnt B1.fnt E1.fnt neuropol.fnt
 
 unimapdir        = ${kbddatadir}/unimaps
 dist_unimap_DATA = cp437AB.uni
