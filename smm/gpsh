@@ -49,7 +49,7 @@ sub main
 		},
 		"O=s" => sub {
 			if ($_[1] =~ s/^M,//) {
-				push(@opt_mplayer, $_[1]);
+				push(@opt_mplayer, split(/[\t\n]/s, $_[1]));
 			}
 		},
 	);
