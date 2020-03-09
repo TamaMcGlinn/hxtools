@@ -29,14 +29,6 @@ AC_SUBST([libdl_LIBS])
 AC_CHECK_FUNCS([splice])
 AC_CHECK_MEMBERS([struct utmpx.ut_session])
 
-AC_LANG_PUSH([C++])
-saved_CXXFLAGS="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS $regular_CXXFLAGS"
-AC_CHECK_HEADERS([xbrz.h])
-AM_CONDITIONAL([HAVE_XBRZ], [test "$ac_cv_header_xbrz_h" = yes])
-CXXFLAGS="$saved_CXXFLAGS"
-AC_LANG_POP([C++])
-
 kbddatadir='${datadir}/kbd';
 x11fontdir='${datadir}/fonts';
 AC_ARG_WITH([kbddatadir], AS_HELP_STRING([--with-kbddatadir=PATH],

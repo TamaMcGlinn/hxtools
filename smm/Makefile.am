@@ -16,8 +16,5 @@ qplay_SOURCES   = qplay.c pcspkr_pcm.c
 qplay_LDADD     = ${libHX_LIBS} -lm
 vfontas_SOURCES = vfontas.cpp vfalib.cpp vfalib.hpp
 vfontas_LDADD   = ${libHX_LIBS}
-if HAVE_XBRZ
-vfontas_LDADD  += -lxbrz
-endif
 
 EXTRA_DIST = pcspkr.h
