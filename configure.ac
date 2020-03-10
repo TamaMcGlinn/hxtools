@@ -1,4 +1,4 @@
-AC_INIT([hxtools], [20200126])
+AC_INIT([hxtools], [20200310])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
 AC_PROG_INSTALL
