@@ -110,6 +110,7 @@ export PS1_XUSER="$PS1_XTERM\[\e[0;1;30m\]\A \[\e[0;32m\]\h:\$(hxpref_beautify_p
 unset PS1_XTERM
 
 eval "$(/usr/bin/dircolors -b /usr/share/hxtools/hxtools_dircolors)";
+export QUILT_COLORS="diff_add=32:diff_rem=31:diff_hdr=1;37;44:diff_hunk=35"
 
 # Find out what options this machine's "ls" supports
 # Same option finding for "less"
