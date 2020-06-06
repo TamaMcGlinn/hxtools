@@ -115,22 +115,11 @@ export QUILT_COLORS="diff_add=32:diff_rem=31:diff_hdr=1;37;44:diff_hunk=35"
 # Find out what options this machine's "ls" supports
 # Same option finding for "less"
 #
-if [[ "$(uname -s)" == Linux ]]; then
-	LESS="-Mi";
-	LS_OPTIONS="-NT0";
-	for i in --color=auto --group-dir; do
-		/bin/ls "$i" -d >/dev/null 2>&1 && LS_OPTIONS="$LS_OPTIONS $i";
-	done;
-else
-	unset LESS;
-	unset LS_OPTIONS;
-	for i in -M -i; do
-		less "$i" </dev/null >/dev/null 2>&1 && LESS="$LESS $i";
-	done;
-	for i in --color=auto --group-dir -N "-T 0"; do
-		/bin/ls "$i" -d >/dev/null 2>&1 && LS_OPTIONS="$LS_OPTIONS $i";
-	done;
-fi;
+LESS="-Mi"
+LS_OPTIONS="-NT0"
+for i in --color=auto --group-dir; do
+	/bin/ls "$i" -d >/dev/null 2>&1 && LS_OPTIONS="$LS_OPTIONS $i"
+done
 
 export LESS;
 export LS_OPTIONS;
