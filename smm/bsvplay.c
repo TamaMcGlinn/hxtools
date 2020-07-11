@@ -21,6 +21,7 @@
 #include <libHX/init.h>
 #include <libHX/option.h>
 #include "pcspkr.h"
+#define TICKSPERSEC 1086
 
 struct bsv_insn {
 	uint16_t divisor, duration, af_pause;
@@ -82,11 +83,11 @@ static void parse_basica(int fd)
 			;
 		else if (silenced)
 			pcspkr_silence(&pcsp, (tone.duration + tone.af_pause) *
-				pcsp.sample_rate / 1086);
+				pcsp.sample_rate / TICKSPERSEC);
 		else
 			pcspkr_output(&pcsp, frequency,
-			              tone.duration * pcsp.sample_rate / 1086,
-			              tone.af_pause * pcsp.sample_rate / 1086);
+			              tone.duration * pcsp.sample_rate / TICKSPERSEC,
+			              tone.af_pause * pcsp.sample_rate / TICKSPERSEC);
 	}
 
 	fprintf(stderr, "Total ticks: %u\n", ticks);
@@ -121,11 +122,11 @@ static void parse_pianoman(int fd)
 			;
 		else if (silenced)
 			pcspkr_silence(&pcsp, (duration + af_pause) *
-				pcsp.sample_rate / 1086);
+				pcsp.sample_rate / TICKSPERSEC);
 		else
 			pcspkr_output(&pcsp, frequency,
-			              duration * pcsp.sample_rate / 1086,
-			              af_pause * pcsp.sample_rate / 1086);
+			              duration * pcsp.sample_rate / TICKSPERSEC,
+			              af_pause * pcsp.sample_rate / TICKSPERSEC);
 	}
 	fprintf(stderr, "Total ticks: %u\n", ticks);
 }
