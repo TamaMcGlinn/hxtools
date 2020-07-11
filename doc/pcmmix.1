@@ -1,0 +1,34 @@
+.TH pcmmix 1 "2020-07-11" "hxtools" "hxtools"
+.SH Name
+.PP
+pcmmix \(em PCM mixer
+.SH Syntax
+.PP
+\fBpcmmix\fP [\fB\-ap\fP] [\fB\-t\fP \fIp/q\fP] \fIfile\fP...
+.SH Description
+.PP
+pcmmix will mix two or more input streams (assumed to be LE16 PCM, and of
+the same number of channels). It can do so in either arpeggiated or
+polyphonic mode.
+.SH Options
+.PP
+\fB\-a\fP
+Select arpeggio mode.
+.PP
+\fB\-p\fP
+Select polyphony mode.
+.PP
+\fB\-r\fP \fIrate\fP
+Input sample rate (default: 48000).
+.PP
+\fB\-t\fP \fIp/q\fP
+Defines the length of one arpeggio block in which data from all input sources
+will be round-robined within, as p/q seconds. (default: 80/1086)
+.SH Examples
+.IP \(bu 4
+Entertainer from FOG: `pcmmix -t 160/1086 <(bsvplay --pianoman entrtan1.mus) <(bsvplay --pianoman entrtan2.mus) <(bsvplay --pianoman exe/entrtan3.mus) <(bsvplay --pianoman exe/entrtan4.mus) | aplay -fcd -r48000 -c1`
+.IP \(bu 4
+IHOLD from FOG: `pcmmix -t 80/1086 <(bsvplay --pianoman ihold1.mus) <(bsvplay --pianoman ihold2.mus) <(bsvplay --pianoman ihold3.mus) <(bsvplay --pianoman ihold4.mus) | aplay -fcd -r48000 -c1`
+.SH See also
+.PP
+\fBaplay\fP(1), \fBbsvplay\fP(1), \fBhxtools\fP(7), \fBqplay\fP(1)
