@@ -1,6 +1,6 @@
 /*
  *	bsvplay.c - BASICA binary music format interpreter
- *	Copyright © Jan Engelhardt <jengelh [at] medozas de>, 2002 - 2010
+ *	Copyright © Jan Engelhardt, 2002-2010,2020
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -25,6 +26,18 @@ struct bsv_insn {
 	uint16_t divisor, duration, af_pause;
 };
 
+struct pianoman_insn {
+	/* 0..255 */
+	uint8_t octave;
+	/* c(1), c#(2), d(3), d#(4), e(5), f(6), f#(7), g(8), g#(9),
+	 * a(10), a#(11), b(12), rest(13) */
+	uint8_t note;
+	/* 0..9 */
+	uint8_t staccato;
+	/* 1280=whole note, 640=half, etc. */
+	uint16_t len;
+} __attribute__((packed));
+
 static struct pcspkr pcsp = {
 	.sample_rate = 48000,
 	.volume      = 0.1,
@@ -32,23 +45,12 @@ static struct pcspkr pcsp = {
 
 static unsigned int filter_lo = 0, filter_hi = ~0U;
 static unsigned int tick_groupsize, tick_filter;
-static unsigned int no_zero_ticks;
+static unsigned int no_zero_ticks, flg_pianoman;
 
-static void parse_file(const char *file)
+static void parse_basica(int fd)
 {
 	unsigned int count = 0, ticks = 0;
 	struct bsv_insn tone;
-	int fd;
-
-	if (strcmp(file, "-") == 0)
-		fd = STDIN_FILENO;
-	else
-		fd = open(file, O_RDONLY);
-
-	if (fd < 0) {
-		fprintf(stderr, "Could not open %s: %s\n", file, strerror(errno));
-		return;
-	}
 
 	while (read(fd, &tone, sizeof(struct bsv_insn)) ==
 	    sizeof(struct bsv_insn))
@@ -62,7 +64,7 @@ static void parse_file(const char *file)
 		if (tick_groupsize != 0)
 			silenced |= (count % tick_groupsize) != tick_filter;
 
-		fprintf(stderr, "(%5u) %5hu %5ld%c %5hu %5hu\n",
+		fprintf(stderr, "(%5u) %5hu %5ldHz%c %5hu %5hu\n",
 			count, tone.divisor, frequency,
 			silenced ? '*' : ' ', tone.duration,
 		        tone.af_pause);
@@ -90,6 +92,63 @@ static void parse_file(const char *file)
 	fprintf(stderr, "Total ticks: %u\n", ticks);
 }
 
+static void parse_pianoman(int fd)
+{
+	unsigned int count = 0, ticks = 0;
+	struct pianoman_insn tone;
+	double notemap[255*12];
+
+	for (int n = 0; n < sizeof(notemap); ++n)
+		notemap[n] = 440.0 * pow(2, (n - 45) / 12.0);
+
+	while (read(fd, &tone, sizeof(tone)) == sizeof(tone)) {
+		int frequency = notemap[tone.octave*12+tone.note];
+		unsigned int af_pause = tone.len * tone.staccato / 10;
+		unsigned int duration = tone.len - af_pause;
+		bool silenced;
+
+		++count;
+		silenced = tone.note == 13;
+		if (tick_groupsize != 0)
+			silenced |= (count % tick_groupsize) != tick_filter;
+
+		fprintf(stderr, "(%5u) O%uN%02u %5dHz%c %5u %5u\n",
+			count, tone.octave, tone.note, frequency,
+			silenced ? '*' : ' ', duration,
+		        af_pause);
+		ticks += duration + af_pause;
+		if (silenced && no_zero_ticks)
+			;
+		else if (silenced)
+			pcspkr_silence(&pcsp, (duration + af_pause) *
+				pcsp.sample_rate / 1086);
+		else
+			pcspkr_output(&pcsp, frequency,
+			              duration * pcsp.sample_rate / 1086,
+			              af_pause * pcsp.sample_rate / 1086);
+	}
+	fprintf(stderr, "Total ticks: %u\n", ticks);
+}
+
+static void parse_file(const char *file)
+{
+	int fd;
+	if (strcmp(file, "-") == 0)
+		fd = STDIN_FILENO;
+	else
+		fd = open(file, O_RDONLY);
+
+	if (fd < 0) {
+		fprintf(stderr, "Could not open %s: %s\n", file, strerror(errno));
+		return;
+	}
+	if (flg_pianoman)
+		parse_pianoman(fd);
+	else
+		parse_basica(fd);
+	close(fd);
+}
+
 int main(int argc, const char **argv)
 {
 	static const struct HXoption options_table[] = {
@@ -105,6 +164,8 @@ int main(int argc, const char **argv)
 		 .help = "Skip over silenced ticks"},
 		{.sh = 'r', .type = HXTYPE_UINT, .ptr = &pcsp.sample_rate,
 		 .help = "Sample rate (default: 48000)"},
+		{.ln = "pianoman", .type = HXTYPE_NONE, .ptr = &flg_pianoman,
+		 .help = "Assume input is in Pianoman .MUS file"},
 		HXOPT_AUTOHELP,
 		HXOPT_TABLEEND,
 	};
