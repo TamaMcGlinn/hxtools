@@ -23,10 +23,32 @@
 #include "pcspkr.h"
 #define TICKSPERSEC 1086
 
+/*
+ * based on findings from pvt collection
+ * entertan.exe 1989 (size:29527 md5:13caa8100e15ad65d900f6a12b9ddf24)
+ * ihold.exe    1989 (size:21317 md5:5cf7aef915539c60a9a98c96a3a8aefb)
+ * maplleaf.exe 1989 (size:27865 md5:f234797cbd1dba47d90da8a94dcb088f)
+ * mnty.exe     1989 (size:19441 md5:507997fa70b89f9a9ed5430e833cb6c0)
+ * willtell.exe 1989 (size:33799 md5:5d5405a5ff063476deec618dcd3d990d)
+ */
 struct bsv_insn {
 	uint16_t divisor, duration, af_pause;
 };
 
+/*
+ * based on findings in FOGDOS.118, FOGDOS.119, FOGDOS.120:
+ * pianoman.com 1986-05-06 01:36:02 (md5:cba939868e35b2742984246aa9317984) (Neil J. Rubenking)
+ * entertan.mus 1984-12-06 03:51:24 (size:24280 md5:994a5130d91b5b1395e4f9653f06c2e9)
+ * (Scott Joplin - The Entertainer)
+ * ihold.mus    1986-05-03 18:10:36 (size:17440 md5:d1ed36909bd4db1e4903181e57486c19)
+ * (Tom Lehrer - I hold your hand in mine)
+ * maplleaf.mus 1984-12-07 03:56:00 (size:23080 md5:f070f2b417065c322434ea2af613d464)
+ * (Scott Joplin - The maple leaf rag)
+ * mntpythn.mus 1984-12-29 20:19:40 (size:18700 md5:e10ba993a9d3179af0b890f453ddc93f)
+ * (John Philip Sousa - The liberty bell)
+ * willtell.mus 1985-01-10 15:23:26 (size:40105 md5:bd0e216ce89080a1e633465f57516b6a)
+ * (Gioachino Rossini - William Tell)
+ */
 struct pianoman_insn {
 	/* 0..255 */
 	uint8_t octave;
@@ -74,11 +96,11 @@ static void parse_basica(int fd)
 		/*
 		 * It seems that in the sample BSV executables from 1989
 		 * calculate the cpu speed and then do around 1086 ticks/sec.
-		 * entertan.exe: 199335 / 183 = 1089
-		 * ihold.exe:     73248 /  68 = 1077
-		 * maplleaf.exe: 170568 / 157 = 1086
-		 * mnty.exe:     119680 / 110 = 1088
-		 * willtell.exe: 225350 / 206 = 1093
+		 * entertan.exe: 199335 / 183s = 1089
+		 * ihold.exe:     73248 /  68s = 1077
+		 * maplleaf.exe: 170568 / 157s = 1086
+		 * mnty.exe:     119680 / 110s = 1088
+		 * willtell.exe: 225350 / 206s = 1093
 		 */
 		ticks += tone.duration + tone.af_pause;
 		if (silenced && no_zero_ticks)
@@ -119,7 +141,15 @@ static void parse_pianoman(int fd)
 			count, tone.octave, tone.note, frequency,
 			silenced ? '*' : ' ', duration,
 		        af_pause);
-		ticks += duration + af_pause;
+		/*
+		 * Pianoman runs through
+		 * entertan.mus: 194240/182s=1067
+		 * ihold.mus:     69760/ 66s=1056
+		 * maplleaf.mus: 138480/130s=1065
+		 * mntpythn.mus: 112200/105s=1068
+		 * willtell.mus: 169407/159s=1065
+		 */
+		ticks += tone.len;
 		if (silenced && no_zero_ticks)
 			;
 		else if (silenced)
