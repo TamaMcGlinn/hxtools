@@ -448,6 +448,7 @@ int main(int argc, const char **argv)
 	sy_gfx_hardware(&sib);
 	sy_display_size(&sib);
 	sy_dump(&sib);
-	HXmap_free(sib.osrel);
+	if (sib.osrel != NULL)
+		HXmap_free(sib.osrel);
 	return EXIT_SUCCESS;
 }
