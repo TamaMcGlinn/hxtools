@@ -20,4 +20,5 @@ Calls mmap(2) on both the source and destination, and does a memcpy(3).
 Calls mmap(2) on the source and uses write(2) for the destination.
 .TP
 \fB\-s\fP, \fB\-\-splice\fP
-Select splice copying mode.
+Calls splice(2) on a pipe(2) pair. This is silly, but it is what it is because
+splice(2) does not support file-to-file transfers.
