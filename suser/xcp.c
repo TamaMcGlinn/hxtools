@@ -23,6 +23,7 @@
 
 enum {
 	XCP_MMAP,
+	XCP_MMAP2,
 	XCP_SPLICE,
 };
 
@@ -31,12 +32,15 @@ static unsigned int xcp_mode = XCP_MMAP;
 static bool xcp_get_options(int *argc, const char ***argv)
 {
 	static struct HXoption options_table[] = {
+		{.sh = 'd', .ptr = &xcp_mode,
+		 .type = HXTYPE_VAL, .val = XCP_MMAP2,
+		 .help = "Use mmap(2) for reading and writing"},
 		{.sh = 'm', .ln = "mmap", .ptr = &xcp_mode,
 		 .type = HXTYPE_VAL, .val = XCP_MMAP,
-		 .help = "Use mmap(2) for copying"},
+		 .help = "Use mmap(2) for reading, write(2) for writing"},
 		{.sh = 's', .ln = "splice", .ptr = &xcp_mode,
 		 .type = HXTYPE_VAL, .val = XCP_SPLICE,
-		 .help = "Use splice(2) for copying"},
+		 .help = "Use splice(2) for reading and writing"},
 		HXOPT_AUTOHELP,
 		HXOPT_TABLEEND,
 	};
@@ -138,6 +142,53 @@ static int xcp_mmap(const char *input, const char *output)
 	return EXIT_SUCCESS;
 }
 
+static int xcp_mmap2(const char *input, const char *output)
+{
+	struct stat isb;
+
+	int ifd = open(input, O_RDONLY);
+	if (ifd < 0) {
+		fprintf(stderr, "open(\"%s\"): %s\n", input, strerror(errno));
+		return EXIT_FAILURE;
+	}
+
+	int ofd = open(output, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+	if (ofd < 0) {
+		fprintf(stderr, "open(\"%s\"): %s\n", output, strerror(errno));
+		return EXIT_FAILURE;
+	}
+
+	if (fstat(ifd, &isb) < 0) {
+		perror("fstat");
+		return EXIT_FAILURE;
+	}
+	if (ftruncate(ofd, isb.st_size) != 0) {
+		perror("ftruncate");
+		return EXIT_FAILURE;
+	}
+
+	void *iarea = mmap(NULL, isb.st_size, PROT_READ, MAP_SHARED, ifd, 0);
+	if (iarea == (void *)-1) {
+		perror("mmap");
+		return EXIT_FAILURE;
+	}
+	void *oarea = mmap(NULL, isb.st_size, PROT_WRITE, MAP_PRIVATE, ofd, 0);
+	if (oarea == (void *)-1) {
+		perror("mmap - 2");
+		return EXIT_FAILURE;
+	}
+	close(ifd);
+	close(ofd);
+	madvise(iarea, isb.st_size, MADV_SEQUENTIAL);
+	madvise(oarea, isb.st_size, MADV_SEQUENTIAL);
+	printf("Copying...\n");
+	memcpy(oarea, iarea, isb.st_size);
+	printf("Unmap...\n");
+	munmap(iarea, isb.st_size);
+	munmap(oarea, isb.st_size);
+	return EXIT_SUCCESS;
+}
+
 static int main2(int argc, const char **argv)
 {
 	if (!xcp_get_options(&argc, &argv))
@@ -152,6 +203,8 @@ static int main2(int argc, const char **argv)
 		return xcp_splice(argv[1], argv[2]);
 	else if (xcp_mode == XCP_MMAP)
 		return xcp_mmap(argv[1], argv[2]);
+	else if (xcp_mode == XCP_MMAP2)
+		return xcp_mmap2(argv[1], argv[2]);
 	return EXIT_FAILURE;
 }
 
