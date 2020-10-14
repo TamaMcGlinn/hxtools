@@ -34,37 +34,26 @@ EXEC		1;31
 #
 .7z	0;31	# 7zip
 .Z	0;31	# LZ77/78 old-style "compress" files
-.ace	0;31	# WinACE
-#.arc	0;31	# SW ARC/PKARC
 .arj	0;31	# Arj
 .bz2	0;31	# BZip2
 .cab	0;31	# Microsoft Cabinet file
 .cpio	0;31	# a different kind of tape archive
 .deb	0;31	# An .a file with cpio.gz in it
 .gz	0;31	# gzip
-#.ice	0;31	# LHICE
 # BIN/CUE explicitly not marked
 .iso	0;31	# ISO-9660 and UDF images
 .jar	0;31	# Jar (Jung Archiver, a new ARJ). Also: ZIP for Java
-#.lha	0;31	# LHARC
 .lz	0;31	# lzip compressed file
-#.lzh	0;31	# LHARC
 .msi	0;31	# Microsoft installer package
-#.pak	0;31	# Pak or Quake1/2
 .pk3	0;31	# ZIP for Quake3 and other games
 .pkg	0;31	# Solaris-style .pkg archives
 .rpm	0;31	# RPM
 .tar	0;31	# Tape Archive
-#.taz	0;31	# Tar / Compress (old)
-#.tbz	0;31	# Tar / BZip1 (old)
-#.tbz2	0;31	# tape archive with bzip2 compression
 .tgz	0;31	# tape archive with gzip compression
 .tlz	0;31	# tape archive with lzip compression
-#.txz	0;31	# tape archive with xz compression
-#.z	0:31	# see .Z
 .xz	0;31	# tukaani xz
 .zip	0;31	# classic PKZIP, Zip, etc.
-.zoo	0;31	# Zoo
+.zst	0;31	# Zstandard
 
 #
 # executables, semi-executables or program code (bright-red)
@@ -72,7 +61,6 @@ EXEC		1;31
 .bat	01;31	# MS-DOS: BAT
 .com	01;31	# MS-DOS: COM
 .exe	01;31	# MS-DOS: EXE
-.pif	01;31	# MS-DOS: PIF
 .dll	01;31
 .so	01;31	# UNIX shared object
 
@@ -82,9 +70,7 @@ EXEC		1;31
 .C	0;32	# C++ program
 .H	0;32	# C++ include files
 .S	0;32	# unpreprocessed GNU Assembler source
-.acs	0;32	# ActionCode script (Doom)
 .asm	0;32	# assembler code
-.bas	0;32	# BASIC program
 .c	0;32	# C program
 .cc	0;32	# C++ program
 .cpp	0;32	# C++ program
@@ -97,37 +83,32 @@ EXEC		1;31
 .pl	0;32	# Perl programs
 .pm	0;32	# Perl modules
 .py	0;32	# Python
+.rb	0;32	# Ruby
+.rs	0;32	# Rust
 .s	0;32	# Precompiled assembler source
 .sh	0;32	# Shell script
 
 #
 # documents (cyan)
 #
-.chm	0;36	# compiled HTML (MS)
 .css	0;36	# Cascading style sheet
 .csv	0;36	# CSV:comma separated values
-#.db	0;36	# Paradox database
-#.dbf	0;36	# DBase database
 .doc	0;36	# Word document
 .docx	0;36	# Word document
-.flv	0;36	# Macromedia container
 .htm	0;36	# HTML file
 .html	0;36	# HTML file
-.lyx	0;36	# LyX word processing file
+.ldif	0;36	# LDAP Interchange Format
 .odt	0;36	# OpenDocument text
 .ods	0;36	# OpenDocument spreadsheet
 .odp	0;36	# OpenDocument presentation
-.pdf	0;36	# Acrobat
+.pdf	0;36
 .po	0;36	# Translations
-.pps	0;36	# Powerpoint Pack&Go presentation/document
+.ps	0;36	# Postscript
 .ppt	0;36	# Powerpoint presentation/document
 .pptx	0;36	# Powerpoint presentation/document
-.reg	0;36	# Windows registry file (MS)
 .rtf	0;36	# Rich Text Format
 .tex	0;36	# latex doc
 .txt	0;36	# text file
-#.url	1;37	# link to the internet
-#.wks	0;36	# Works file
 .xls	0;36	# Excel table/document
 .xlsx	0;36	# Excel table/document
 .xml	0;36	# XML
@@ -135,19 +116,8 @@ EXEC		1;31
 #
 # multimedia (cyan)
 #
-.aif	0;36	# Macintosh AIFF
-.aiff	0;36	# Macintosh AIFF
-.asf	0;36	# Active Streaming Format
-.asx	0;36	# Active Streaming Format
-.AVI	0;36	# Audio-Video Interleaved
 .avi	0;36	# Audio-Video Interleaved
-.au	0;36	# Sun Audio
 .bmp	0;36	# Windows bitmap
-#.cdr	0;36	# CorelDraw file
-#.div	0;36	# Divx
-.divx	0;36	# Divx
-#.drw	0;36	# Micrografx Draw
-.eps	0;36	# Encapsulated PostScript
 .flac	0;36	# Free Lossless Audio
 .gif	0;36	# CompuServer Graphics Interchange Format
 .ico	0;36	# Microsoft bitmap Icon
@@ -155,44 +125,30 @@ EXEC		1;31
 .jpeg	0;36
 .JPG	0;36	# JPEG
 .jpg	0;36	# JPEG
-.m4a	0:36	# MPEG4 container with just audio
+.m4a	0;36	# MPEG4 container with just audio
 .mid	0;36	# MIDI file
 .mka	0;36	# Matroska container (used for audio-only)
 .mkv	0;36	# Matroska container (used for video)
 .mod	0;36	# Fast Tracker Module
-.mov	0;36	# QuickTime Movie
-.mp2	0;36	# MPEG-1 layer 2 audio
 .mp3	0;36	# MPEG-1 layer 3 audio
 .mp4	0;36	# MPEG-4 video
 .mpeg	0;36
 .mpg	0;36	# MPEG video
 .ogg	0;36	# OGG container (usually with Vorbis audio stream)
 .opus	0;36	# OGG container with Opus audio stream
+.otf	0;36	# OpenType CFF font
 .pbm	0;36	# Portable Bitmap
-.pcx	0;36	# ZSoft Paintbrush
 .pgm	0;36	# Portable graymap
 .png	0;36	# Portable Network Graphics
 .ppm	0;36	# Portable Pixelmap
-#.psp	0;36	# Paint Shop Pro
-#.ra	0;36	# RealPlayer Streaming Video
-#.ram	0;36	# RealPlayer Video or link to one
-#.rmi	0;36	# RIFF-MIDI file
 .s3m	0;36	# Scream-Tracker Module
-#.snd	0;36
 .svg	0;36	# Scalable vector graphics
-.tga	0;36	# Targa bitmap
 .tif	0;36	# Tagged Image File Format
 .tiff	0;36
-.ttc	0;36	# TrueType font
+.ttc	0;36	# TrueType font collection
 .ttf	0;36	# TrueType font
 .VOB	0;36	# MPEG-2 DVD Video
 .vob	0;36	# MPEG-2 DVD Video
-#.voc	0;36	# Soundblaster VOC file
 .wav	0;36	# RIFF Wave file
-.wma	0;36	# Windows Media Audio
-.wmf	0;36	# Windows Metafile
-.wmv	0;36	# Windows Media Video
-.xbm	0;36	# X Bitmap
 .xm	0;36	# Fast Tracker Module
 .xpm	0;36	# X Pixmap
-.xvid	0;36	# XviD
