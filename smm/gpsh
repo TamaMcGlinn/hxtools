@@ -249,7 +249,7 @@ sub workaround_mp3vbr
 	# make it even more costly).
 	my $ifile = shift @_;
 	my $ofile = $ifile;
-	my $tmpdir = "/tmp/psh.$>";
+	my $tmpdir = "/var/tmp/psh.$>";
 	my @stat = stat($ifile);
 
 	if (!defined($stat[0])) {
@@ -283,7 +283,7 @@ sub play_umx
 		return;
 	}
 
-	my $of = "/tmp/playmuch-$$.it";
+	my $of = "/var/tmp/playmuch-$$.it";
 	open(OUT, "> $of");
 	read(IN, $buffer, 256);
 	$buffer =~ s{^.*?(?=IMP|SCRM|Extended Module)}{}ogs;
