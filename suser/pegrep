@@ -44,12 +44,14 @@ sub nlcount
 sub main
 {
 	my $pattern = shift @ARGV;
-	if (length($grepcolor) > 0) {
+	if (defined($grepcolor) && length($grepcolor) > 0) {
 		$grepcolor = "\x1b\x5b${grepcolor}m";
 		$filecolor = "\x1b\x5b35m";
 		$coloncolor = "\x1b\x5b1;30m";
 		$linenocolor = "\x1b\x5b36m";
 		$stopcolor = "\x1b\x5b0m";
+	} else {
+		$grepcolor = $filecolor = $coloncolor = $linenocolor = $stopcolor = "";
 	}
 	foreach my $file (@ARGV) {
 		&dofile($file, $pattern);
