@@ -269,7 +269,12 @@ sub workaround_mp3vbr
 			return $ifile;
 		}
 	}
-	system "mkvmerge", "-o", $ofile, $ifile;
+	my $ret = system("mkvmerge", "-o", $ofile, $ifile);
+	if ($ret == -1) {
+		print "\e[31m", "mkvmerge was not found.", "\e[0m\n";
+	} elsif ($ret != 0) {
+		print "mkvmerge failed to run.\n";
+	}
 	return $ofile;
 }
 
