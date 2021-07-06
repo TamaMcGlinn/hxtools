@@ -72,13 +72,13 @@ hxpref_beautify_path()
 	local wd;
 	(
 	IFS="/";
-	pw2="$PWD/";
+	wd="$PWD/"
 	# Special treatment for homedir, as ~ is cheaper (shorter) than
 	# the full home path ($HOME)
-	wd=${pw2/#$HOME\//~\/};
+	wd=${wd/#$HOME\//~\/}
 	wd=${wd%/};
 	set $wd;
-	if [ \( -z "$1" -a $# -le "$[$HXPREF_BEAUTIFY_PATH_LEVEL+1]" \) -o $# -le \
+	if [ \( -z "$1" -a $# -le "$[$HXPREF_BEAUTIFY_PATH_LEVEL]" \) -o $# -le \
 	    "$HXPREF_BEAUTIFY_PATH_LEVEL" ]; then
 		echo "$wd";
 	else
