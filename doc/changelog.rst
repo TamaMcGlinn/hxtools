@@ -38,11 +38,13 @@ can inspect in e.g. Inkscape by overlaying both fontfaces) that may be
 addressed in a later release.
 
 N2:
+
 * Isthmuses tend to get washed out, noticable in glyphs like 'G'.
 * Sumps in the 'K', 'M', 'N' glyphs could be improved.
   This is noticable in glyphs like 'G'.
 
 Nouveau IBM:
+
 * Kerning is not original: too closely spaced.
 * Node points are not at pixel or half-pixel locations.
   'B' has a 30.78 diagonal for no apparent reason. This is bad for integral
