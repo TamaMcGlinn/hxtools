@@ -1,3 +1,13 @@
+rel-20210803
+============
+Enhancements:
+* vfontas: read support for BDF
+* kbd: cp437x.uni learned a few Unicode codepoints for checkmarks
+  (cp437x is a glyph mapping table for arbitrary CP437 fonts
+  that declares some extra mappings to display more Unicode
+  characters somehow, rather than not showing them with a blank/box character)
+
+
 rel-20201116
 ============
 * pegrep: cure uninitialized variable warnings
