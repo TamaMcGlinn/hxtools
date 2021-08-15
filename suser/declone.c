@@ -1,66 +1,104 @@
 /*
- *	declone.c - unlink but preserve a file
- *	written by Jan Engelhardt, 2004-2007
+ *	declone.c - break hardlink off a file
+ *	written by Jan Engelhardt, 2021
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the WTF Public License version 2 or
  *	(at your option) any later version.
  */
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#define BLOCKSIZE 4096
+#include <libHX/defs.h>
+#include <libHX/string.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 static void dofile(const char *file)
 {
 	struct stat sb;
-	ssize_t ret;
-	char buffer[BLOCKSIZE];
-	int in, out;
-
-	if ((in = open(file, O_RDONLY)) < 0) {
+	int infd = open(file, O_RDONLY);
+	if (infd < 0) {
 		fprintf(stderr, "Could not open %s: %s\n",
 		        file, strerror(errno));
 		return;
 	}
-	if (fstat(in, &sb) < 0) {
+	if (fstat(infd, &sb) < 0) {
 		fprintf(stderr, "Could not stat %s: %s\n",
 		        file, strerror(errno));
-		return;
+		goto out;
 	}
-	if (unlink(file) < 0) {
-		fprintf(stderr, "Could not unlink %s: %s\n",
-		        file, strerror(errno));
-		return;
-	}
-	if ((out = open(file, O_WRONLY | O_TRUNC | O_CREAT,
-	    sb.st_mode)) < 0) {
-		fprintf(stderr, "Could not recreate/open file %s: %s\n",
-		        file, strerror(errno));
-		fgets(buffer, 4, stdin);
-		return;
+	void *inmap = mmap(NULL, sb.st_size, PROT_READ, MAP_SHARED, infd, 0);
+	if (inmap == MAP_FAILED) {
+		fprintf(stderr, "mmap %s: %s\n", file, strerror(errno));
+		goto out;
 	}
 
+	char *cont_dir = HX_dirname(file);
+	if (cont_dir == NULL) {
+		fprintf(stderr, "%s\n", strerror(errno));
+		goto out2;
+	}
+	hxmc_t *outname = HXmc_strinit(cont_dir);
+	if (outname == NULL) {
+		fprintf(stderr, "%s\n", strerror(errno));
+		goto out3;
+	}
+	if (HXmc_strcat(&outname, "/decloneXXXXXX") == NULL) {
+		fprintf(stderr, "%s\n", strerror(errno));
+		goto out4;
+	}
+	if (mkstemp(outname) < 0) {
+		fprintf(stderr, "mkstemp: %s\n", strerror(errno));
+		goto out4;
+	}
+	int outfd = open(outname, O_RDWR, S_IRUGO | S_IWUGO);
+	if (outfd < 0) {
+		fprintf(stderr, "open %s: %s\n", outname, strerror(errno));
+		goto out4;
+	}
+	if (ftruncate(outfd, sb.st_size) < 0) {
+		fprintf(stderr, "ftruncate %s: %s\n", outname, strerror(errno));
+		goto out5;
+	}
+	if (fchown(outfd, sb.st_uid, sb.st_gid) < 0 ||
+	    fchmod(outfd, sb.st_mode) < 0) {
+		fprintf(stderr, "fchown/fchmod %s: %s\n", outname, strerror(errno));
+		goto out5;
+	}
+	void *outmap = mmap(NULL, sb.st_size, PROT_WRITE, MAP_SHARED, outfd, 0);
+	if (outmap == MAP_FAILED) {
+		fprintf(stderr, "mmap %s: %s\n", outname, strerror(errno));
+		goto out5;
+	}
+	memcpy(outmap, inmap, sb.st_size);
+	if (msync(outmap, sb.st_size, MS_ASYNC) < 0) {
+		fprintf(stderr, "msync: %s\n", strerror(errno));
+		goto out6;
+	}
+	if (rename(outname, file) < 0) {
+		fprintf(stderr, "Could not replace %s: %s\n",
+		        file, strerror(errno));
+		goto out6;
+	}
 	printf("* %s\n", file);
-	fchown(out, sb.st_uid, sb.st_gid);
-	fchmod(out, sb.st_mode);
-	while ((ret = read(in, buffer, BLOCKSIZE)) > 0)
-		if (write(out, buffer, ret) < 0) {
-			fprintf(stderr, "Error during write to %s: "
-			        "%s\n", file, strerror(errno));
-			break;
-		}
-
-	if (ret < 0)
-		fprintf(stderr, "Error during read on %s: %s\n",
-		        file, strerror(errno));
-	close(in);
-	close(out);
+ out6:
+	munmap(outmap, sb.st_size);
+ out5:
+	close(outfd);
+	unlink(outname);
+ out4:
+	HXmc_free(outname);
+ out3:
+	free(cont_dir);
+ out2:
+	munmap(inmap, sb.st_size);
+ out:
+	close(infd);
 }
 
 int main(int argc, const char **argv)

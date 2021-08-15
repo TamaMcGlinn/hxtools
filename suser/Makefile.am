@@ -21,6 +21,7 @@ dist_pkglibexec_SCRIPTS = \
 	mailsplit \
 	rezip
 
+declone_LDADD = ${libHX_LIBS}
 sysinfo_LDADD = ${libHX_LIBS} ${libmount_LIBS} ${libpci_LIBS} ${libxcb_LIBS}
 tailhex_LDADD = ${libHX_LIBS}
 xcp_LDADD     = ${libHX_LIBS}
