@@ -236,7 +236,7 @@
 # Greek letters and mathematical symbols
 #
 0xe0	U+03b1
-0xe1	U+03b2 U+00df
+0xe1	U+00df U+03b2 U+00df
 0xe2	U+0393
 0xe3	U+03c0
 0xe4	U+03a3
