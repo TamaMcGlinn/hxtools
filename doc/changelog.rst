@@ -1,3 +1,12 @@
+rel-20210928
+============
+Enhancements:
+* vfontas: add recognition for BDF glyphs as produced by fontforge from PCF
+* kbd: map beta to eszett on cp437x
+* vfontas: recognize "idem" lines in kbd unimaps
+* vfontas: add -setbold, -setprop, -lgeu, -lgeuf commands
+
+
 rel-20210803
 ============
 Enhancements:
